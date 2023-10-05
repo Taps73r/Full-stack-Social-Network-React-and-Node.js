@@ -1,6 +1,4 @@
 import './App.css';
-import Circle from './Circle';
-import Square  from './square';
 
 function App() {
   return (
