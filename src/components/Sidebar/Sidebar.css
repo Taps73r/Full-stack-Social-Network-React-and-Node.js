@@ -1,0 +1,17 @@
+.sidebar {
+    grid-area: 2 / 1 / 4 / 2;
+    background-color: rgb(94, 7, 121);
+    width: 300px;
+    color: rgb(230, 154, 55);
+    font-size: 2rem;
+    display: flex;
+    flex-direction: column;
+  }
+  .sidebar div{
+    cursor: pointer;
+    padding: 20px;
+  }
+  
+  .sidebar div:hover{
+    background-color: rgba(7, 121, 36, 0.767);
+  }

@@ -1,0 +1,13 @@
+.logo {
+    grid-area: 1 / 1 / 2 / 5;
+    background-color: rgb(94, 7, 121);
+    height: 150px;
+    display: flex;
+    align-items: center;
+    padding-left: 20px;
+  }
+  
+  .logo img {
+    width: 100px;
+    height: 100px;
+  }

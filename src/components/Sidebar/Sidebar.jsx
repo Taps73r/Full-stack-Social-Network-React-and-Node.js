@@ -1,4 +1,5 @@
-function Side_bar () {
+import './Sidebar.css'
+function Sidebar () {
     return (
         <div className="sidebar">
           <div className="sidebaritem">Profile</div>
@@ -10,4 +11,4 @@ function Side_bar () {
     )
 }
 
-export default Side_bar;
+export default Sidebar;
