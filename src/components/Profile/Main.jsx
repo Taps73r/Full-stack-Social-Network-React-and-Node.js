@@ -1,4 +1,6 @@
 import './Main.css';
+import Profile from './Posts/Profile';
+import Post from './Posts/Post/Post';
 function Main() {
     return (
         <div className="maincontent">
@@ -16,6 +18,8 @@ function Main() {
                 <div className='profile_bio'>
                     <h1>Bio</h1>
             </div>
+            <Profile />
+            <Post message="New content"/>
         </div>
     )
 }

@@ -1,0 +1,5 @@
+.dialogs {
+    grid-area: 2 / 2 / 4 / 5;
+    background-color: orange;
+    border-radius: 15px;
+}
