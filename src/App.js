@@ -17,7 +17,7 @@ function App() {
         <div className='route_side_bar'>
           <Routes>
             <Route path="/profile" element={<Main />} />
-            <Route path="/dialogs" element={<Dialogs />} />
+            <Route path="/dialogs/*" element={<Dialogs />} />
             <Route path="/news" element={<News />} />
             <Route path="/music" element={<Music />} />
             <Route path="/settings" element={<Settings />} />

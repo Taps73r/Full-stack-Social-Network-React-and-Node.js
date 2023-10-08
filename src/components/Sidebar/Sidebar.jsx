@@ -1,32 +1,33 @@
+import { NavLink } from 'react-router-dom';
 import './Sidebar.css'
 function Sidebar() {
   return (
     <div className="sidebar">
-      <a href='/profile'>
+      <NavLink to='/profile'>
       <div className="sidebaritem">
         Profile
       </div>
-      </a>
-      <a href='/dialogs'>
+      </NavLink>
+      <NavLink to='/dialogs'>
       <div className="sidebaritem">
         Messages
       </div>
-      </a>
-      <a href='/news'>
+      </NavLink>
+      <NavLink to='/news'>
       <div className="sidebaritem">
         News
       </div>
-      </a>
-      <a href='/music'>
+      </NavLink>
+      <NavLink to='/music'>
       <div className="sidebaritem">
         Music
       </div>
-      </a>
-      <a href='/settings'>
+      </NavLink>
+      <NavLink to='/settings'>
       <div className="sidebaritem">
         Settings
       </div>
-      </a>
+      </NavLink>
     </div>
   )
 }

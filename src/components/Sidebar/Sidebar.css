@@ -1,4 +1,4 @@
-.sidebar {
+.sidebar a{
     grid-area: 2 / 1 / 4 / 2;
     background-color: rgb(94, 7, 121);
     width: 300px;
@@ -6,6 +6,7 @@
     font-size: 2rem;
     display: flex;
     flex-direction: column;
+    text-decoration: none;
   }
   .sidebar div{
     cursor: pointer;
@@ -14,4 +15,8 @@
   
   .sidebar div:hover{
     background-color: rgba(7, 121, 36, 0.767);
+  }
+  .sidebar a.active{
+    color: purple;
+    background-color: rgb(230, 154, 55);
   }
