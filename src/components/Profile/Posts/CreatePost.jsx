@@ -1,6 +1,6 @@
-import './Profile.css';
+import './CreatePost.css';
 
-function Profile () {
+function CreatePost () {
     return(
         <div className='Profile'>
             <div>
@@ -11,4 +11,4 @@ function Profile () {
     )
 }
 
-export default Profile;
+export default CreatePost;

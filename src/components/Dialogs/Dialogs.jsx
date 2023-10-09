@@ -1,7 +1,7 @@
 import './Dialogs.css';
 import Message from './Message'
 
-function Dialogs (){
+function Dialogs (props){
     return(
         <div className="dialogs">
             <Message />

@@ -2,7 +2,7 @@ import './Post.css';
 
 function Post (props){
     return (
-        <div className='posts'>1 post
+        <div className='posts'>
         { props.message }
         </div>
     )
