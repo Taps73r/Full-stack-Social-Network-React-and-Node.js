@@ -5,8 +5,8 @@ import Users from "./Users/User";
 function Message(props) {
     return (
         <div className="dialog">
-            <Users />
-            <TextData />
+            <Users usersData={props.usersData} />
+            <TextData messagesData={props.messagesData} />
         </div>
     )
 }

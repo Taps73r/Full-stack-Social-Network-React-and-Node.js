@@ -1,10 +1,4 @@
 import { NavLink } from "react-router-dom";
-let usersData = [{ id: 1, name: 'Sasha' }, { id: 2, name: 'Misha' }];
-
-let user = usersData.map(dialog => {
-    return <MessageUser name={dialog.name} id={dialog.id}
-        urlavarat='https://variety.com/wp-content/uploads/2021/04/Avatar.jpg' />
-})
 
 function MessageUser(props) {
     let path = '/dialogs/' + props.id;
@@ -21,6 +15,10 @@ function MessageUser(props) {
 }
 
 function Users(props) {
+    let user = props.usersData.map(dialog => {
+        return <MessageUser name={dialog.name} id={dialog.id}
+            urlavarat='https://variety.com/wp-content/uploads/2021/04/Avatar.jpg' />
+    })
     return (
         <div className="user_dialog">
             {user}

@@ -8,7 +8,7 @@ import Music from './components/Music/Music';
 import Settings from './components/Settings/Settings';
 import Footer from './components/Footer/Footer';
 import { BrowserRouter, Route, Routes } from 'react-router-dom';
-function App() {
+function App(props) {
   return (
     <BrowserRouter>
       <div className="App">
@@ -16,8 +16,8 @@ function App() {
         <Sidebar />
         <div className='route_side_bar'>
           <Routes>
-            <Route path="/profile" element={<Main />} />
-            <Route path="/dialogs/*" element={<Dialogs />} />
+            <Route path="/profile" element={<Main postData={props.postData}/>} />
+            <Route path="/dialogs/*" element={<Dialogs messagesData={props.messagesData} usersData={props.usersData} />} />
             <Route path="/news" element={<News />} />
             <Route path="/music" element={<Music />} />
             <Route path="/settings" element={<Settings />} />

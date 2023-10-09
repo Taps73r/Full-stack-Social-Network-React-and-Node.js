@@ -4,10 +4,14 @@ import './index.css';
 import App from './App';
 import reportWebVitals from './reportWebVitals';
 
+let messagesData = [{ id: 1, message: 'fsdaafadfad' }, { id: 2, message: '211241212fe' }];
+let usersData = [{ id: 1, name: 'Sasha' }, { id: 2, name: 'Misha' }];
+let postData = [{id: 1, postMessage: 'dsadads'}, {id: 2, postMessage: 'dsad1231243ads'}]
+
 const root = ReactDOM.createRoot(document.getElementById('root'));
 root.render(
   <React.StrictMode>
-    <App />
+    <App messagesData={messagesData} usersData={usersData} postData={postData}/>
   </React.StrictMode>
 );
 
