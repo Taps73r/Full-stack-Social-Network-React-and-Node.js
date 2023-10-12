@@ -3,8 +3,6 @@ import CreatePost from './Posts/CreatePost';
 import Post from './Posts/Post/Post';
 import ProfileInfo from './ProfileInfo/ProfileInfo';
 
-
-
 function Main(props) {
     let posts = props.postData.map(post => {
         return <Post message={post.postMessage} />
@@ -12,7 +10,8 @@ function Main(props) {
     return (
         <div className="maincontent">
             <ProfileInfo />
-            <CreatePost />
+            <CreatePost newPostText={props.newPostText} 
+            addPost={props.addPost} updateTextPost={props.updateTextPost}/>
             {posts}
         </div>
     )
