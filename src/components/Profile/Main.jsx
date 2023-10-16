@@ -10,7 +10,7 @@ function Main(props) {
     return (
         <div className="maincontent">
             <ProfileInfo />
-            <CreatePost addPost={props.addPost} updateTextPost={props.updateTextPost}/>
+            <CreatePost dispatch={props.dispatch} />
             {posts}
         </div>
     )

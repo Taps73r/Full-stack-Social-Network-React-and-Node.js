@@ -11,7 +11,7 @@ function reRenderTree(state) {
   root.render(
     <React.StrictMode>
       <BrowserRouter>
-        <App state={state} addPost={store.addPost.bind(store)} updateTextPost={store.updateTextPost.bind(store)} />
+        <App state={state} dispatch={store.dispatch.bind(store)} />
       </BrowserRouter>
     </React.StrictMode>
   );
