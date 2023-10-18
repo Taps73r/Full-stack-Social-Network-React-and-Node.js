@@ -1,5 +1,5 @@
 import React from "react";
-import { addMessage, updateTextMessage } from "./../../../redux/state";
+import { addMessage, updateTextMessage } from "./../../../redux/dialog-reducer";
 
 function SendMessage(props) {
 
