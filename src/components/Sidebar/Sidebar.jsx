@@ -1,12 +1,12 @@
 import { NavLink } from 'react-router-dom';
-import './Sidebar.css'
+import './Sidebar.css';
+
 function Sidebar() {
   return (
-    <div className='border'>
       <div className="sidebar">
-        <NavLink to='/profile'>
-          <div className="sidebaritem">
-            <span class="material-symbols-outlined">
+        <NavLink to='/profile' id='f'>
+          <div className='first-item'>
+            <span className="material-symbols-outlined">
               person
             </span>
             Profile
@@ -14,7 +14,7 @@ function Sidebar() {
         </NavLink>
         <NavLink to='/dialogs'>
           <div className="sidebaritem">
-            <span class="material-symbols-outlined">
+            <span className="material-symbols-outlined">
               chat
             </span>
             Messages
@@ -22,7 +22,7 @@ function Sidebar() {
         </NavLink>
         <NavLink to='/news'>
           <div className="sidebaritem">
-            <span class="material-symbols-outlined">
+            <span className="material-symbols-outlined">
               newsmode
             </span>
             News
@@ -30,22 +30,21 @@ function Sidebar() {
         </NavLink>
         <NavLink to='/music'>
           <div className="sidebaritem">
-            <span class="material-symbols-outlined">
+            <span className="material-symbols-outlined">
               library_music
             </span>
             Music
           </div>
         </NavLink>
-        <NavLink to='/settings'>
-          <div className="sidebaritem">
-            <span class="material-symbols-outlined">
+        <NavLink to='/settings' >
+          <div className='last-item'>
+            <span className="material-symbols-outlined">
               settings
             </span>
             Settings
           </div>
         </NavLink>
       </div>
-    </div>
   )
 }
 

@@ -1,9 +1,9 @@
 @import url('https://fonts.googleapis.com/css2?family=Tilt+Neon&display=swap');
-.border {
-  border-radius: 20%;
+.sidebar{
+  grid-area: 2 / 1 / 4 / 2;
+  border-radius: 20px;
 }
 .sidebar a{
-    grid-area: 2 / 1 / 4 / 2;
     background-color: #fff;
     width: 300px;
     color: #1C2541;
@@ -17,6 +17,36 @@
     display: flex;
     align-items: center;
   }
+  .first-item{
+    border-top-left-radius: 20px;
+    border-top-right-radius: 20px;
+    display: flex;
+    align-items: center;
+  }
+  .first-item:hover{
+    background-color: #5BC0BE;
+    border-top-left-radius: 20px;
+    border-top-right-radius: 20px;
+  }
+  .first-item span{
+    font-size: 40px;
+    padding-right: 8px;
+  }
+  .last-item{
+    border-bottom-left-radius: 20px;
+    border-bottom-right-radius: 20px;
+    display: flex;
+    align-items: center;
+  }
+  .last-item:hover{
+    background-color: #5BC0BE;
+    border-bottom-left-radius: 20px;
+    border-bottom-right-radius: 20px;
+  }
+  .last-item span{
+    font-size: 40px;
+    padding-right: 8px;
+  }
   .sidebar div{
     cursor: pointer;
     padding: 16px;
@@ -26,10 +56,10 @@
     font-size: 40px;
     padding-right: 8px;
   }
-  
   .sidebar div:hover{
     background-color: #5BC0BE;
   }
+  
   .sidebar a.active{
     color: purple;
     background-color: rgb(230, 154, 55);
