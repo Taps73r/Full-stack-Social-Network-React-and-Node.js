@@ -5,9 +5,9 @@ let store = {
     _state: {
         messageInfo: {
             messagesData: [{ message: 'fsdaafadfad'}, {message: '211241212fe'}],
-            newMessageText: ''  
+            newMessageText: '',
+            usersData: [{ id: 1, name: 'Sasha' }, { id: 2, name: 'Misha' }]
         },
-        usersData: [{ id: 1, name: 'Sasha' }, { id: 2, name: 'Misha' }],
         profileInfo: {
             postData: [{ id: 1, postMessage: 'dsadads' }, { id: 2, postMessage: 'dsad1231243ads' }],
             newPostText: ''

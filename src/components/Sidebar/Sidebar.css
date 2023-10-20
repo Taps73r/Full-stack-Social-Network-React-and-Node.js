@@ -1,20 +1,34 @@
+@import url('https://fonts.googleapis.com/css2?family=Tilt+Neon&display=swap');
+.border {
+  border-radius: 20%;
+}
 .sidebar a{
     grid-area: 2 / 1 / 4 / 2;
-    background-color: rgb(94, 7, 121);
+    background-color: #fff;
     width: 300px;
-    color: rgb(230, 154, 55);
-    font-size: 2rem;
+    color: #1C2541;
+    font-size: 26px;
     display: flex;
     flex-direction: column;
     text-decoration: none;
+    font-family: 'Tilt Neon', sans-serif;
+  }
+  .sidebaritem{
+    display: flex;
+    align-items: center;
   }
   .sidebar div{
     cursor: pointer;
-    padding: 20px;
+    padding: 16px;
+    font-family: 'Tilt Neon', sans-serif;
+  }
+  .sidebaritem span{
+    font-size: 40px;
+    padding-right: 8px;
   }
   
   .sidebar div:hover{
-    background-color: rgba(7, 121, 36, 0.767);
+    background-color: #5BC0BE;
   }
   .sidebar a.active{
     color: purple;
