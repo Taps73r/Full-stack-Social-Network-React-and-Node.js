@@ -1,14 +1,21 @@
+import React from "react";
 import SendMessageContainer from "./Messages/SendMessageContainer";
 import TextData from "./Messages/Messages";
 import Users from "./Users/User";
+import ContextStore from "../../redux/store-context";
 
-function Message(props) {
+function Message() {
     return (
-        <div className="dialog">
-            <Users usersData={props.usersData} />
-            <TextData messagesData={props.messagesData} />
-            <SendMessageContainer dispatch={props.dispatch}/>
-        </div>
-    )
+        <ContextStore.Consumer>
+            {store => (
+                <div className="dialog">
+                    <Users usersData={store.getState().messageInfo.usersData} />
+                    <TextData messagesData={store.getState().messageInfo.messagesData} />
+                    <SendMessageContainer />
+                </div>
+            )}
+        </ContextStore.Consumer>
+    );
 }
+
 export default Message;

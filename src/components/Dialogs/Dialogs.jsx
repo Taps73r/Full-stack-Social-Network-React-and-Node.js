@@ -1,10 +1,10 @@
 import './Dialogs.css';
 import Message from './Message'
 
-function Dialogs(props) {
+function Dialogs() {
     return (
         <div className="dialogs">
-            <Message messagesData={props.messagesData} usersData={props.usersData} dispatch={props.dispatch}/>
+            <Message />
         </div>
     )
 }

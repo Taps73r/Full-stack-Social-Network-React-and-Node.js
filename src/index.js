@@ -2,6 +2,7 @@ import reportWebVitals from './reportWebVitals';
 import store from './redux/redux-store';
 import React from 'react';
 import ReactDOM from 'react-dom/client';
+import ContextStore from './redux/store-context';
 import './index.css';
 import App from './App';
 import { BrowserRouter } from 'react-router-dom';
@@ -11,7 +12,9 @@ function reRenderTree(state) {
   root.render(
     <React.StrictMode>
       <BrowserRouter>
-        <App state={state} dispatch={store.dispatch.bind(store)} />
+      <ContextStore.Provider value={store}>
+        <App />
+        </ContextStore.Provider>
       </BrowserRouter>
     </React.StrictMode>
   );
