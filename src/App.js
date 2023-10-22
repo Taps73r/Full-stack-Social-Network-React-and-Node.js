@@ -15,7 +15,7 @@ function App(props) {
       <Sidebar />
       <div className='route_side_bar'>
         <Routes>
-          <Route path="/profile" element={<Main profileInfo={props.state.profileInfo} dispatch={props.dispatch} />} />
+          <Route path="/profile" element={<Main store={props.store} profileInfo={props.state.profileInfo} dispatch={props.dispatch} />} />
           <Route path="/dialogs/*" element={<Dialogs messagesData={props.state.messageInfo.messagesData} dispatch={props.dispatch} usersData={props.state.messageInfo.usersData} />} />
           <Route path="/news" element={<News />} />
           <Route path="/music" element={<Music />} />

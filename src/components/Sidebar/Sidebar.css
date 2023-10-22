@@ -57,10 +57,19 @@
     padding-right: 8px;
   }
   .sidebar div:hover{
-    background-color: #5BC0BE;
+    background-color: #3A506B;
+    color: white
   }
   
   .sidebar a.active{
-    color: purple;
-    background-color: rgb(230, 154, 55);
+    color: #5BC0BE;
+    background-color: #1C2541;
   }
+#f-a{
+  border-top-left-radius: 20px;
+  border-top-right-radius: 20px;
+}
+#l-a{
+  border-bottom-left-radius: 20px;
+  border-bottom-right-radius: 20px;
+}

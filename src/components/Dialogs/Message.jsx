@@ -1,4 +1,4 @@
-import SendMessage from "./Messages/SendMessage";
+import SendMessageContainer from "./Messages/SendMessageContainer";
 import TextData from "./Messages/Messages";
 import Users from "./Users/User";
 
@@ -7,7 +7,7 @@ function Message(props) {
         <div className="dialog">
             <Users usersData={props.usersData} />
             <TextData messagesData={props.messagesData} />
-            <SendMessage dispatch={props.dispatch}/>
+            <SendMessageContainer dispatch={props.dispatch}/>
         </div>
     )
 }

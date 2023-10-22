@@ -1,5 +1,5 @@
 import './Main.css';
-import CreatePost from './Posts/CreatePost';
+import CreatePostContainer from './Posts/CreatePostContainer';
 import Post from './Posts/Post/Post';
 import ProfileInfo from './ProfileInfo/ProfileInfo';
 
@@ -10,7 +10,7 @@ function Main(props) {
     return (
         <div className="maincontent">
             <ProfileInfo />
-            <CreatePost dispatch={props.dispatch} />
+            <CreatePostContainer dispatch={props.dispatch} />
             {posts}
         </div>
     )

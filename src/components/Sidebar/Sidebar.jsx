@@ -4,7 +4,7 @@ import './Sidebar.css';
 function Sidebar() {
   return (
       <div className="sidebar">
-        <NavLink to='/profile' id='f'>
+        <NavLink to='/profile' id='f-a'>
           <div className='first-item'>
             <span className="material-symbols-outlined">
               person
@@ -36,7 +36,7 @@ function Sidebar() {
             Music
           </div>
         </NavLink>
-        <NavLink to='/settings' >
+        <NavLink to='/settings' id='l-a'>
           <div className='last-item'>
             <span className="material-symbols-outlined">
               settings

@@ -1,23 +1,22 @@
 import React from 'react';
 import './CreatePost.css';
-import {addPostActionCreator, updateTextActionCreator} from './../../../redux/profile-reducer';
 
 function CreatePost(props) {
 
-    const addPost = () => {
-        props.dispatch(addPostActionCreator())
+    const addNewPost = () => {
+        props.createNewPost();
     }
 
-    const updateText = (e) => {
+    const updateNewText = (e) => {
         const text = e.target.value;
-        props.dispatch(updateTextActionCreator(text))
+        props.updateTextPost(text);
     }
 
     return (
         <div className='Profile'>
             <div>
-                <textarea onChange={updateText} value={props.newPostText} />
-                <button onClick={addPost}>Submit</button>
+                <textarea onChange={updateNewText} value={props.newPostText} />
+                <button onClick={addNewPost}>Submit</button>
             </div>
         </div>
     )

@@ -1,8 +1,18 @@
 import './Footer.css';
-function Footer () {
-    return(
+function Footer() {
+    return (
         <div className="footer">
-            Footer
+            <a href='https://github.com/Taps73r/'>
+                <div className='footer-link'>
+                    <img src='./../footer_log.png' alt='github logo' />
+                    Taps73r
+                </div>
+            </a>
+            <div className='copyright'>
+                Copyright <span className="material-symbols-outlined">
+                    copyright
+                </span> 2023, Converso. All Rights Reserved.
+            </div>
         </div>
     )
 }

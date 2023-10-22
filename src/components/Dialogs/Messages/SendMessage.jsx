@@ -1,16 +1,15 @@
 import React from "react";
-import { addMessage, updateTextMessage } from "./../../../redux/dialog-reducer";
 
 function SendMessage(props) {
 
 
     const addText = () => {
-        props.dispatch(addMessage());
+        props.addNewText();
     }
 
     const updateText = (e) => {
         const text = e.target.value;
-        props.dispatch(updateTextMessage(text));
+        props.updateNewText(text);
     }
     return (
         <div className="send_message">
