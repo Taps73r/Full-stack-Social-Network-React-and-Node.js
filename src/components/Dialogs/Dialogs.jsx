@@ -1,10 +1,12 @@
 import './Dialogs.css';
-import Message from './Message'
+import MessageContainer from './MessageContainer'
+import SendMessageContainer from './Messages/SendMessageContainer';
 
 function Dialogs() {
     return (
         <div className="dialogs">
-            <Message />
+            <MessageContainer />
+            <SendMessageContainer />
         </div>
     )
 }

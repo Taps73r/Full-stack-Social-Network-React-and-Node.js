@@ -7,15 +7,21 @@ let initialState = {
 }
 export const profileReducer = (state = initialState, action) => {
     if (action.type === ADD_POST) {
-        let newElem = { id: 3, postMessage: state.newPostText };
-        state.postData.push(newElem);
-        state.newPostText = '';
+        return {
+            ...state,
+            postData: [...state.postData, { id: 3, postMessage: state.newPostText }],
+            newPostText: ''
+        }
     }
     else if (action.type === UPDATE_TEXT_POST) {
-       state.newPostText = action.newText;
+        return {
+            ...state,
+            newPostText: action.newText
+        }
     }
     return state;
 }
+
 
 export const updateTextActionCreator = (text) => ({
     type: UPDATE_TEXT_POST,

@@ -2,7 +2,6 @@ import React from "react";
 
 function SendMessage(props) {
 
-
     const addText = () => {
         props.addNewText();
     }

@@ -1,27 +1,21 @@
-import React from "react";
+import { addMessage, updateTextMessage } from "../../../redux/dialog-reducer";
 import SendMessage from "./SendMessage"
-import { addMessage, updateTextMessage } from "./../../../redux/dialog-reducer";
-import ContextStore from "../../../redux/store-context";
+import { connect } from 'react-redux';
 
-function SendMessageContainer() {
-    return (
-        <ContextStore.Consumer>
-            {
-                (store) => {
-                    const addText = () => {
-                        store.dispatch(addMessage());
-                    }
-
-                    const updateText = (text) => {
-                        store.dispatch(updateTextMessage(text));
-                    }
-                    return (
-                        <SendMessage addNewText={addText} updateNewText={updateText} />
-                    )
-                }
-            }
-        </ContextStore.Consumer>
-    )
+let mapDispatchMessageToProps = (dispatch) => {
+    return {
+        updateNewText: (text) => {
+            dispatch(updateTextMessage(text))
+        },
+        addNewText: () => {
+            dispatch(addMessage())
+        }
+    }
 }
-
+let mapNewPostTextToProps = (state) => {
+    return {
+        newMessageText: state.messageInfo.newMessageText
+    }
+}
+const SendMessageContainer = connect(mapNewPostTextToProps, mapDispatchMessageToProps)(SendMessage);
 export default SendMessageContainer;
