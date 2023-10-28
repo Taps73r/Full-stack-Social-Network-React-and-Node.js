@@ -1,0 +1,63 @@
+@import url('https://fonts.googleapis.com/css2?family=Tilt+Neon&display=swap');
+
+.users_area {
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: space-between;
+    gap: 20px;
+}
+
+.user_area {
+    display: flex;
+    flex-direction: row;
+    width: calc(100% - 10px);
+    padding-bottom: 30px;
+}
+
+.avatar_button {
+    display: flex;
+    flex-direction: column;
+}
+
+.avatar_button img {
+    width: 70px;
+    height: 70px;
+    border-radius: 50px;
+}
+
+.users_name button {
+    width: 90px;
+    height: 35px;
+    color: #1C2541;
+    background-color: #fff;
+    border: 2px solid #5BC0BE;
+    border-radius: 10px;
+    font-size: 19px;
+    font-family: 'Tilt Neon', sans-serif;
+}
+
+.users_name button:hover {
+    color: #fff;
+    border-color: #1C2541;
+    background-color: #3A506B;
+    cursor: pointer;
+}
+
+.users_info {
+    font-family: 'Tilt Neon', sans-serif;
+    margin-left: 20px;
+    width: 300px;
+}
+
+.users_name {
+    display: flex;
+    justify-content: space-between;
+    color: #1C2541;
+    font-size: 20px;
+    margin-bottom: 10px;
+}
+
+.users_bio {
+    color: #0B132B;
+    font-size: 16px;
+}
