@@ -17,7 +17,10 @@ let mapDispatchUserToProps = (dispatch) => {
 }
 let mapUsersToProps = (state) => {
     return {
-        usersList: state.usersInfo.users
+        usersList: state.usersInfo.users,
+        pageSize: state.usersInfo.pageSize,
+        totalUsersCount: state.usersInfo.totalUsersCount,
+        currentPage: state.usersInfo.currentPage
     }
 }
 

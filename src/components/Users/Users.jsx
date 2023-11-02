@@ -11,7 +11,13 @@ class Users extends React.Component {
             })
     }
     render() {
-        return <div className='users_area'>
+        let pagesCount = this.props.totalUsersCount / this.props.pageSize;
+        let pages = [];
+
+        for (let i = 1; i <= pagesCount; i++) {
+            pages.push(i)
+        }
+        return <div> <div className='users_area'>
             {this.props.usersList.map(u => <div key={u.id}>
                 <div className='user_area'>
                     <div className="avatar_button">
@@ -29,6 +35,10 @@ class Users extends React.Component {
                     </div>
                 </div>
             </div>)}
+        </div>
+            <div className='pagination'>
+                {pages.map(p => <div className={this.props.currentPage === p && 'selectedPage'}> {p} </div>)}
+            </div>
         </div>
     }
 }

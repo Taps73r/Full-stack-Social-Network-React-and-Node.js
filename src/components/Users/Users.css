@@ -1,5 +1,30 @@
 @import url('https://fonts.googleapis.com/css2?family=Tilt+Neon&display=swap');
 
+.pagination{
+    display: flex;
+    flex-direction: row;
+    justify-content: center;
+    background-color: #1C2541;
+    border-radius: 20px;
+    gap: 10px;
+    padding-bottom: 4px;
+    padding-top: 4px;
+}
+.pagination div{
+    color: #fff;
+    background-color: #5BC0BE;
+    font-size: 22px;
+    border-radius: 10px;
+    padding: 4px;
+    padding-left: 6px;
+    padding-right: 6px;
+
+}
+.pagination div:hover{
+    background-color: #3A506B;
+    cursor: pointer;
+    color:#fff;
+}
 .users_area {
     display: flex;
     flex-wrap: wrap;
