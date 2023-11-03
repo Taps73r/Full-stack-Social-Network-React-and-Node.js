@@ -1,30 +1,38 @@
 @import url('https://fonts.googleapis.com/css2?family=Tilt+Neon&display=swap');
 
-.pagination{
+#selectedPage {
+    background-color: #0B132B;
+    color: #fff;
+}
+
+.pagination {
     display: flex;
     flex-direction: row;
     justify-content: center;
-    background-color: #1C2541;
     border-radius: 20px;
     gap: 10px;
-    padding-bottom: 4px;
-    padding-top: 4px;
+    font-family: 'Tilt Neon', sans-serif;
 }
-.pagination div{
-    color: #fff;
+
+.pagination div {
     background-color: #5BC0BE;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    color: #fff;
     font-size: 22px;
     border-radius: 10px;
-    padding: 4px;
-    padding-left: 6px;
-    padding-right: 6px;
+    width: 50px;
+    height: 40px;
 
 }
-.pagination div:hover{
+
+.pagination div:hover {
     background-color: #3A506B;
     cursor: pointer;
-    color:#fff;
+    color: #fff;
 }
+
 .users_area {
     display: flex;
     flex-wrap: wrap;

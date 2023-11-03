@@ -1,24 +1,27 @@
-import React from 'react';
-import axios from 'axios'
-import './Users.css'
 import staticPhoto from './../../photos/userstaticavatar.jpg';
-
-class Users extends React.Component {
-    componentDidMount() {
-        axios.get("https://social-network.samuraijs.com/api/1.0/users")
-            .then(response => {
-                this.props.setUsers(response.data.items);
-            })
-    }
-    render() {
-        let pagesCount = this.props.totalUsersCount / this.props.pageSize;
+let Users = (props) => {
+    let pagesCount = Math.ceil(props.totalUsersCount / props.pageSize);
         let pages = [];
-
-        for (let i = 1; i <= pagesCount; i++) {
-            pages.push(i)
+        const maxPageButtons = 10;
+        const currentPage = props.currentPage;
+        let startPage = Math.max(currentPage - Math.floor(maxPageButtons / 2), 1);
+        let endPage = startPage + maxPageButtons - 1;
+        if (endPage > pagesCount) {
+            endPage = pagesCount;
+            startPage = Math.max(endPage - maxPageButtons + 1, 1);
         }
-        return <div> <div className='users_area'>
-            {this.props.usersList.map(u => <div key={u.id}>
+        for (let i = startPage; i <= endPage; i++) {
+            pages.push(i);
+        }
+        if (startPage > 1) {
+            pages.unshift(1);
+        }
+        if (endPage < pagesCount) {
+            pages.push(pagesCount);
+        }
+    return(
+        <div> <div className='users_area'>
+            {props.usersList.map(u => <div key={u.id}>
                 <div className='user_area'>
                     <div className="avatar_button">
                         <img src={u.photos.small != null ? u.photos.small : staticPhoto} alt="User-Avatar" />
@@ -26,10 +29,10 @@ class Users extends React.Component {
                     <div className="users_info">
                         <p className='users_name'>{u.name}
                             {u.followed ? <button onClick={() => {
-                                this.props.unfolowCurrentUser(u.id)
+                                props.unfolowCurrentUser(u.id)
                             }}>Unfollow</button>
                                 : <button onClick={() => {
-                                    this.props.folowCurrentUser(u.id)
+                                    props.folowCurrentUser(u.id)
                                 }}>Follow</button>}</p>
                         <p className='users_bio'>{u.id}</p>
                     </div>
@@ -37,10 +40,14 @@ class Users extends React.Component {
             </div>)}
         </div>
             <div className='pagination'>
-                {pages.map(p => <div className={this.props.currentPage === p && 'selectedPage'}> {p} </div>)}
+                {
+                    pages.map(p =>
+                        <div id={props.currentPage === p ? 'selectedPage' : ''}
+                            onClick={() => props.onPageChanged(p)}> {p} </div>
+                    )}
             </div>
         </div>
-    }
+    )
 }
 
 export default Users;
