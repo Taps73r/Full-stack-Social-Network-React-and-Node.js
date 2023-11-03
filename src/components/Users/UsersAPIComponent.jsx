@@ -19,13 +19,17 @@ class UsersAPIComponent extends React.Component {
             })
     }
     render() {
-        return <Users usersList={this.props.usersList} 
-        unfolowCurrentUser={this.props.unfolowCurrentUser}
-        folowCurrentUser={this.props.folowCurrentUser} 
-        totalUsersCount={this.props.totalUsersCount}
-        pageSize={this.props.pageSize} 
-        currentPage={this.props.currentPage}
-        onPageChanged={this.onPageChanged} /> 
+        return <Users
+            usersList={this.props.usersList}
+            unfolowCurrentUser={this.props.unfolowCurrentUser}
+            folowCurrentUser={this.props.folowCurrentUser}
+            totalUsersCount={this.props.totalUsersCount}
+            pageSize={this.props.pageSize}
+            currentPage={this.props.currentPage}
+            onPageChanged={this.onPageChanged}
+            newUserSearchText={this.props.newUserSearchText}
+            updateSearchUserText={this.props.updateSearchUserText}
+             />
     }
 }
 

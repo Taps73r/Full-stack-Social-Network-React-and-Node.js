@@ -5,6 +5,43 @@
     color: #fff;
 }
 
+.find_user{
+    display: flex;
+    flex-direction: row;
+    justify-content: center;
+    padding-bottom: 30px;
+}
+
+.find_user_border{
+    display: flex;
+    flex-direction: row;
+    justify-content: center;
+    border: 3px solid #5BC0BE;
+    border-radius: 5px;
+}
+
+.find_user button{
+    background-color:#5BC0BE;
+    border: none;
+    font-size: 20px;
+    font-family: 'Tilt Neon', sans-serif;
+    color: white;
+    padding: 8px 10px 10px 8px;
+    cursor: pointer;
+    text-align: center;
+    align-items: center;
+}
+.find_user button:hover{
+    
+}
+
+.find_user_border input{
+    padding: 8px 0 8px 10px;
+    border: none;
+    font-size: 20px;
+    font-family: 'Tilt Neon', sans-serif;
+    outline: none;
+}
 .pagination {
     display: flex;
     flex-direction: row;

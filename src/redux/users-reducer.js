@@ -3,17 +3,25 @@ const UNFOLLOW = 'UNFOLLOW';
 const SET_USERS = 'SET_USERS';
 const SET_CURRENT_PAGE = 'SET_CURRENT_PAGE';
 const SET_TOTAL_USERS_COUNT = 'SET_TOTAL_USERS_COUNT';
+const UPDATE_SEARCH_USER_TEXT = 'UPDATE_SEARCH_USER_TEXT';
+const FIND_USER = 'FIND_USER';
 
 let initialState = {
     users: [],
     pageSize: 6,
     totalUsersCount: 40,
-    currentPage: 1
+    currentPage: 1,
+    newUserSearchText: ''
 }
 
 export const usersReducer = (state = initialState, action) => {
     switch (action.type) {
 
+        case UPDATE_SEARCH_USER_TEXT:
+            return {
+                ...state,
+                newUserSearchText: action.newUserSearchText
+            }
         case FOLLOW:
             return {
                 ...state,
@@ -34,6 +42,9 @@ export const usersReducer = (state = initialState, action) => {
                     return u;
                 })
             }
+        case FIND_USER: {
+            return { ...state, users: action.users }
+        }
         case SET_USERS: {
             return { ...state, users: action.users }
         }
@@ -41,7 +52,7 @@ export const usersReducer = (state = initialState, action) => {
             return { ...state, currentPage: action.currentPage }
         }
         case SET_TOTAL_USERS_COUNT: {
-            return {...state, totalUsersCount: action.totalUsersCount}
+            return { ...state, totalUsersCount: action.totalUsersCount }
         }
         default:
             return state;
@@ -68,4 +79,12 @@ export const setCurrentPage = (currentPage) => ({
 export const setTotalUsersCount = (totalUsersCount) => ({
     type: SET_TOTAL_USERS_COUNT,
     totalUsersCount
-}) 
+})
+export const updateSearchUserText = (newUserSearchText) => ({
+    type: UPDATE_SEARCH_USER_TEXT,
+    newUserSearchText
+})
+export const findUser = (users) => ({
+    type: FIND_USER,
+    users
+})
