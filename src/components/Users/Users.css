@@ -19,7 +19,12 @@
     border: 3px solid #5BC0BE;
     border-radius: 5px;
 }
-
+.find_user_border:hover{
+    border: 3px solid #3A506B;
+}
+.find_user_border:hover button{
+    background-color: #3A506B;
+}
 .find_user button{
     background-color:#5BC0BE;
     border: none;
@@ -29,14 +34,14 @@
     padding: 8px 10px 10px 8px;
     cursor: pointer;
     text-align: center;
-    align-items: center;
-}
-.find_user button:hover{
-    
 }
 
-.find_user_border input{
-    padding: 8px 0 8px 10px;
+
+.find_user_border textarea{
+    resize: none;
+    padding: 8px 8px 8px 10px;
+    width: 350px;
+    height: 50px;
     border: none;
     font-size: 20px;
     font-family: 'Tilt Neon', sans-serif;

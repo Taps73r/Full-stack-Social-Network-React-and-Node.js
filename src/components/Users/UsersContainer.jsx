@@ -1,5 +1,5 @@
 import UsersAPIComponent from "./UsersAPIComponent";
-import { folowUser, setCurrentPage, setTotalUsersCount, setUsersAC, unfolowUser, updateSearchUserText } from "../../redux/users-reducer";
+import { folowUser, setCurrentPage, setIsFetching, setTotalUsersCount, setUsersAC, unfolowUser, updateSearchUserText } from "../../redux/users-reducer";
 import { connect } from 'react-redux';
 
 let mapDispatchUserToProps = (dispatch) => {
@@ -21,6 +21,9 @@ let mapDispatchUserToProps = (dispatch) => {
         },
         updateSearchUserText: (text) => {
             dispatch(updateSearchUserText(text))
+        },
+        setIsFetching: (isFetching) => {
+            dispatch(setIsFetching(isFetching))
         }
     }
 }
@@ -30,7 +33,8 @@ let mapUsersToProps = (state) => {
         pageSize: state.usersInfo.pageSize,
         totalUsersCount: state.usersInfo.totalUsersCount,
         currentPage: state.usersInfo.currentPage,
-        newUserSearchText: state.usersInfo.newUserSearchText
+        newUserSearchText: state.usersInfo.newUserSearchText,
+        isFetching: state.usersInfo.isFetching
     }
 }
 

@@ -5,13 +5,15 @@ const SET_CURRENT_PAGE = 'SET_CURRENT_PAGE';
 const SET_TOTAL_USERS_COUNT = 'SET_TOTAL_USERS_COUNT';
 const UPDATE_SEARCH_USER_TEXT = 'UPDATE_SEARCH_USER_TEXT';
 const FIND_USER = 'FIND_USER';
+const TOGGLE_IS_FETCHING = 'TOGGLE_IS_FETCHING';
 
 let initialState = {
     users: [],
     pageSize: 6,
     totalUsersCount: 40,
     currentPage: 1,
-    newUserSearchText: ''
+    newUserSearchText: '',
+    isFetching: true
 }
 
 export const usersReducer = (state = initialState, action) => {
@@ -54,6 +56,9 @@ export const usersReducer = (state = initialState, action) => {
         case SET_TOTAL_USERS_COUNT: {
             return { ...state, totalUsersCount: action.totalUsersCount }
         }
+        case TOGGLE_IS_FETCHING: {
+            return { ...state, isFetching: action.isFetching }
+        }
         default:
             return state;
     }
@@ -87,4 +92,8 @@ export const updateSearchUserText = (newUserSearchText) => ({
 export const findUser = (users) => ({
     type: FIND_USER,
     users
+})
+export const setIsFetching = (isFetching) => ({
+    type: TOGGLE_IS_FETCHING,
+    isFetching
 })
