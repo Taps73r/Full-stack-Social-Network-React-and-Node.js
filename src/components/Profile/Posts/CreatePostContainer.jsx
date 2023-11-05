@@ -10,17 +10,9 @@ let mapProfileInfoToProps = (state) => {
     }
 }
 
-let mapDispatchToProps = (dispatch) => {
-    return{
-        updateTextPost: (text) => {
-            dispatch(updateTextActionCreator(text))
-        },
-        createNewPost: () => {
-            dispatch(addPostActionCreator())
-        }
-    }
-}
-
-const CreatePostContainer = connect(mapProfileInfoToProps, mapDispatchToProps)(CreatePost)
+const CreatePostContainer = connect(mapProfileInfoToProps, {
+    updateTextPost: updateTextActionCreator,
+    createNewPost: addPostActionCreator
+})(CreatePost)
 
 export default CreatePostContainer;

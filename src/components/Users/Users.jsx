@@ -28,7 +28,7 @@ let Users = (props) => {
             <div className='find_user'>
                 <div className='find_user_border'>
                     <textarea onChange={updateFindText} value={props.newUserSearchText} placeholder="Find..."></textarea>
-                    <button onClick={props.onSearchClick} className='find_btn'><span class="material-symbols-outlined">
+                    <button onClick={props.onSearchClick} className='find_btn'><span className="material-symbols-outlined">
                         search
                     </span></button>
                 </div>

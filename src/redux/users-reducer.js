@@ -13,7 +13,7 @@ let initialState = {
     totalUsersCount: 40,
     currentPage: 1,
     newUserSearchText: '',
-    isFetching: true
+    isFetching: false
 }
 
 export const usersReducer = (state = initialState, action) => {
@@ -47,7 +47,8 @@ export const usersReducer = (state = initialState, action) => {
         case FIND_USER: {
             return { ...state, users: action.users }
         }
-        case SET_USERS: {
+        case SET_USERS: 
+        {
             return { ...state, users: action.users }
         }
         case SET_CURRENT_PAGE: {

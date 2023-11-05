@@ -1,0 +1,8 @@
+.Preloader{
+    display: flex;
+    justify-content: center;
+}
+.Preloader img{
+    width: 400px;
+    height: 400px;
+}

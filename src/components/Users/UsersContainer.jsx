@@ -2,31 +2,6 @@ import UsersAPIComponent from "./UsersAPIComponent";
 import { folowUser, setCurrentPage, setIsFetching, setTotalUsersCount, setUsersAC, unfolowUser, updateSearchUserText } from "../../redux/users-reducer";
 import { connect } from 'react-redux';
 
-let mapDispatchUserToProps = (dispatch) => {
-    return {
-        folowCurrentUser: (userId) => {
-            dispatch(folowUser(userId))
-        },
-        unfolowCurrentUser: (userId) => {
-            dispatch(unfolowUser(userId))
-        },
-        setUsers: (users) => {
-            dispatch(setUsersAC(users))
-        },
-        setCurrentPage: (pageNumber) => {
-            dispatch(setCurrentPage(pageNumber))
-        },
-        setTotalUsersCount: (totalUsersCount) => {
-            dispatch(setTotalUsersCount(totalUsersCount))
-        },
-        updateSearchUserText: (text) => {
-            dispatch(updateSearchUserText(text))
-        },
-        setIsFetching: (isFetching) => {
-            dispatch(setIsFetching(isFetching))
-        }
-    }
-}
 let mapUsersToProps = (state) => {
     return {
         usersList: state.usersInfo.users,
@@ -38,6 +13,16 @@ let mapUsersToProps = (state) => {
     }
 }
 
-let UsersContainer =  connect(mapUsersToProps, mapDispatchUserToProps)(UsersAPIComponent);
+let UsersContainer = connect(mapUsersToProps,
+    {
+        folowCurrentUser: folowUser,
+        unfolowCurrentUser: unfolowUser,
+        setUsers: setUsersAC,
+        setCurrentPage: setCurrentPage,
+        setTotalUsersCount,
+        updateSearchUserText,
+        setIsFetching
+    })
+    (UsersAPIComponent);
 
 export default UsersContainer;
