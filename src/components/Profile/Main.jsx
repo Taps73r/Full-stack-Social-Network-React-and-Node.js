@@ -2,10 +2,11 @@ import './Main.css';
 import CreatePostContainer from './Posts/CreatePostContainer';
 import ProfileInfo from './ProfileInfo/ProfileInfo';
 
-function Main() {
+function Main(props) {
+    debugger;
     return (
         <div className="maincontent">
-            <ProfileInfo />
+            <ProfileInfo postData={props.postData}/>
             <CreatePostContainer/>
         </div>
     )

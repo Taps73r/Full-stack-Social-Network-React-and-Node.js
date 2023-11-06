@@ -1,4 +1,8 @@
-function ProfileInfo() {
+import Post from './../Posts/Post/Post';
+function ProfileInfo(props) {
+    let posts = props.postData.map(post => {
+        return <Post message={post.postMessage} />
+    })
     return (
         <div>
             <div className='profileheader'>
@@ -14,6 +18,9 @@ function ProfileInfo() {
                 </div>
                 <div className='profile_bio'>
                     <h1>Bio</h1>
+            </div>
+            <div className='Posts'>
+                {posts}
             </div>
         </div>
     )
