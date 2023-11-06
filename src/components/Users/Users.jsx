@@ -1,3 +1,4 @@
+import { NavLink } from 'react-router-dom';
 import staticPhoto from './../../photos/userstaticavatar.jpg';
 let Users = (props) => {
     let pagesCount = Math.ceil(props.totalUsersCount / props.pageSize);
@@ -37,16 +38,22 @@ let Users = (props) => {
                 {props.usersList.map(u => <div key={u.id}>
                     <div className='user_area'>
                         <div className="avatar_button">
-                            <img src={u.photos.small != null ? u.photos.small : staticPhoto} alt="User-Avatar" />
+                            <NavLink to={'/profile/' + u.id}>
+                                <img src={u.photos.small != null ? u.photos.small : staticPhoto} alt="User-Avatar" />
+                            </NavLink>
                         </div>
                         <div className="users_info">
-                            <p className='users_name'>{u.name}
+                            <div className='users_name'>
+                                <NavLink to={'/profile/' + u.id} className='Remove_style'>
+                                    <p>{u.name}</p>
+                                </NavLink>
                                 {u.followed ? <button onClick={() => {
                                     props.unfolowCurrentUser(u.id)
                                 }}>Unfollow</button>
                                     : <button onClick={() => {
                                         props.folowCurrentUser(u.id)
-                                    }}>Follow</button>}</p>
+                                    }}>Follow</button>}
+                            </div>
                             <p className='users_bio'>{u.id}</p>
                         </div>
                     </div>

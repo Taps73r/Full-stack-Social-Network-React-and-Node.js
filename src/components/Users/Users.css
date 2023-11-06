@@ -124,6 +124,10 @@
     width: 300px;
 }
 
+.Remove_style{
+    text-decoration: none;
+    color: inherit;
+}
 .users_name {
     display: flex;
     justify-content: space-between;
