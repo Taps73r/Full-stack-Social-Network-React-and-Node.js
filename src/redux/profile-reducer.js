@@ -7,7 +7,7 @@ let initialState = {
     postData: [{ id: 1, postMessage: 'dsadads' }, { id: 2, postMessage: 'dsad1231243ads' }],
     newPostText: '',
     isFetching: false,
-    profileData: {}
+    profileData: null
 }
 export const profileReducer = (state = initialState, action) => {
     switch (action.type) {
@@ -25,7 +25,7 @@ export const profileReducer = (state = initialState, action) => {
             }
         case SET_PROFILE:
             {
-                return { ...state, users: action.profileData }
+                return { ...state, profileData: action.profileData }
             }
         case TOGGLE_IS_FETCHING: {
             return {

@@ -1,19 +1,20 @@
 import Post from './../Posts/Post/Post';
+import staticPhoto from './../../../photos/userstaticavatar.jpg';
 function ProfileInfo(props) {
     let posts = props.postData.map(post => {
         return <Post message={post.postMessage} />
     })
+    let fullName = props.profileData.fullName;
+    let profilePhoto = props.profileData.photos.large;
+
     return (
         <div>
-            <div className='profileheader'>
-                <img src='https://static.vecteezy.com/system/resources/previews/001/227/759/non_2x/abstract-modern-cool-geometric-pattern-background-vector.jpg' alt="header" />
-            </div>
             <div className='profile_content'>
                 <div className="profile_avatar">
-                    <img alt="avatar" />
+                    <img src={profilePhoto != null ? profilePhoto : staticPhoto} alt="avatar" />
                 </div>
                 <div className='profile_name'>
-                    <h1>Name</h1>
+                    <h1>{fullName}</h1>
                 </div>
                 </div>
                 <div className='profile_bio'>

@@ -20,25 +20,28 @@ class MainContainer extends React.Component {
 
         axios.get(url)
             .then(response => {
-                this.props.setProfile(response.data.items);
+                this.props.setProfile(response.data);
                 this.props.setIsFetching(false);
             });
     }
 
     render() {
+        if (this.props.isFetching) {
+            return <Preloader />;
+        }
+
+        if (!this.props.profileData) {
+            return <Preloader />;
+        }
         return (
-            <>
-                {
-                    this.props.isFetching ? <Preloader /> : <Main
-                        postData={this.props.postData}
-                        newPostText={this.props.newPostText}
-                        profileData={this.props.profileData}
-                        updateTextActionCreator={this.props.updateTextActionCreator}
-                        addPostActionCreator={this.props.addPostActionCreator}
-                        setProfile={this.props.setProfile}
-                    />
-                }
-            </>
+            <Main
+                postData={this.props.postData}
+                newPostText={this.props.newPostText}
+                profileData={this.props.profileData}
+                updateTextActionCreator={this.props.updateTextActionCreator}
+                addPostActionCreator={this.props.addPostActionCreator}
+                setProfile={this.props.setProfile}
+            />
         )
     }
 }
