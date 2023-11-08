@@ -1,0 +1,27 @@
+@import url('https://fonts.googleapis.com/css2?family=Tilt+Neon&display=swap');
+.profile_content{
+    display: flex;
+    flex-direction: column;
+    padding-bottom: 20px;
+    font-family: 'Tilt Neon', sans-serif;
+}
+
+.profile_avatar img{
+    width: 150px;
+    height: 150px;
+    border: 2px solid #fff;
+    border-radius: 10px;
+    margin-bottom: 10px;
+}
+
+.profile_bio{
+    font-size: 20px;
+    color: #3A506B;
+}
+
+.profile_name{
+    padding-bottom: 10px;
+    font-weight: bold;
+    font-size: 22px;
+    color: #1C2541;
+}

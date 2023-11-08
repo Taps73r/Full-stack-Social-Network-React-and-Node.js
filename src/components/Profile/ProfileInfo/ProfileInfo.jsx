@@ -1,12 +1,14 @@
 import Post from './../Posts/Post/Post';
+import './ProfileInfo.css';
 import staticPhoto from './../../../photos/userstaticavatar.jpg';
 function ProfileInfo(props) {
     let posts = props.postData.map(post => {
         return <Post message={post.postMessage} />
     })
+    let userId = props.profileData.userId;
     let fullName = props.profileData.fullName;
     let profilePhoto = props.profileData.photos.large;
-
+    let aboutMe = props.profileData.aboutMe;
     return (
         <div>
             <div className='profile_content'>
@@ -14,11 +16,11 @@ function ProfileInfo(props) {
                     <img src={profilePhoto != null ? profilePhoto : staticPhoto} alt="avatar" />
                 </div>
                 <div className='profile_name'>
-                    <h1>{fullName}</h1>
-                </div>
+                    <p>{fullName != null ? fullName : 'Id ' + userId}</p>
                 </div>
                 <div className='profile_bio'>
-                    <h1>Bio</h1>
+                    <p>{aboutMe != null ? aboutMe : 'User has not set a bio.'}</p>
+                </div>
             </div>
             <div className='Posts'>
                 {posts}
