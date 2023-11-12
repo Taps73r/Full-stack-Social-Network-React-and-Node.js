@@ -1,4 +1,5 @@
 import './App.css';
+import Header from './components/Header/Header';
 import Sidebar from './components/Sidebar/Sidebar';
 import Dialogs from './components/Dialogs/Dialogs';
 import News from './components/News/News';
@@ -8,11 +9,13 @@ import Footer from './components/Footer/Footer';
 import { Route, Routes } from 'react-router-dom';
 import UsersContainer from './components/Users/UsersContainer';
 import ProfileContainerWithApi from './components/Profile/MainContainer';
-import HeaderAuthUserWithApiContainer from './components/Header/HeaderContainer';
+import LoginContainerAPI from './components/Login/LoginContainer';
 function App() {
   return (
     <div className="App">
-      <HeaderAuthUserWithApiContainer />
+      <Header />
+      <LoginContainerAPI />
+      {/* <HeaderAuthUserWithApiContainer />
       <Sidebar />
       <div className='route_side_bar'>
         <Routes>
@@ -25,7 +28,7 @@ function App() {
           <Route path="/settings" element={<Settings />} />
         </Routes>
       </div>
-      <Footer />
+      <Footer /> */}
     </div>
   );
 }
