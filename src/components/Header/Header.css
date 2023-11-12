@@ -1,22 +1,28 @@
 @import url('https://fonts.googleapis.com/css2?family=Signika+Negative&display=swap');
 
 .header {
-    font-family: 'Signika Negative', sans-serif;
-    font-size: 50px;
-    grid-area: 1 / 1 / 2 / 5;
-    background-color: #1C2541;
-    height: 150px;
-    display: flex;
-    align-items: center;
-    padding-left: 20px;
-    border-radius: 20px;
-  }
-  
-  .logo img {
-    width: 100px;
-    height: 100px;
-  }
+  font-family: 'Signika Negative', sans-serif;
+  font-size: 50px;
+  grid-area: 1 / 1 / 2 / 5;
+  background-color: #1C2541;
+  height: 150px;
+  display: flex;
+  align-items: center;
+  padding-left: 20px;
+  border-radius: 20px;
+}
 
-.header1{
+.logo img {
+  width: 100px;
+  height: 100px;
+}
+
+.header1 {
   color: #5BC0BE;
+}
+
+#h-d-name {
+  color: #5BC0BE;
+  text-decoration: none;
+  font-size: 100px;
 }

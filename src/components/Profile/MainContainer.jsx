@@ -5,6 +5,7 @@ import Preloader from './../common/Preloader/Preloader';
 import Main from './Main';
 import './Main.css';
 import { addPostActionCreator, setIsFetching, setProfile, updateTextActionCreator } from '../../redux/profile-reducer';
+import { useLocation, useNavigate, useParams, } from "react-router-dom";
 
 
 class MainContainer extends React.Component {
@@ -15,8 +16,8 @@ class MainContainer extends React.Component {
 
     requestProfileInfo = () => {
         this.props.setIsFetching(true);
-        // const { } = this.props;
-        const url = `https://social-network.samuraijs.com/api/1.0/profile/2`;
+        let userId = this.props.router.params.userId;
+        const url = `https://social-network.samuraijs.com/api/1.0/profile/${userId}`;
 
         axios.get(url)
             .then(response => {
@@ -61,4 +62,20 @@ let ProfileContainerWithApi = connect(mapStateToProps, {
     addPostActionCreator
 })(MainContainer);
 
-export default ProfileContainerWithApi;
+function withRouter(Component) {
+    function ComponentWithRouterProp(props) {
+        let location = useLocation();
+        let navigate = useNavigate();
+        let params = useParams();
+        return (
+            <Component
+                {...props}
+                router={{ location, navigate, params }}
+            />
+        );
+    }
+
+    return ComponentWithRouterProp;
+}
+
+export default connect(mapStateToProps, {setProfile})(withRouter(ProfileContainerWithApi));

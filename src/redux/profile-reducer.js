@@ -27,12 +27,11 @@ export const profileReducer = (state = initialState, action) => {
             {
                 return { ...state, profileData: action.profileData }
             }
-        case TOGGLE_IS_FETCHING: {
+        case TOGGLE_IS_FETCHING:
             return {
                 ...state,
                 isFetching: action.isFetching
             }
-        }
         default:
             return state;
     }

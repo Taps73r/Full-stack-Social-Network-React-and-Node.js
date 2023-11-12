@@ -1,12 +1,17 @@
+import { NavLink } from 'react-router-dom';
 import './Header.css';
 function Header() {
     return (
         <div className='header'>
-            <div className='logo'>
-                <img src="./../logopage.png" alt='Логотип' />
+            <div className='header-name'>
+                <NavLink to='/profile' id='h-d-name' >
+                    converso
+                </NavLink>
             </div>
-            <div className='header1'>
-                converso
+            <div className='login-block'>
+                <NavLink to={'/login'}>
+                    Login
+                </NavLink>
             </div>
         </div>
     )
