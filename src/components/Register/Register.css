@@ -1,0 +1,11 @@
+.register_form{
+    position: absolute;
+    top: 40%;
+    left: 50%;
+    transform: translate(-50%, 0);
+}
+
+.register_form div{
+    display: flex;
+    flex-direction: column;
+}

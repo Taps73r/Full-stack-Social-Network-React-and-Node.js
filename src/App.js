@@ -10,11 +10,18 @@ import { Route, Routes } from 'react-router-dom';
 import UsersContainer from './components/Users/UsersContainer';
 import ProfileContainerWithApi from './components/Profile/MainContainer';
 import LoginContainerAPI from './components/Login/LoginContainer';
+import RegisterContainerAPI from './components/Register/RegisterContainer';
+import PreLogin from './components/Login/PreLogin';
 function App() {
   return (
     <div className="App">
       <Header />
-      <LoginContainerAPI />
+      <PreLogin />
+      <Routes>
+        <Route path="/login" element={<LoginContainerAPI />} />
+        <Route path="/registration" element={<RegisterContainerAPI />} />
+      </Routes>
+      <Footer />
       {/* <HeaderAuthUserWithApiContainer />
       <Sidebar />
       <div className='route_side_bar'>
@@ -28,7 +35,7 @@ function App() {
           <Route path="/settings" element={<Settings />} />
         </Routes>
       </div>
-      <Footer /> */}
+       */}
     </div>
   );
 }

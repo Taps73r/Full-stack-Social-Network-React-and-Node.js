@@ -26,12 +26,12 @@ const initialState = {
   };
   
   export const registrationSuccess = () => ({
-    type: REGISTRATION_SUCCESS,
+    type: REGISTRATION_SUCCESS
   });
   
   export const registrationFailure = (error) => ({
     type: REGISTRATION_FAILURE,
-    error,
+    error
   });
   
   export default registrationReducer;
