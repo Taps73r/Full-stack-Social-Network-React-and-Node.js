@@ -4,9 +4,9 @@ const bodyParser = require('body-parser');
 const bcrypt = require('bcrypt');
 const jwt = require('jsonwebtoken');
 const app = express();
-const port = 3000;
+const port = 3002;
 
-const mongoURI = process.env.MONGODB_URI || 'mongodb://localhost/auth_demo';
+const mongoURI = "mongodb+srv://taps73r:motherboard2005@cluster0.rx59bw7.mongodb.net/?retryWrites=true&w=majority";
 mongoose.connect(mongoURI, { useNewUrlParser: true, useUnifiedTopology: true });
 const db = mongoose.connection;
 db.on('error', console.error.bind(console, 'Помилка підключення до MongoDB:'));
@@ -14,6 +14,11 @@ db.once('open', function() {
   console.log('Підключено до бази даних MongoDB');
 });
 
+app.use((req, res, next) => {
+  res.header('Access-Control-Allow-Origin', '*'); // Дозволяє всім джерелам
+  res.header('Access-Control-Allow-Headers', 'Origin, X-Requested-With, Content-Type, Accept');
+  next();
+});
 // Імпортуємо модель користувача
 const User = require('./user');
 
@@ -33,12 +38,12 @@ app.post('/register', async (req, res) => {
   const newUser = new User({ username, password });
 
   // Збереження користувача в базі даних
-  newUser.save((err) => {
-    if (err) {
-      return res.status(500).json({ message: 'Помилка реєстрації' });
-    }
+  try {
+    await newUser.save();
     res.status(201).json({ message: 'Користувач успішно зареєстрований' });
-  });
+  } catch (error) {
+    res.status(500).json({ message: 'Помилка реєстрації' });
+  }
 });
 
 app.get('/protected', (req, res) => {
