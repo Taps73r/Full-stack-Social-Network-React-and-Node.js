@@ -84,7 +84,7 @@ app.post('/login', async (req, res) => {
   // Генерація JWT для користувача
   const token = jwt.sign({ username }, 'secret_key', { expiresIn: '1h' });
 
-  res.json({ token });
+  res.json({ token, user: { username, userId: user.userId } });
 });
 
 app.listen(port, () => {

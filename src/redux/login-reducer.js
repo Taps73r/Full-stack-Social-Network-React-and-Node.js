@@ -1,11 +1,11 @@
 const initialState = {
   isAuthenticated: false,
-  user: null,
+  user: '',
   error: null,
   isFetching: false,
   id: null,
   password: '',
-  username: ''
+  username: '',
 };
 
 const LOGIN_PASS_UPDATE_TEXT = 'LOGIN_PASS_UPDATE_TEXT';
@@ -37,7 +37,7 @@ const loginReducer = (state = initialState, action) => {
         isAuthenticated: true,
         user: action.user,
         error: null,
-        isFetching: false
+        isFetching: false,
       };
     case LOGIN_FAILURE:
       return {
@@ -66,9 +66,9 @@ export const loginRequest = () => ({
   type: LOGIN_REQUEST
 })
 
-export const loginSuccess = (user) => ({
+export const loginSuccess = (user, token) => ({
   type: LOGIN_SUCCESS,
-  user,
+  user
 });
 
 export const loginFailure = (error) => ({

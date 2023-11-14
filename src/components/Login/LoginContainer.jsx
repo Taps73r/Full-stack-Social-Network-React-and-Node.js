@@ -2,20 +2,41 @@ import React from 'react';
 import { connect } from 'react-redux';
 import Login from './Login';
 import { loginFailure, loginPassText, loginRequest, loginSuccess, loginUserNameText } from '../../redux/login-reducer';
+import axios from 'axios';
+import Preloader from '../common/Preloader/Preloader';
 
 class LoginContainer extends React.Component {
+    handleLogin = async () => {
+        const { username, password, loginRequest, loginSuccess, loginFailure } = this.props;
+        loginRequest();
 
+        try {
+            const response = await axios.post('http://localhost:3002/login', { username, password });
+            console.log(response);
+            loginSuccess(response);
+
+
+        } catch (error) {
+            loginFailure(error.response.data.message || 'Помилка логіну');
+        }
+    };
 
     render() {
-        return (
-            <Login 
-            username={this.props.username}
-            password={this.props.password}
-            error={this.props.error}
-            loginPassText={this.props.loginPassText}
-            loginUserNameText={this.props.loginUserNameText}
-            />
-        )
+        if (this.props.isFetching) {
+            return <Preloader />
+        }
+        else {
+            return (
+                <Login
+                    username={this.props.username}
+                    password={this.props.password}
+                    error={this.props.error}
+                    loginPassText={this.props.loginPassText}
+                    loginUserNameText={this.props.loginUserNameText}
+                    onLogin={this.handleLogin}
+                />
+            )
+        }
     }
 }
 

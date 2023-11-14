@@ -12,33 +12,43 @@ import ProfileContainerWithApi from './components/Profile/MainContainer';
 import LoginContainerAPI from './components/Login/LoginContainer';
 import RegisterContainerAPI from './components/Register/RegisterContainer';
 import PreLogin from './components/Login/PreLogin';
-function App() {
+import { connect } from 'react-redux';
+
+function App({ isAuthenticated }) {
   return (
     <div className="App">
       <Header />
-      <PreLogin />
-      <Routes>
-        <Route path="/login" element={<LoginContainerAPI />} />
-        <Route path="/registration" element={<RegisterContainerAPI />} />
-      </Routes>
+      {isAuthenticated ? (
+        <>
+          <Sidebar />
+          <div className='route_side_bar'>
+            <Routes>
+              <Route path="/profile/:userId" element={<ProfileContainerWithApi />} />
+              <Route path="/profile/" element={<ProfileContainerWithApi />} />
+              <Route path="/dialogs/*" element={<Dialogs />} />
+              <Route path="/users/" element={<UsersContainer />} />
+              <Route path="/news" element={<News />} />
+              <Route path="/music" element={<Music />} />
+              <Route path="/settings" element={<Settings />} />
+            </Routes>
+          </div>
+        </>
+      ) : (
+        <>
+          <PreLogin />
+          <Routes>
+            <Route path="/login" element={<LoginContainerAPI />} />
+            <Route path="/registration" element={<RegisterContainerAPI />} />
+          </Routes>
+        </>
+      )}
       <Footer />
-      {/* <HeaderAuthUserWithApiContainer />
-      <Sidebar />
-      <div className='route_side_bar'>
-        <Routes>
-          <Route path="/profile/:userId" element={<ProfileContainerWithApi />} />
-          <Route path="/profile/" element={<ProfileContainerWithApi />} />
-          <Route path="/dialogs/*" element={<Dialogs />} />
-          <Route path="/users/" element={<UsersContainer />} />
-          <Route path="/news" element={<News />} />
-          <Route path="/music" element={<Music />} />
-          <Route path="/settings" element={<Settings />} />
-        </Routes>
-      </div>
-       */}
     </div>
   );
 }
 
-export default App;
+const mapStateToProps = (state) => ({
+  isAuthenticated: state.loginInfo.isAuthenticated,
+});
 
+export default connect(mapStateToProps)(App);

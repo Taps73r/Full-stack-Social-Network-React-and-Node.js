@@ -1,5 +1,18 @@
 import './Login.css';
 let Login = (props) => {
+    const submitLogin = () => {
+        props.onLogin();
+    }
+
+    const updatePassText = (e) => {
+        const text = e.target.value;
+        props.loginPassText(text);
+      }
+    
+      const updateUserText = (e) => {
+        const text = e.target.value;
+        props.loginUserNameText(text);
+      }
     return (
         <div className="login-form">
             <h2>Увійти</h2>
@@ -9,6 +22,8 @@ let Login = (props) => {
                     <input
                         type="text"
                         id="username"
+                        value={props.username}
+                        onChange={updateUserText}
                     />
                 </div>
                 <div className="form-group">
@@ -16,9 +31,11 @@ let Login = (props) => {
                     <input
                         type="password"
                         id="password"
+                        value={props.password}
+                        onChange={updatePassText}
                     />
                 </div>
-                <button type="button">
+                <button type="button" onClick={submitLogin}>
                     Увійти
                 </button>
             </form>
