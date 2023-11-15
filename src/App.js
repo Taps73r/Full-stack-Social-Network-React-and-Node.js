@@ -13,42 +13,57 @@ import LoginContainerAPI from './components/Login/LoginContainer';
 import RegisterContainerAPI from './components/Register/RegisterContainer';
 import PreLogin from './components/Login/PreLogin';
 import { connect } from 'react-redux';
+import React from 'react';
+import { loginSuccess } from './redux/login-reducer';
 
-function App({ isAuthenticated }) {
-  return (
-    <div className="App">
-      <Header />
-      {isAuthenticated ? (
-        <>
-          <Sidebar />
-          <div className='route_side_bar'>
+class App extends React.Component {
+  componentDidMount() {
+    const storedToken = localStorage.getItem('token');
+    if (storedToken) {
+      // this.props.loginSuccess(storedToken);
+      localStorage.removeItem('token');
+    }
+  }
+  render() {
+    const { isAuthenticated } = this.props;
+    return (
+      <div className="App">
+        <Header />
+        {isAuthenticated ? (
+          <>
+            <Sidebar />
+            <div className='route_side_bar'>
+              <Routes>
+                <Route path="/profile/:userId" element={<ProfileContainerWithApi />} />
+                <Route path="/profile/" element={<ProfileContainerWithApi />} />
+                <Route path="/dialogs/*" element={<Dialogs />} />
+                <Route path="/users/" element={<UsersContainer />} />
+                <Route path="/news" element={<News />} />
+                <Route path="/music" element={<Music />} />
+                <Route path="/settings" element={<Settings />} />
+              </Routes>
+            </div>
+          </>
+        ) : (
+          <>
+            <PreLogin />
             <Routes>
-              <Route path="/profile/:userId" element={<ProfileContainerWithApi />} />
-              <Route path="/profile/" element={<ProfileContainerWithApi />} />
-              <Route path="/dialogs/*" element={<Dialogs />} />
-              <Route path="/users/" element={<UsersContainer />} />
-              <Route path="/news" element={<News />} />
-              <Route path="/music" element={<Music />} />
-              <Route path="/settings" element={<Settings />} />
+              <Route path="/login" element={<LoginContainerAPI />} />
+              <Route path="/registration" element={<RegisterContainerAPI />} />
             </Routes>
-          </div>
-        </>
-      ) : (
-        <>
-          <PreLogin />
-          <Routes>
-            <Route path="/login" element={<LoginContainerAPI />} />
-            <Route path="/registration" element={<RegisterContainerAPI />} />
-          </Routes>
-        </>
-      )}
-      <Footer />
-    </div>
-  );
+          </>
+        )}
+        <Footer />
+      </div>
+    );
+  }
 }
 
 const mapStateToProps = (state) => ({
   isAuthenticated: state.loginInfo.isAuthenticated,
 });
+const mapDispatchToProps = (dispatch) => ({
+  loginSuccess: (token) => dispatch(loginSuccess(token)),
+});
 
-export default connect(mapStateToProps)(App);
+export default connect(mapStateToProps, mapDispatchToProps)(App);

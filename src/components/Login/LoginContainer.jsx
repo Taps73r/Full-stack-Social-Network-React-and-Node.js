@@ -4,16 +4,21 @@ import Login from './Login';
 import { loginFailure, loginPassText, loginRequest, loginSuccess, loginUserNameText } from '../../redux/login-reducer';
 import axios from 'axios';
 import Preloader from '../common/Preloader/Preloader';
+import { setProfile } from '../../redux/profile-reducer';
 
 class LoginContainer extends React.Component {
     handleLogin = async () => {
-        const { username, password, loginRequest, loginSuccess, loginFailure } = this.props;
+        const { username, password, loginRequest, loginSuccess, loginFailure, setProfile } = this.props;
         loginRequest();
 
         try {
             const response = await axios.post('http://localhost:3002/login', { username, password });
             console.log(response);
-            loginSuccess(response);
+            const token = response.data.token;
+            const data = response.data;
+            localStorage.setItem('token', token);
+            loginSuccess(data);
+            setProfile(data);
 
 
         } catch (error) {
@@ -53,6 +58,7 @@ let LoginContainerAPI = connect(mapStateToProps, {
     loginFailure,
     loginRequest,
     loginSuccess,
-    loginUserNameText
+    loginUserNameText,
+    setProfile
 })(LoginContainer);
 export default LoginContainerAPI;
