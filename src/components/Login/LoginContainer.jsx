@@ -17,6 +17,7 @@ class LoginContainer extends React.Component {
             const token = response.data.token;
             const data = response.data;
             localStorage.setItem('token', token);
+            // localStorage.removeItem('token');
             loginSuccess(data);
             setProfile(data);
 

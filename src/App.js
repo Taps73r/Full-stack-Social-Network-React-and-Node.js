@@ -15,13 +15,28 @@ import PreLogin from './components/Login/PreLogin';
 import { connect } from 'react-redux';
 import React from 'react';
 import { loginSuccess } from './redux/login-reducer';
+import axios from 'axios';
 
 class App extends React.Component {
   componentDidMount() {
+    this.fetchToken();
+  }
+
+  fetchToken() {
     const storedToken = localStorage.getItem('token');
     if (storedToken) {
-      // this.props.loginSuccess(storedToken);
-      localStorage.removeItem('token');
+      axios.post('http://localhost:3002/protected', { token: storedToken })
+        .then(response => {
+          if (response.data) {
+            const { token, username, userId } = response.data;
+            this.props.loginSuccess({ token, username, userId });
+          } else {
+            // Обробте неприпустимий токен
+          }
+        })
+        .catch(error => {
+          console.error('Error during token validation:', error);
+        });
     }
   }
   render() {

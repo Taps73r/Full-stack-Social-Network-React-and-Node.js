@@ -4,6 +4,7 @@ const bodyParser = require('body-parser');
 const bcrypt = require('bcrypt');
 const jwt = require('jsonwebtoken');
 const app = express();
+const cors = require('cors');
 const port = 3002;
 
 const mongoURI = "mongodb+srv://taps73r:motherboard2005@cluster0.rx59bw7.mongodb.net/?retryWrites=true&w=majority";
@@ -13,10 +14,10 @@ db.on('error', console.error.bind(console, 'Помилка підключенн�
 db.once('open', function() {
   console.log('Підключено до бази даних MongoDB');
 });
-
+app.use(cors());
 app.use((req, res, next) => {
-  res.header('Access-Control-Allow-Origin', '*'); // Дозволяє всім джерелам
-  res.header('Access-Control-Allow-Headers', 'Origin, X-Requested-With, Content-Type, Accept');
+  res.header('Access-Control-Allow-Origin', '*');
+  res.header('Access-Control-Allow-Headers', 'Origin, X-Requested-With, Content-Type, Accept, Authorization');
   next();
 });
 // Імпортуємо модель користувача
@@ -46,23 +47,46 @@ app.post('/register', async (req, res) => {
   }
 });
 
-app.get('/protected', (req, res) => {
-    const token = req.headers.authorization;
-  
+app.post('/protected', (req, res) => {
+    const token = req.body.token;
+
     if (!token) {
-      return res.status(401).json({ message: 'Немає токену' });
+      return res.status(401).json(console.log('Немає токену'));
     }
   
     jwt.verify(token, 'secret_key', (err, decoded) => {
       if (err) {
-        return res.status(401).json({ message: 'Невалідний токен' });
+        console.error('JWT verification error:', err);
+        return res.status(401).json(console.log('Немає токену'));
       }
-  
-      // Ви можете використовувати дані користувача, отримані з токену, для доступу
-      res.json({ message: 'Доступ дозволено', user: decoded.username });
+      
+      res.json({ message: 'Доступ дозволено', username: decoded.username, userId: decoded.userId, token });
     });
   });
 
+  app.get('/profile/:userId', async (req, res) => {
+    const userId = req.params.userId;
+  
+    try {
+      // Знайдіть користувача за userId
+      const user = await User.findOne({ userId });
+  
+      if (!user) {
+        return res.status(404).json({ message: 'Користувача не знайдено' });
+      }
+  
+      // Поверніть дані про користувача
+      res.json({
+        username: user.username,
+        userId: user.userId,
+        // Додайте інші дані користувача, які вам потрібні
+      });
+    } catch (error) {
+      console.error('Помилка при отриманні даних профілю:', error);
+      res.status(500).json({ message: 'Помилка при отриманні даних профілю' });
+    }
+  });
+  
 // Вхід користувача
 app.post('/login', async (req, res) => {
   const { username, password } = req.body;
@@ -81,11 +105,12 @@ app.post('/login', async (req, res) => {
     return res.status(401).json({ message: 'Неправильний пароль' });
   }
 
-  // Генерація JWT для користувача
-  const token = jwt.sign({ username }, 'secret_key', { expiresIn: '1h' });
+  // Генерація JWT для користувача, включаючи userId
+  const token = jwt.sign({ username, userId: user.userId }, 'secret_key', { expiresIn: '1h' });
 
-  res.json({ token, user: { username, userId: user.userId } });
+  res.json({ token, username, userId: user.userId });
 });
+
 
 app.listen(port, () => {
   console.log(`Сервер слухає на порту ${port}`);
