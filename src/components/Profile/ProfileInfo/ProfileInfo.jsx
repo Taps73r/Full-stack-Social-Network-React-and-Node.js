@@ -6,9 +6,9 @@ function ProfileInfo(props) {
         return <Post message={post.postMessage} />
     })
     let userId = props.profileData.userId;
-    let fullName = props.profileData.fullName;
-    let profilePhoto = props.profileData.photos.large;
-    let aboutMe = props.profileData.aboutMe;
+    let fullName = props.profileData.username;
+    let profilePhoto //= props.profileData.photos.large;
+    let aboutMe //= props.profileData.aboutMe;
     return (
         <div>
             <div className='profile_content'>

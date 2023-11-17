@@ -7,7 +7,7 @@ let initialState = {
     postData: [{ id: 1, postMessage: 'dsadads' }, { id: 2, postMessage: 'dsad1231243ads' }],
     newPostText: '',
     isFetching: false,
-    profileData: null
+    profileData: ''
 }
 export const profileReducer = (state = initialState, action) => {
     switch (action.type) {

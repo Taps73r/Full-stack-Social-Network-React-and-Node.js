@@ -11,45 +11,40 @@ import {
     updateTextActionCreator,
 } from '../../redux/profile-reducer';
 
-function MainContainer({
-    isFetching,
-    newPostText,
-    postData,
-    profileData,
-    updateTextActionCreator,
-    addPostActionCreator,
-    setIsFetching,
-    setProfile,
-    userId,
-}) {
+function MainContainer(props) {
     useEffect(() => {
         const requestProfileInfo = () => {
-            setIsFetching(true);
+            props.setIsFetching(true);
 
-            const url = `http://localhost:3002/profile/${userId}`;
+            const url = `http://localhost:3002/profile/${props.userId}`;
 
             axios.get(url)
                 .then(response => {
-                    setProfile(response.data);
-                    setIsFetching(false);
+                    props.setProfile(response.data);
+                    props.setIsFetching(false);
+                })
+                .catch(error => {
+                    // Обробка помилки
+                    console.error('Error fetching profile data:', error);
+                    props.setIsFetching(false);
                 });
         };
 
         requestProfileInfo();
-    }, [userId, setIsFetching, setProfile]);
+    }, [props.userId, props.setIsFetching, props.setProfile]);
 
-    if (isFetching || !profileData) {
+    if (props.isFetching || !props.profileData) {
         return <Preloader />;
     }
 
     return (
         <Main
-            postData={postData}
-            newPostText={newPostText}
-            profileData={profileData}
-            updateTextActionCreator={updateTextActionCreator}
-            addPostActionCreator={addPostActionCreator}
-            setProfile={setProfile}
+            postData={props.postData}
+            newPostText={props.newPostText}
+            profileData={props.profileData}
+            updateTextActionCreator={props.updateTextActionCreator}
+            addPostActionCreator={props.addPostActionCreator}
+            setProfile={props.setProfile}
         />
     );
 }

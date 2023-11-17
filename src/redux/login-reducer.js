@@ -35,11 +35,11 @@ const loginReducer = (state = initialState, action) => {
       return {
         ...state,
         isAuthenticated: true,
-        user: action.user,
+        user: action.user.username,
         error: null,
         isFetching: false,
-        token: action.token,
-        userId: action.userId
+        token: action.user.token,
+        userId: action.user.userId
       };
     case LOGIN_FAILURE:
       return {
@@ -70,9 +70,7 @@ export const loginRequest = () => ({
 
 export const loginSuccess = (user, token, userId) => ({
   type: LOGIN_SUCCESS,
-  user,
-  token, 
-  userId
+  user
 });
 
 export const loginFailure = (error) => ({
