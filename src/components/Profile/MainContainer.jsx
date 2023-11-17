@@ -7,44 +7,60 @@ import './Main.css';
 import {
     addPostActionCreator,
     setIsFetching,
-    setProfile,
-    updateTextActionCreator,
+    setProfile
 } from '../../redux/profile-reducer';
 
-function MainContainer(props) {
+function MainContainer({
+    userId,
+    isFetching,
+    newPostText,
+    postData,
+    profileData,
+    addPostActionCreator,
+    setIsFetching,
+    setProfile,
+}) {
     useEffect(() => {
         const requestProfileInfo = () => {
-            props.setIsFetching(true);
+            setIsFetching(true);
 
-            const url = `http://localhost:3002/profile/${props.userId}`;
+            const url = `http://localhost:3002/profile/${userId}`;
 
             axios.get(url)
                 .then(response => {
-                    props.setProfile(response.data);
-                    props.setIsFetching(false);
+                    setProfile(response.data);
+                    setIsFetching(false);
                 })
                 .catch(error => {
                     // Обробка помилки
                     console.error('Error fetching profile data:', error);
-                    props.setIsFetching(false);
+                    setIsFetching(false);
                 });
+               
         };
-
         requestProfileInfo();
-    }, [props.userId, props.setIsFetching, props.setProfile]);
+    }, [userId, setIsFetching, setProfile]);
 
-    if (props.isFetching || !props.profileData) {
+    let addPost = () => {
+        let postMessage = newPostText;
+        axios.post('http://localhost:3002/posts', {userId, postMessage})
+        .then((response) => {
+            addPostActionCreator(response.data.post);
+        })
+        .catch((error) => {
+            console.error('Error adding post:', error);
+        })
+        
+    }
+    if (isFetching || !profileData) {
         return <Preloader />;
     }
 
     return (
         <Main
-            postData={props.postData}
-            newPostText={props.newPostText}
-            profileData={props.profileData}
-            updateTextActionCreator={props.updateTextActionCreator}
-            addPostActionCreator={props.addPostActionCreator}
-            setProfile={props.setProfile}
+            postData={postData}
+            profileData={profileData}
+            addPost={addPost}
         />
     );
 }
@@ -60,7 +76,6 @@ const mapStateToProps = (state) => ({
 const ProfileContainerWithApi = connect(
     mapStateToProps,
     {
-        updateTextActionCreator,
         setProfile,
         setIsFetching,
         addPostActionCreator

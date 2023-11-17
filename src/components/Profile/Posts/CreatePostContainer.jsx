@@ -1,18 +1,18 @@
 import './CreatePost.css';
-import { addPostActionCreator, updateTextActionCreator } from './../../../redux/profile-reducer';
+import { updateTextActionCreator } from './../../../redux/profile-reducer';
 import CreatePost from './CreatePost';
 import { connect } from 'react-redux';
 
-let mapProfileInfoToProps = (state) => {
-    return{
-        postData: state.profileInfo.postData,
+const mapProfileInfoToProps = (state) => {
+    return {
         newPostText: state.profileInfo.newPostText
-    }
-}
+    };
+};
 
-const CreatePostContainer = connect(mapProfileInfoToProps, {
+const CreatePostContainer = ({ addPost, ...props }) => {
+    return <CreatePost addPost={addPost} {...props} />;
+};
+
+export default connect(mapProfileInfoToProps, {
     updateTextPost: updateTextActionCreator,
-    createNewPost: addPostActionCreator
-})(CreatePost)
-
-export default CreatePostContainer;
+})(CreatePostContainer);

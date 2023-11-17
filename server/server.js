@@ -1,4 +1,5 @@
 const express = require('express');
+const Post = require('./post');
 const mongoose = require('mongoose');
 const bodyParser = require('body-parser');
 const bcrypt = require('bcrypt');
@@ -11,7 +12,7 @@ const mongoURI = "mongodb+srv://taps73r:motherboard2005@cluster0.rx59bw7.mongodb
 mongoose.connect(mongoURI, { useNewUrlParser: true, useUnifiedTopology: true });
 const db = mongoose.connection;
 db.on('error', console.error.bind(console, 'Помилка підключення до MongoDB:'));
-db.once('open', function() {
+db.once('open', function () {
   console.log('Підключено до бази даних MongoDB');
 });
 app.use(cors());
@@ -47,46 +48,70 @@ app.post('/register', async (req, res) => {
   }
 });
 
-app.post('/protected', (req, res) => {
-    const token = req.body.token;
+app.get('/profile/:userId', async (req, res) => {
+  const userId = req.params.userId;
 
-    if (!token) {
+  try {
+    // Знайдіть користувача за userId
+    const user = await User.findOne({ userId });
+
+    if (!user) {
+      return res.status(404).json({ message: 'Користувача не знайдено' });
+    }
+
+    // Знайдіть пости для цього користувача
+    const posts = await Post.find({ userId });
+
+    // Поверніть дані про користувача та його пости
+    res.json({
+      username: user.username,
+      userId: user.userId,
+      posts: posts || [],
+      // Додайте інші дані користувача, які вам потрібні
+    });
+  } catch (error) {
+    console.error('Помилка при отриманні даних профілю:', error);
+    res.status(500).json({ message: 'Помилка при отриманні даних профілю' });
+  }
+});
+app.post('/protected', (req, res) => {
+  const token = req.body.token;
+
+  if (!token) {
+    return res.status(401).json(console.log('Немає токену'));
+  }
+
+  jwt.verify(token, 'secret_key', (err, decoded) => {
+    if (err) {
+      console.error('JWT verification error:', err);
       return res.status(401).json(console.log('Немає токену'));
     }
-  
-    jwt.verify(token, 'secret_key', (err, decoded) => {
-      if (err) {
-        console.error('JWT verification error:', err);
-        return res.status(401).json(console.log('Немає токену'));
-      }
-      
-      res.json({ message: 'Доступ дозволено', username: decoded.username, userId: decoded.userId, token });
-    });
-  });
 
-  app.get('/profile/:userId', async (req, res) => {
-    const userId = req.params.userId;
-  
-    try {
-      // Знайдіть користувача за userId
-      const user = await User.findOne({ userId });
-  
-      if (!user) {
-        return res.status(404).json({ message: 'Користувача не знайдено' });
-      }
-  
-      // Поверніть дані про користувача
-      res.json({
-        username: user.username,
-        userId: user.userId,
-        // Додайте інші дані користувача, які вам потрібні
-      });
-    } catch (error) {
-      console.error('Помилка при отриманні даних профілю:', error);
-      res.status(500).json({ message: 'Помилка при отриманні даних профілю' });
-    }
+    res.json({ message: 'Доступ дозволено', username: decoded.username, userId: decoded.userId, token });
   });
-  
+});
+
+app.post('/posts', async (req, res) => {
+  const { userId, postMessage } = req.body;
+
+  try {
+    // Створіть новий пост
+    const newPost = new Post({
+      userId, // Використовуйте інкрементований userId
+      postMessage,
+      // Додайте інші дані, які вам потрібні для поста
+    });
+
+    // Збережіть пост в базу даних
+    await newPost.save();
+
+    // Поверніть дані про створений пост
+    res.status(201).json({ message: 'Пост успішно створено', newPost });
+  } catch (error) {
+    console.error('Помилка при створенні поста:', error);
+    res.status(500).json({ message: 'Помилка при створенні поста' });
+  }
+});
 // Вхід користувача
 app.post('/login', async (req, res) => {
   const { username, password } = req.body;

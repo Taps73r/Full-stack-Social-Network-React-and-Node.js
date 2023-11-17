@@ -4,7 +4,7 @@ const TOGGLE_IS_FETCHING = 'TOGGLE_IS_FETCHING';
 const SET_PROFILE = 'SET_PROFILE';
 
 let initialState = {
-    postData: [{ id: 1, postMessage: 'dsadads' }, { id: 2, postMessage: 'dsad1231243ads' }],
+    postData: [],
     newPostText: '',
     isFetching: false,
     profileData: ''
@@ -14,7 +14,7 @@ export const profileReducer = (state = initialState, action) => {
         case ADD_POST:
             return {
                 ...state,
-                postData: [...state.postData, { id: 3, postMessage: state.newPostText }],
+                postData: [...state.postData, action.post],
                 newPostText: ''
             }
 
@@ -24,8 +24,10 @@ export const profileReducer = (state = initialState, action) => {
                 newPostText: action.newText
             }
         case SET_PROFILE:
-            {
-                return { ...state, profileData: action.profileData }
+            return {
+                ...state,
+                profileData: action.profileData,
+                postData: action.profileData.posts || [],
             }
         case TOGGLE_IS_FETCHING:
             return {
@@ -42,12 +44,17 @@ export const updateTextActionCreator = (text) => ({
     newText: text
 })
 
-export const addPostActionCreator = () => ({ type: ADD_POST })
-export const setIsFetching = (isFetching) => ({
-    type: TOGGLE_IS_FETCHING,
-    isFetching
+export const addPostActionCreator = (post) => ({
+    type: ADD_POST,
+    post
 })
-export const setProfile = (profileData) => ({
+export const setIsFetching = (isFetching, userId) => ({
+    type: TOGGLE_IS_FETCHING,
+    isFetching,
+    userId
+})
+export const setProfile = (profileData, postData) => ({
     type: SET_PROFILE,
-    profileData
+    profileData,
+    postData
 })

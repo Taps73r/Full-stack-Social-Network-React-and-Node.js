@@ -2,9 +2,14 @@ import Post from './../Posts/Post/Post';
 import './ProfileInfo.css';
 import staticPhoto from './../../../photos/userstaticavatar.jpg';
 function ProfileInfo(props) {
-    let posts = props.postData.map(post => {
-        return <Post message={post.postMessage} />
-    })
+    let posts;
+    if (props.postData && props.postData.length > 0) {
+        posts = props.postData.map(post => {
+            return <Post key={post.postId} message={post.postMessage} />;
+        });
+    } else {
+        posts = <p>No posts available.</p>;
+    }
     let userId = props.profileData.userId;
     let fullName = props.profileData.username;
     let profilePhoto //= props.profileData.photos.large;

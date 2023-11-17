@@ -4,7 +4,7 @@ import './CreatePost.css';
 function CreatePost(props) {
 
     const addNewPost = () => {
-        props.createNewPost();
+        props.addPost();
     }
 
     const updateNewText = (e) => {

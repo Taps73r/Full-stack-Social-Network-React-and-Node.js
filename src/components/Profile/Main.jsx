@@ -6,7 +6,7 @@ function Main(props) {
     return (
         <div className="maincontent">
             <ProfileInfo postData={props.postData} profileData={props.profileData}/>
-            <CreatePostContainer/>
+            <CreatePostContainer addPost={props.addPost}/>
         </div>
     )
 }
