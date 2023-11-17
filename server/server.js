@@ -112,6 +112,30 @@ app.post('/posts', async (req, res) => {
     res.status(500).json({ message: 'Помилка при створенні поста' });
   }
 });
+app.get('/users-info', async (req, res) => {
+  try {
+    const { term } = req.query;
+    let query = {};
+
+    if (term) {
+      query = { username: { $regex: new RegExp(term), $options: 'i' } };
+    }
+
+    // Отримати всіх користувачів з бази даних з можливістю пошуку
+    const allUsers = await User.find(query, { password: 0 }); // Виключити паролі з результату
+
+    // Отримати загальну кількість користувачів
+    const totalUsers = await User.countDocuments(query);
+
+    // Поверніть дані клієнту
+    res.json({ totalCount: totalUsers, items: allUsers });
+  } catch (error) {
+    console.error('Помилка при отриманні даних:', error);
+    res.status(500).json({ message: 'Помилка при отриманні даних' });
+  }
+});
+
+
 // Вхід користувача
 app.post('/login', async (req, res) => {
   const { username, password } = req.body;

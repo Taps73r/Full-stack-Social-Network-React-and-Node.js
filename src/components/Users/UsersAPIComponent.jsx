@@ -11,11 +11,12 @@ class UsersAPIComponent extends React.Component {
     requestUsers = (currentPage) => {
         this.props.setIsFetching(true);
         const { pageSize, newUserSearchText } = this.props;
-        const url = `https://social-network.samuraijs.com/api/1.0/users?page=${currentPage}&count=${pageSize}&term=${newUserSearchText}`;
+        const url = `http://localhost:3002/users-info?page=${currentPage}&count=${pageSize}&term=${newUserSearchText}`;
 
         axios.get(url)
             .then(response => {
                 this.props.setUsers(response.data.items);
+                console.log(response.data.items)
                 this.props.setTotalUsersCount(response.data.totalCount);
                 this.props.setIsFetching(false);
             });
