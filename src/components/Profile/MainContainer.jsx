@@ -6,6 +6,7 @@ import Main from './Main';
 import './Main.css';
 import {
     addPostActionCreator,
+    changeUserInfo,
     setIsFetching,
     setProfile
 } from '../../redux/profile-reducer';
@@ -19,6 +20,9 @@ function MainContainer({
     addPostActionCreator,
     setIsFetching,
     setProfile,
+    setChangeUserInfo,
+    changeBioText,
+    changeNameText
 }) {
     useEffect(() => {
         const requestProfileInfo = () => {
@@ -36,22 +40,28 @@ function MainContainer({
                     console.error('Error fetching profile data:', error);
                     setIsFetching(false);
                 });
-               
+
         };
         requestProfileInfo();
     }, [userId, setIsFetching, setProfile]);
 
     let addPost = () => {
         let postMessage = newPostText;
-        axios.post('http://localhost:3002/posts', {userId, postMessage})
-        .then((response) => {
-            addPostActionCreator(response.data.post);
-        })
-        .catch((error) => {
-            console.error('Error adding post:', error);
-        })
-        
+        axios.post('http://localhost:3002/posts', { userId, postMessage })
+            .then((response) => {
+                addPostActionCreator(response.data.post);
+            })
+            .catch((error) => {
+                console.error('Error adding post:', error);
+            })
     }
+    let changeUserInfo = () => {
+        setChangeUserInfo()
+    }
+    let putChangedUserInfo = () => {
+        axios.put(`http://localhost:3002/update-profile/${userId}`)
+    }
+
     if (isFetching || !profileData) {
         return <Preloader />;
     }
@@ -61,6 +71,8 @@ function MainContainer({
             postData={postData}
             profileData={profileData}
             addPost={addPost}
+            changeUserInfo={changeUserInfo}
+            putChangedUserInfo={putChangedUserInfo}
         />
     );
 }
@@ -70,7 +82,9 @@ const mapStateToProps = (state) => ({
     newPostText: state.profileInfo.newPostText,
     postData: state.profileInfo.postData,
     profileData: state.profileInfo.profileData,
-    userId: state.loginInfo.userId
+    userId: state.loginInfo.userId,
+    changeBioText: state.profileInfo.changeBioText,
+    changeNameText: state.profileInfo.changeNameText
 });
 
 const ProfileContainerWithApi = connect(
@@ -78,7 +92,8 @@ const ProfileContainerWithApi = connect(
     {
         setProfile,
         setIsFetching,
-        addPostActionCreator
+        addPostActionCreator,
+        setChangeUserInfo: changeUserInfo
     }
 )(MainContainer);
 

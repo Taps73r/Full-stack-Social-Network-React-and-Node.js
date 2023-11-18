@@ -7,18 +7,18 @@ let Login = (props) => {
     const updatePassText = (e) => {
         const text = e.target.value;
         props.loginPassText(text);
-      }
-    
-      const updateUserText = (e) => {
+    }
+
+    const updateUserText = (e) => {
         const text = e.target.value;
         props.loginUserNameText(text);
-      }
+    }
     return (
         <div className="login-form">
-            <h2>Увійти</h2>
             <form>
                 <div className="form-group">
-                    <label htmlFor="username">Ім'я користувача:</label>
+                    <h2>Login</h2>
+                    <p htmlFor="username">Username:</p>
                     <input
                         type="text"
                         id="username"
@@ -27,17 +27,19 @@ let Login = (props) => {
                     />
                 </div>
                 <div className="form-group">
-                    <label htmlFor="password">Пароль:</label>
+                    <p htmlFor="password">Password:</p>
                     <input
                         type="password"
                         id="password"
                         value={props.password}
                         onChange={updatePassText}
                     />
+                    <div className='center-button'>
+                        <button className='form-button' type="button" onClick={submitLogin}>
+                            Login
+                        </button>
+                    </div>
                 </div>
-                <button type="button" onClick={submitLogin}>
-                    Увійти
-                </button>
             </form>
         </div>
     );

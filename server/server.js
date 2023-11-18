@@ -48,6 +48,23 @@ app.post('/register', async (req, res) => {
   }
 });
 
+app.post('/protected', (req, res) => {
+  const token = req.body.token;
+
+  if (!token) {
+    return res.status(401).json(console.log('Немає токену'));
+  }
+
+  jwt.verify(token, 'secret_key', (err, decoded) => {
+    if (err) {
+      console.error('JWT verification error:', err);
+      return res.status(401).json(console.log('Немає токену'));
+    }
+
+    res.json({ message: 'Доступ дозволено', username: decoded.username, userId: decoded.userId, token });
+  });
+});
+
 app.get('/profile/:userId', async (req, res) => {
   const userId = req.params.userId;
 
@@ -66,6 +83,8 @@ app.get('/profile/:userId', async (req, res) => {
     res.json({
       username: user.username,
       userId: user.userId,
+      bio: user.bio,
+      photo: user.photo,
       posts: posts || [],
       // Додайте інші дані користувача, які вам потрібні
     });
@@ -74,21 +93,85 @@ app.get('/profile/:userId', async (req, res) => {
     res.status(500).json({ message: 'Помилка при отриманні даних профілю' });
   }
 });
-app.post('/protected', (req, res) => {
-  const token = req.body.token;
 
-  if (!token) {
-    return res.status(401).json(console.log('Немає токену'));
-  }
+app.put('/update-profile/:userId', async (req, res) => {
+  const userId = req.params.userId;
+  const { username, bio, photo } = req.body;
 
-  jwt.verify(token, 'secret_key', (err, decoded) => {
-    if (err) {
-      console.error('JWT verification error:', err);
-      return res.status(401).json(console.log('Немає токену'));
+  try {
+    // Знаходимо поточного користувача
+    const currentUser = await User.findOne({ userId });
+
+    if (!currentUser) {
+      return res.status(404).json({ message: 'Користувача не знайдено' });
     }
 
-    res.json({ message: 'Доступ дозволено', username: decoded.username, userId: decoded.userId, token });
-  });
+    // Оновлюємо тільки ті дані, які надійшли з фронтенду та не є пустими
+    if (username) {
+      currentUser.username = username;
+    }
+    if (bio) {
+      currentUser.bio = bio;
+    }
+    if (photo) {
+      currentUser.photo = photo;
+    }
+
+    // Зберігаємо оновленого користувача
+    await currentUser.save();
+
+    // Повертаємо оновленого користувача
+    res.json(currentUser);
+  } catch (error) {
+    console.error('Помилка при оновленні профілю:', error);
+    res.status(500).json({ message: 'Помилка при оновленні профілю' });
+  }
+});
+
+app.post('/login', async (req, res) => {
+  const { username, password } = req.body;
+
+  // Знаходження користувача за ім'ям
+  const user = await User.findOne({ username });
+
+  if (!user) {
+    return res.status(401).json({ message: 'Користувача з таким ім\'ям не існує' });
+  }
+
+  // Порівняння введеного паролю з хешованим паролем в базі даних
+  const passwordMatch = await bcrypt.compare(password, user.password);
+
+  if (!passwordMatch) {
+    return res.status(401).json({ message: 'Неправильний пароль' });
+  }
+
+  // Генерація JWT для користувача, включаючи userId
+  const token = jwt.sign({ username, userId: user.userId, bio: user.bio, photo: user.photo }, 'secret_key', { expiresIn: '1h' });
+
+  res.json({ token, username, userId: user.userId, bio: user.bio, photo: user.photo });
+});
+
+app.get('/users-info', async (req, res) => {
+  try {
+    const { term } = req.query;
+    let query = {};
+
+    if (term) {
+      query = { username: { $regex: new RegExp(term), $options: 'i' } };
+    }
+
+    // Отримати всіх користувачів з бази даних з можливістю пошуку
+    const allUsers = await User.find(query, { password: 0 }); // Виключити паролі з результату
+
+    // Отримати загальну кількість користувачів
+    const totalUsers = await User.countDocuments(query);
+
+    // Поверніть дані клієнту
+    res.json({ totalCount: totalUsers, items: allUsers.map(user => ({ username: user.username, bio: user.bio, photo: user.photo })) });
+  } catch (error) {
+    console.error('Помилка при отриманні даних:', error);
+    res.status(500).json({ message: 'Помилка при отриманні даних' });
+  }
 });
 
 app.post('/posts', async (req, res) => {
@@ -112,54 +195,6 @@ app.post('/posts', async (req, res) => {
     res.status(500).json({ message: 'Помилка при створенні поста' });
   }
 });
-app.get('/users-info', async (req, res) => {
-  try {
-    const { term } = req.query;
-    let query = {};
-
-    if (term) {
-      query = { username: { $regex: new RegExp(term), $options: 'i' } };
-    }
-
-    // Отримати всіх користувачів з бази даних з можливістю пошуку
-    const allUsers = await User.find(query, { password: 0 }); // Виключити паролі з результату
-
-    // Отримати загальну кількість користувачів
-    const totalUsers = await User.countDocuments(query);
-
-    // Поверніть дані клієнту
-    res.json({ totalCount: totalUsers, items: allUsers });
-  } catch (error) {
-    console.error('Помилка при отриманні даних:', error);
-    res.status(500).json({ message: 'Помилка при отриманні даних' });
-  }
-});
-
-
-// Вхід користувача
-app.post('/login', async (req, res) => {
-  const { username, password } = req.body;
-
-  // Знаходження користувача за ім'ям
-  const user = await User.findOne({ username });
-
-  if (!user) {
-    return res.status(401).json({ message: 'Користувача з таким ім\'ям не існує' });
-  }
-
-  // Порівняння введеного паролю з хешованим паролем в базі даних
-  const passwordMatch = await bcrypt.compare(password, user.password);
-
-  if (!passwordMatch) {
-    return res.status(401).json({ message: 'Неправильний пароль' });
-  }
-
-  // Генерація JWT для користувача, включаючи userId
-  const token = jwt.sign({ username, userId: user.userId }, 'secret_key', { expiresIn: '1h' });
-
-  res.json({ token, username, userId: user.userId });
-});
-
 
 app.listen(port, () => {
   console.log(`Сервер слухає на порту ${port}`);

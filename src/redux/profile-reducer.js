@@ -2,12 +2,19 @@ const ADD_POST = 'ADD-POST';
 const UPDATE_TEXT_POST = 'UPDATE-TEXT-POST';
 const TOGGLE_IS_FETCHING = 'TOGGLE_IS_FETCHING';
 const SET_PROFILE = 'SET_PROFILE';
+const CHANGE_USER_INFO = 'CHANGE_USER_INFO';
+const RETURN_CHANGE_INFO = 'RETURN_CHANGE_INFO';
+const UPDATE_CHANGE_BIO_TEXT = 'UPDATE_CHANGE_BIO_TEXT';
+const UPDATE_CHANGE_NAME_TEXT = 'UPDATE_CHANGE_NAME_TEXT';
 
 let initialState = {
     postData: [],
     newPostText: '',
     isFetching: false,
-    profileData: ''
+    profileData: '',
+    changingInfo: false,
+    changeBioText: '',
+    changeNameText: ''
 }
 export const profileReducer = (state = initialState, action) => {
     switch (action.type) {
@@ -34,11 +41,45 @@ export const profileReducer = (state = initialState, action) => {
                 ...state,
                 isFetching: action.isFetching
             }
+        case CHANGE_USER_INFO:
+            return {
+                ...state,
+                changingInfo: true
+            }
+        case RETURN_CHANGE_INFO:
+            return {
+                ...state,
+                changingInfo: false
+            }
+        case UPDATE_CHANGE_BIO_TEXT:
+            return {
+                ...state,
+                changeBioText: action.changeBioText
+            }
+        case UPDATE_CHANGE_NAME_TEXT:
+            return {
+                ...state,
+                changeNameText: action.changeNameText
+            }
         default:
             return state;
     }
 }
 
+export const returnChangeUserInfo = () => ({
+    type: RETURN_CHANGE_INFO
+})
+export const changeUserInfo = () => ({
+    type: CHANGE_USER_INFO
+})
+export const updateChangeNameText = (text) => ({
+    type: UPDATE_CHANGE_NAME_TEXT,
+    changeNameText: text
+})
+export const updateChangeBioText = (text) => ({
+    type: UPDATE_CHANGE_BIO_TEXT,
+    changeBioText: text
+})
 export const updateTextActionCreator = (text) => ({
     type: UPDATE_TEXT_POST,
     newText: text

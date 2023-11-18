@@ -21,7 +21,7 @@ let Registration = (props) => {
     <div className='register_form'>
       <h2>Registration</h2>
       <div>
-        <p>User name:</p>
+        <p>Username:</p>
         <input type="text" value={props.username} onChange={updateUserText} />
       </div>
       <div>

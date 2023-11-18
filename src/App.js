@@ -4,7 +4,6 @@ import Sidebar from './components/Sidebar/Sidebar';
 import Dialogs from './components/Dialogs/Dialogs';
 import News from './components/News/News';
 import Music from './components/Music/Music';
-import Settings from './components/Settings/Settings';
 import Footer from './components/Footer/Footer';
 import { Route, Routes } from 'react-router-dom';
 import UsersContainer from './components/Users/UsersContainer';
@@ -16,6 +15,7 @@ import { connect } from 'react-redux';
 import React from 'react';
 import { loginSuccess } from './redux/login-reducer';
 import axios from 'axios';
+import SettingsContainer from './components/Settings/SettingsContainer';
 
 class App extends React.Component {
   componentDidMount() {
@@ -55,7 +55,7 @@ class App extends React.Component {
                 <Route path="/users/" element={<UsersContainer />} />
                 <Route path="/news" element={<News />} />
                 <Route path="/music" element={<Music />} />
-                <Route path="/settings" element={<Settings />} />
+                <Route path="/settings" element={<SettingsContainer />} />
               </Routes>
             </div>
           </>

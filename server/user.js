@@ -1,3 +1,4 @@
+// Змінена схема користувача (user.js)
 const mongoose = require('mongoose');
 const bcrypt = require('bcrypt');
 
@@ -5,6 +6,8 @@ const userSchema = new mongoose.Schema({
   username: { type: String, required: true, unique: true },
   password: { type: String, required: true },
   userId: { type: Number, unique: true },
+  bio: { type: String },
+  photo: { type: String }, // Асумпція: URL або шлях до зображення користувача
 });
 
 userSchema.pre('save', async function(next) {

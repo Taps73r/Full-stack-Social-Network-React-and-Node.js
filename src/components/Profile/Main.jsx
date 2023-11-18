@@ -5,7 +5,7 @@ import ProfileInfo from './ProfileInfo/ProfileInfo';
 function Main(props) {
     return (
         <div className="maincontent">
-            <ProfileInfo postData={props.postData} profileData={props.profileData}/>
+            <ProfileInfo postData={props.postData} profileData={props.profileData} changeUserInfo={props.changeUserInfo}/>
             <CreatePostContainer addPost={props.addPost}/>
         </div>
     )

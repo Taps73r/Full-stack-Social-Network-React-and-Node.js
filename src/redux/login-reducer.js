@@ -13,6 +13,7 @@ const LOGIN_USERNAME_UPDATE_TEXT = 'LOGIN_USERNAME_UPDATE_TEXT';
 const LOGIN_REQUEST = 'LOGIN_REQUEST';
 const LOGIN_SUCCESS = 'LOGIN_SUCCESS';
 const LOGIN_FAILURE = 'LOGIN_FAILURE';
+const RESET_DATA = 'RESET_DATA';
 
 const loginReducer = (state = initialState, action) => {
   switch (action.type) {
@@ -49,6 +50,17 @@ const loginReducer = (state = initialState, action) => {
         error: action.error,
         isFetching: false
       };
+    case RESET_DATA:
+      return {
+        ...state,
+        isAuthenticated: false,
+        error: null,
+        isFetching: false,
+        userId: '',
+        password: '',
+        username: '',
+        token: null
+      }
     default:
       return state;
   }
@@ -78,5 +90,8 @@ export const loginFailure = (error) => ({
   error,
 });
 
+export const resetData = () => ({
+  type: RESET_DATA
+})
 
 export default loginReducer;
