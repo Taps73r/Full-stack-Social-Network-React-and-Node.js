@@ -18,18 +18,26 @@ userSchema.pre('save', async function(next) {
     user.userId = await generateUniqueUserId();
   }
 
-  // Хешуємо пароль перед збереженням
-  const saltRounds = 10;
-  user.password = await bcrypt.hash(user.password, saltRounds);
+  // Хешуємо пароль тільки тоді, коли він був змінений
+  if (user.isModified('password')) {
+    const saltRounds = 10;
+    user.password = await bcrypt.hash(user.password, saltRounds);
+  }
 
   next();
 });
 
-// Функція для генерації унікального userId
+// Додайте функцію для генерації унікального userId
 async function generateUniqueUserId() {
   const lastUser = await User.findOne().sort({ userId: -1 });
   return lastUser ? lastUser.userId + 1 : 1;
 }
+
+// Додайте функцію для хешування паролю
+userSchema.methods.hashPassword = async function(password) {
+  const saltRounds = 10;
+  return bcrypt.hash(password, saltRounds);
+};
 
 const User = mongoose.model('User', userSchema);
 

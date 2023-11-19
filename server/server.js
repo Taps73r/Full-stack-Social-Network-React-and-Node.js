@@ -96,7 +96,7 @@ app.get('/profile/:userId', async (req, res) => {
 
 app.put('/update-profile/:userId', async (req, res) => {
   const userId = req.params.userId;
-  const { username, bio, photo } = req.body;
+  const { username, bio, photo, password } = req.body;
 
   try {
     // Знаходимо поточного користувача
@@ -116,6 +116,10 @@ app.put('/update-profile/:userId', async (req, res) => {
     if (photo) {
       currentUser.photo = photo;
     }
+    if (password) {
+      // Хешуємо пароль тільки, якщо він змінений
+      currentUser.password = await currentUser.hashPassword(password);
+    }
 
     // Зберігаємо оновленого користувача
     await currentUser.save();
@@ -127,7 +131,6 @@ app.put('/update-profile/:userId', async (req, res) => {
     res.status(500).json({ message: 'Помилка при оновленні профілю' });
   }
 });
-
 app.post('/login', async (req, res) => {
   const { username, password } = req.body;
 

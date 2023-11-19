@@ -10,15 +10,19 @@ function ProfileInfo(props) {
     } else {
         posts = <p>No posts available.</p>;
     }
+    let setChangingInfo = () =>{
+        props.changeUserInfo();
+    }
     let userId = props.profileData.userId;
     let fullName = props.profileData.username;
     let profilePhoto //= props.profileData.photos.large;
-    let aboutMe //= props.profileData.aboutMe;
+    let aboutMe = props.profileData.bio;
     return (
         <div>
             <div className='profile_content'>
                 <div className="profile_avatar">
                     <img src={profilePhoto != null ? profilePhoto : staticPhoto} alt="avatar" />
+                    <button onClick={setChangingInfo}>Change Info</button>
                 </div>
                 <div className='profile_name'>
                     <p>{fullName != null ? fullName : 'Id ' + userId}</p>

@@ -21,7 +21,7 @@ export const profileReducer = (state = initialState, action) => {
         case ADD_POST:
             return {
                 ...state,
-                postData: [...state.postData, action.post],
+                postData: [...state.postData, action.post.newPost],
                 newPostText: ''
             }
 

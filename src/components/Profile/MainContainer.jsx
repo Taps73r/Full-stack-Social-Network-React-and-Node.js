@@ -22,7 +22,8 @@ function MainContainer({
     setProfile,
     setChangeUserInfo,
     changeBioText,
-    changeNameText
+    changeNameText,
+    changingInfo
 }) {
     useEffect(() => {
         const requestProfileInfo = () => {
@@ -49,7 +50,7 @@ function MainContainer({
         let postMessage = newPostText;
         axios.post('http://localhost:3002/posts', { userId, postMessage })
             .then((response) => {
-                addPostActionCreator(response.data.post);
+                addPostActionCreator(response.data);
             })
             .catch((error) => {
                 console.error('Error adding post:', error);
@@ -59,7 +60,20 @@ function MainContainer({
         setChangeUserInfo()
     }
     let putChangedUserInfo = () => {
-        axios.put(`http://localhost:3002/update-profile/${userId}`)
+        const username = changeNameText;
+        const bio = changeBioText;
+        const photo = 'test';
+        setIsFetching(true);
+        axios.put(`http://localhost:3002/update-profile/${userId}`, {username, bio, photo})
+        .then((response) => {
+            setProfile(response.data);
+            setIsFetching(false);
+        })
+        .catch(error => {
+            // Обробка помилки
+            console.error('Error fetching profile data:', error);
+            setIsFetching(false);
+        });
     }
 
     if (isFetching || !profileData) {
@@ -73,6 +87,7 @@ function MainContainer({
             addPost={addPost}
             changeUserInfo={changeUserInfo}
             putChangedUserInfo={putChangedUserInfo}
+            changingInfo={changingInfo}
         />
     );
 }
@@ -84,7 +99,8 @@ const mapStateToProps = (state) => ({
     profileData: state.profileInfo.profileData,
     userId: state.loginInfo.userId,
     changeBioText: state.profileInfo.changeBioText,
-    changeNameText: state.profileInfo.changeNameText
+    changeNameText: state.profileInfo.changeNameText,
+    changingInfo: state.profileInfo.changingInfo
 });
 
 const ProfileContainerWithApi = connect(
