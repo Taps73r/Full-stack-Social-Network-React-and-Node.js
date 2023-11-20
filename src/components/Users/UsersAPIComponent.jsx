@@ -22,6 +22,16 @@ class UsersAPIComponent extends React.Component {
             });
     }
 
+    subscribeUser = (followerId, followingId) => {
+        axios.post('http://localhost:3002/subscribe', { followerId, followingId })
+            .then(response => {
+                this.props.toggleSubscription(followerId, followingId);
+            })
+            .catch(error => {
+                console.error('Error subscribing user:', error);
+            });
+    }
+
     onPageChanged = (pageNumber) => {
         this.props.setCurrentPage(pageNumber);
         this.requestUsers(pageNumber);
@@ -47,6 +57,8 @@ class UsersAPIComponent extends React.Component {
                         newUserSearchText={this.props.newUserSearchText}
                         updateSearchUserText={this.props.updateSearchUserText}
                         onSearchClick={this.onSearchClick}
+                        handleSubscribe={this.subscribeUser}
+                        userId={this.props.userId}
                     />
                 }
             </>

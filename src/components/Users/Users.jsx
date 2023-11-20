@@ -3,6 +3,7 @@ import staticPhoto from './../../photos/userstaticavatar.jpg';
 let Users = (props) => {
     let pagesCount = Math.ceil(props.totalUsersCount / props.pageSize);
     let pages = [];
+    const loggedInUserId = props.userId;
     const maxPageButtons = 10;
     const currentPage = props.currentPage;
     let startPage = Math.max(currentPage - Math.floor(maxPageButtons / 2), 1);
@@ -47,14 +48,11 @@ let Users = (props) => {
                                 <NavLink to={'/user-profile/' + u.userId} className='Remove_style'>
                                     <p>{u.username}</p>
                                 </NavLink>
-                                {u.followed ? <button onClick={() => {
-                                    props.unfolowCurrentUser(u.userId)
-                                }}>Unfollow</button>
-                                    : <button onClick={() => {
-                                        props.folowCurrentUser(u.userId)
-                                    }}>Follow</button>}
+                                <button onClick={() => props.handleSubscribe(loggedInUserId, u.userId)}>
+                                    {u.followers.includes(loggedInUserId) ? 'Unfollow' : 'Follow'}
+                                </button>
                             </div>
-                            <p className='users_bio'>{u.userId}</p>
+                            <p className='users_bio'>{u.bio}</p>
                         </div>
                     </div>
                 </div>)}

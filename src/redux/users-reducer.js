@@ -1,11 +1,10 @@
-const FOLLOW = 'FOLLOW';
-const UNFOLLOW = 'UNFOLLOW';
 const SET_USERS = 'SET_USERS';
 const SET_CURRENT_PAGE = 'SET_CURRENT_PAGE';
 const SET_TOTAL_USERS_COUNT = 'SET_TOTAL_USERS_COUNT';
 const UPDATE_SEARCH_USER_TEXT = 'UPDATE_SEARCH_USER_TEXT';
 const FIND_USER = 'FIND_USER';
 const TOGGLE_IS_FETCHING = 'TOGGLE_IS_FETCHING';
+const TOGGLE_SUBSCRIPTION = 'TOGGLE_SUBSCRIPTION';
 
 let initialState = {
     users: [],
@@ -19,38 +18,35 @@ let initialState = {
 export const usersReducer = (state = initialState, action) => {
     switch (action.type) {
 
+        case TOGGLE_SUBSCRIPTION: {
+            return {
+                ...state,
+                users: state.users.map(u => {
+                    if (u.userId === action.userId) {
+                        return {
+                            ...u,
+                            followers: u.followers.includes(action.followerId)
+                                ? u.followers.filter(sub => sub !== action.followerId)
+                                : [...u.followers, action.followerId],
+                        };
+                    }
+                    return u;
+                }),
+            };
+        }
         case UPDATE_SEARCH_USER_TEXT:
             return {
                 ...state,
                 newUserSearchText: action.newUserSearchText
             }
-        case FOLLOW:
-            return {
-                ...state,
-                users: state.users.map(u => {
-                    if (u.id === action.userId) {
-                        return { ...u, followed: true }
-                    }
-                    return u;
-                })
-            }
-        case UNFOLLOW:
-            return {
-                ...state,
-                users: state.users.map(u => {
-                    if (u.id === action.userId) {
-                        return { ...u, followed: false }
-                    }
-                    return u;
-                })
-            }
+       
         case FIND_USER: {
             return { ...state, users: action.users }
         }
-        case SET_USERS: 
-        {
-            return { ...state, users: action.users }
-        }
+        case SET_USERS:
+            {
+                return { ...state, users: action.users }
+            }
         case SET_CURRENT_PAGE: {
             return { ...state, currentPage: action.currentPage }
         }
@@ -64,16 +60,6 @@ export const usersReducer = (state = initialState, action) => {
             return state;
     }
 }
-
-export const folowUser = (userId) => ({
-    type: FOLLOW,
-    userId
-})
-
-export const unfolowUser = (userId) => ({
-    type: UNFOLLOW,
-    userId
-})
 export const setUsersAC = (users) => ({
     type: SET_USERS,
     users
@@ -98,3 +84,8 @@ export const setIsFetching = (isFetching) => ({
     type: TOGGLE_IS_FETCHING,
     isFetching
 })
+export const toggleSubscription = (followerId, followingId) => ({
+    type: TOGGLE_SUBSCRIPTION,
+    userId: followingId,
+    followerId
+});

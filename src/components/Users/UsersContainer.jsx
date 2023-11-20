@@ -1,5 +1,5 @@
 import UsersAPIComponent from "./UsersAPIComponent";
-import { folowUser, setCurrentPage, setIsFetching, setTotalUsersCount, setUsersAC, unfolowUser, updateSearchUserText } from "../../redux/users-reducer";
+import { setCurrentPage, setIsFetching, setTotalUsersCount, setUsersAC, toggleSubscription, updateSearchUserText } from "../../redux/users-reducer";
 import { connect } from 'react-redux';
 
 let mapUsersToProps = (state) => {
@@ -9,19 +9,19 @@ let mapUsersToProps = (state) => {
         totalUsersCount: state.usersInfo.totalUsersCount,
         currentPage: state.usersInfo.currentPage,
         newUserSearchText: state.usersInfo.newUserSearchText,
-        isFetching: state.usersInfo.isFetching
+        isFetching: state.usersInfo.isFetching,
+        userId: state.loginInfo.userId
     }
 }
 
 let UsersContainer = connect(mapUsersToProps,
     {
-        folowCurrentUser: folowUser,
-        unfolowCurrentUser: unfolowUser,
         setUsers: setUsersAC,
         setCurrentPage: setCurrentPage,
         setTotalUsersCount,
         updateSearchUserText,
-        setIsFetching
+        setIsFetching,
+        toggleSubscription
     })
     (UsersAPIComponent);
 

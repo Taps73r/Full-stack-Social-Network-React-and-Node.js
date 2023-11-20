@@ -1,12 +1,16 @@
 const express = require('express');
-const Post = require('./post');
 const mongoose = require('mongoose');
 const bodyParser = require('body-parser');
 const bcrypt = require('bcrypt');
 const jwt = require('jsonwebtoken');
-const app = express();
 const cors = require('cors');
+
+const app = express();
 const port = 3002;
+
+const Post = require('./post');
+const User = require('./user');
+const Subscription = require('./subscription');
 
 const mongoURI = "mongodb+srv://taps73r:motherboard2005@cluster0.rx59bw7.mongodb.net/?retryWrites=true&w=majority";
 mongoose.connect(mongoURI, { useNewUrlParser: true, useUnifiedTopology: true });
@@ -21,8 +25,6 @@ app.use((req, res, next) => {
   res.header('Access-Control-Allow-Headers', 'Origin, X-Requested-With, Content-Type, Accept, Authorization');
   next();
 });
-// Імпортуємо модель користувача
-const User = require('./user');
 
 app.use(bodyParser.json());
 
@@ -47,6 +49,39 @@ app.post('/register', async (req, res) => {
     res.status(500).json({ message: 'Помилка реєстрації' });
   }
 });
+
+app.post('/subscribe', async (req, res) => {
+  const { followerId, followingId } = req.body;
+
+  try {
+    // Перевірка, чи обидва користувачі існують
+    const follower = await User.findOne({ userId: followerId });
+    const following = await User.findOne({ userId: followingId });
+
+    if (!follower || !following) {
+      return res.status(404).json({ message: 'Користувач не знайдено' });
+    }
+
+    // Перевірка, чи підписка вже існує
+    const existingSubscription = await Subscription.findOne({ follower: followerId, following: followingId });
+
+    if (existingSubscription) {
+      // Якщо підписка вже існує, розглядаємо це як відписку
+      await Subscription.deleteOne({ _id: existingSubscription._id });
+      return res.json({ message: 'Ви успішно відписалися від цього користувача', subscription: null });
+    }
+
+    // Створення нової підписки
+    const newSubscription = new Subscription({ follower: followerId, following: followingId });
+    await newSubscription.save();
+
+    res.status(201).json({ message: 'Підписка успішно додана', subscription: newSubscription });
+  } catch (error) {
+    console.error('Помилка при додаванні/видаленні підписки:', error);
+    res.status(500).json({ message: 'Помилка при додаванні/видаленні підписки' });
+  }
+});
+
 
 app.post('/protected', (req, res) => {
   const token = req.body.token;
@@ -153,7 +188,6 @@ app.post('/login', async (req, res) => {
 
   res.json({ token, username, userId: user.userId, bio: user.bio, photo: user.photo });
 });
-
 app.get('/users-info', async (req, res) => {
   try {
     const { term } = req.query;
@@ -166,11 +200,32 @@ app.get('/users-info', async (req, res) => {
     // Отримати всіх користувачів з бази даних з можливістю пошуку
     const allUsers = await User.find(query, { password: 0 }); // Виключити паролі з результату
 
-    // Отримати загальну кількість користувачів
-    const totalUsers = await User.countDocuments(query);
+    // Отримати інформацію про підписки для кожного користувача
+    const subscriptions = await Subscription.find();
+
+    // Додати інформацію про підписки та підписників до кожного користувача
+    const usersWithSubscriptions = allUsers.map(user => {
+      const userSubscriptions = subscriptions
+        .filter(subscription => subscription.follower.toString() === user.userId.toString())
+        .map(subscription => subscription.following);
+
+      const followers = subscriptions
+        .filter(subscription => subscription.following.toString() === user.userId.toString())
+        .map(subscription => subscription.follower);
+
+      return {
+        userId: user.userId,
+        username: user.username,
+        bio: user.bio,
+        photo: user.photo,
+        subscriptions: userSubscriptions,
+        followers: followers,
+        // Додайте інші дані користувача, які вам потрібні
+      };
+    });
 
     // Поверніть дані клієнту
-    res.json({ totalCount: totalUsers, items: allUsers.map(user => ({ username: user.username, bio: user.bio, photo: user.photo })) });
+    res.json({ totalCount: usersWithSubscriptions.length, items: usersWithSubscriptions });
   } catch (error) {
     console.error('Помилка при отриманні даних:', error);
     res.status(500).json({ message: 'Помилка при отриманні даних' });
