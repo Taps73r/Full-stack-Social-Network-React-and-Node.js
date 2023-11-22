@@ -60,11 +60,11 @@ function MainContainer({
         setChangeUserInfo()
     }
     let putChangedUserInfo = () => {
-        const username = changeNameText;
+        const name = changeNameText;
         const bio = changeBioText;
         const photo = 'test';
         setIsFetching(true);
-        axios.put(`http://localhost:3002/update-profile/${userId}`, {username, bio, photo})
+        axios.put(`http://localhost:3002/update-profile/${userId}`, {name, bio, photo})
         .then((response) => {
             setProfile(response.data);
             setIsFetching(false);

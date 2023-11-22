@@ -46,7 +46,7 @@ let Users = (props) => {
                         <div className="users_info">
                             <div className='users_name'>
                                 <NavLink to={'/user-profile/' + u.userId} className='Remove_style'>
-                                    <p>{u.username}</p>
+                                    <p>{u.name}</p>
                                 </NavLink>
                                 <button onClick={() => props.handleSubscribe(loggedInUserId, u.userId)}>
                                     {u.followers.includes(loggedInUserId) ? 'Unfollow' : 'Follow'}

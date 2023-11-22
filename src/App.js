@@ -16,6 +16,7 @@ import React from 'react';
 import { loginSuccess } from './redux/login-reducer';
 import axios from 'axios';
 import SettingsContainer from './components/Settings/SettingsContainer';
+import OtherProfileContainerWithApi from './components/OtherProfile/OtherProfileContainer';
 
 class App extends React.Component {
   componentDidMount() {
@@ -56,6 +57,7 @@ class App extends React.Component {
                 <Route path="/news" element={<News />} />
                 <Route path="/music" element={<Music />} />
                 <Route path="/settings" element={<SettingsContainer />} />
+                <Route path="/user-profile/:userId" element={<OtherProfileContainerWithApi />} />
               </Routes>
             </div>
           </>

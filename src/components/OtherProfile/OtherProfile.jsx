@@ -1,7 +1,7 @@
-import Post from './../Posts/Post/Post';
-import './ProfileInfo.css';
-import staticPhoto from './../../../photos/userstaticavatar.jpg';
-function ProfileInfo(props) {
+import { NavLink } from "react-router-dom"
+import Post from "../Profile/Posts/Post/Post";
+import staticPhoto from './../../photos/userstaticavatar.jpg';
+let OtherProfile = (props) => {
     let posts;
     if (props.postData && props.postData.length > 0) {
         posts = props.postData.map(post => {
@@ -10,7 +10,7 @@ function ProfileInfo(props) {
     } else {
         posts = <p>No posts available.</p>;
     }
-    let setChangingInfo = () =>{
+    let setChangingInfo = () => {
         props.changeUserInfo();
     }
     let userId = props.profileData.userId;
@@ -18,7 +18,8 @@ function ProfileInfo(props) {
     let profilePhoto //= props.profileData.photos.large;
     let aboutMe = props.profileData.bio;
     return (
-        <div>
+        <div className="UserProfile">
+            <NavLink to='/users'>Back to Users page</NavLink>
             <div className='profile_content'>
                 <div className="profile_avatar">
                     <img src={profilePhoto != null ? profilePhoto : staticPhoto} alt="avatar" />
@@ -37,5 +38,4 @@ function ProfileInfo(props) {
         </div>
     )
 }
-
-export default ProfileInfo;
+export default OtherProfile

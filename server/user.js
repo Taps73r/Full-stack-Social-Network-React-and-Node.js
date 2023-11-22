@@ -5,10 +5,8 @@ const userSchema = new mongoose.Schema({
   username: { type: String, required: true, unique: true },
   password: { type: String, required: true },
   userId: { type: Number, unique: true },
-  bio: { type: String },
-  photo: { type: String },
-  followers: [{ type: Number, ref: 'User' }], // Using your custom userId
-  following: [{ type: Number, ref: 'User' }]  // Using your custom userId
+  followers: [{ type: Number, ref: 'User' }],
+  following: [{ type: Number, ref: 'User' }],
 });
 
 userSchema.pre('save', async function(next) {
