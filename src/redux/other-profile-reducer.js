@@ -1,5 +1,7 @@
 const SET_PROFILE = 'SET_PROFILE';
 const TOGGLE_IS_FETCHING = 'TOGGLE_IS_FETCHING';
+const TOGGLE_SUBSCRIPTION_PROFILE = 'TOGGLE_SUBSCRIPTION_PROFILE';
+
 let initialState = {
     postData: [],
     profileData: '',
@@ -8,6 +10,17 @@ let initialState = {
 }
 export const otherProfileReducer = (state = initialState, action) => {
     switch (action.type) {
+        case TOGGLE_SUBSCRIPTION_PROFILE:
+            debugger
+            const updatedFollowers = action.follower;
+            console.log(state.profileData)
+            return {
+                ...state,
+                profileData: {
+                    ...state.profileData,
+                    followers: updatedFollowers
+                  }
+            };
         case SET_PROFILE:
             return {
                 ...state,
@@ -21,12 +34,15 @@ export const otherProfileReducer = (state = initialState, action) => {
             return state;
     }
 }
-export const setProfile = (profileData, postData) => ({
+export const setProfile = (profileData) => ({
     type: SET_PROFILE,
-    profileData,
-    postData
+    profileData
 })
 export const setIsFetching = (isFetching) => ({
     type: TOGGLE_IS_FETCHING,
     isFetching
 })
+export const toggleSubscriptionProfile = (follower) => ({
+    type: TOGGLE_SUBSCRIPTION_PROFILE,
+    follower
+  });

@@ -127,12 +127,32 @@ app.get('/profile/:userId', async (req, res) => {
     // Знайдіть пости для цього користувача
     const posts = await Post.find({ userId });
 
+    // Знайдіть інформацію про підписки
+    const subscriptions = await Subscription.find({
+      $or: [
+        { follower: userId },
+        { following: userId }
+      ]
+    });
+
+    // Визначте підписників та підписки для поточного користувача
+    const userSubscriptions = subscriptions
+      .filter(subscription => subscription.follower.toString() === userId)
+      .map(subscription => subscription.following);
+
+    const followers = subscriptions
+      .filter(subscription => subscription.following.toString() === userId)
+      .map(subscription => subscription.follower);
+
+    // Виведіть дані профілю разом із підписками
     res.json({
       userId: profile.userId,
       name: profile.name,
       bio: profile.bio,
       photo: profile.photo,
-      posts: posts || [], // Додайте дані про пости користувача
+      posts: posts || [],
+      subscriptions: userSubscriptions,
+      followers: followers,
       // Додайте інші дані профілю, які вам потрібні
     });
   } catch (error) {

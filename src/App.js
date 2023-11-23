@@ -68,9 +68,9 @@ class App extends React.Component {
               <Route path="/login" element={<LoginContainerAPI />} />
               <Route path="/registration" element={<RegisterContainerAPI />} />
             </Routes>
+            <Footer />
           </>
         )}
-        <Footer />
       </div>
     );
   }

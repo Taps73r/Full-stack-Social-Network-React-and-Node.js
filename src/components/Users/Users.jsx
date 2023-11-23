@@ -36,10 +36,10 @@ let Users = (props) => {
                 </div>
             </div>
             <div> <div className='users_area'>
-                {props.usersList.map(u => <div key={u.id}>
+                {props.usersList.map(u => <div key={u.userId}>
                     <div className='user_area'>
                         <div className="avatar_button">
-                            <NavLink to={'/user-profile/' + u.id}>
+                            <NavLink to={'/user-profile/' + u.userId}>
                                 <img src={staticPhoto} alt="User-Avatar" />
                             </NavLink>
                         </div>

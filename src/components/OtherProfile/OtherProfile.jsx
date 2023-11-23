@@ -10,9 +10,7 @@ let OtherProfile = (props) => {
     } else {
         posts = <p>No posts available.</p>;
     }
-    let setChangingInfo = () => {
-        props.changeUserInfo();
-    }
+    let loggedInUserId = props.loggedId;
     let userId = props.profileData.userId;
     let fullName = props.profileData.name;
     let profilePhoto //= props.profileData.photos.large;
@@ -23,7 +21,9 @@ let OtherProfile = (props) => {
             <div className='profile_content'>
                 <div className="profile_avatar">
                     <img src={profilePhoto != null ? profilePhoto : staticPhoto} alt="avatar" />
-                    <button onClick={setChangingInfo}>Change Info</button>
+                    <button onClick={() => props.handleSubscribe(loggedInUserId, userId)}>
+                        {props.profileData.followers.includes(loggedInUserId) ? 'Unfollow' : 'Follow'}
+                    </button>
                 </div>
                 <div className='profile_name'>
                     <p>{fullName != null ? fullName : 'Id ' + userId}</p>
@@ -38,4 +38,4 @@ let OtherProfile = (props) => {
         </div>
     )
 }
-export default OtherProfile
+export default OtherProfile;
