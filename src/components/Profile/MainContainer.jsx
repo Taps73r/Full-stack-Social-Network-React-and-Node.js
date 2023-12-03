@@ -23,7 +23,8 @@ function MainContainer({
     setChangeUserInfo,
     changeBioText,
     changeNameText,
-    changingInfo
+    changingInfo,
+    avatar
 }) {
     useEffect(() => {
         const requestProfileInfo = () => {
@@ -62,7 +63,7 @@ function MainContainer({
     let putChangedUserInfo = () => {
         const name = changeNameText;
         const bio = changeBioText;
-        const photo = 'test';
+        const photo = avatar;
         setIsFetching(true);
         axios.put(`http://localhost:3002/update-profile/${userId}`, {name, bio, photo})
         .then((response) => {
@@ -100,7 +101,8 @@ const mapStateToProps = (state) => ({
     userId: state.loginInfo.userId,
     changeBioText: state.profileInfo.changeBioText,
     changeNameText: state.profileInfo.changeNameText,
-    changingInfo: state.profileInfo.changingInfo
+    changingInfo: state.profileInfo.changingInfo,
+    avatar: state.profileInfo.avatar
 });
 
 const ProfileContainerWithApi = connect(

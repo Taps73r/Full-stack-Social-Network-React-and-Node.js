@@ -6,6 +6,7 @@ const CHANGE_USER_INFO = 'CHANGE_USER_INFO';
 const RETURN_CHANGE_INFO = 'RETURN_CHANGE_INFO';
 const UPDATE_CHANGE_BIO_TEXT = 'UPDATE_CHANGE_BIO_TEXT';
 const UPDATE_CHANGE_NAME_TEXT = 'UPDATE_CHANGE_NAME_TEXT';
+const UPLOAD_AVATAR = 'UPLOAD_AVATAR';
 
 let initialState = {
     postData: [],
@@ -14,7 +15,8 @@ let initialState = {
     profileData: '',
     changingInfo: false,
     changeBioText: '',
-    changeNameText: ''
+    changeNameText: '',
+    avatar: ''
 }
 export const profileReducer = (state = initialState, action) => {
     switch (action.type) {
@@ -29,6 +31,11 @@ export const profileReducer = (state = initialState, action) => {
             return {
                 ...state,
                 newPostText: action.newText
+            }
+        case UPLOAD_AVATAR:
+            return {
+                ...state,
+                avatar: action.avatarUrl
             }
         case SET_PROFILE:
             return {
@@ -99,3 +106,7 @@ export const setProfile = (profileData, postData) => ({
     profileData,
     postData
 })
+export const uploadAvatar = (avatarUrl) => ({
+    type: UPLOAD_AVATAR,
+    avatarUrl
+});

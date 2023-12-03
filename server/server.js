@@ -1,12 +1,21 @@
 const express = require('express');
+const multer = require('multer');
 const mongoose = require('mongoose');
 const bodyParser = require('body-parser');
 const bcrypt = require('bcrypt');
 const jwt = require('jsonwebtoken');
 const cors = require('cors');
+const cloudinary = require('cloudinary').v2;
+const upload = multer();
 
 const app = express();
 const port = 3002;
+
+cloudinary.config({
+  cloud_name: 'duoxvyirq',
+  api_key: '872646555943858',
+  api_secret: '8FumT857SXwXJz7dRs-mwCRBJpY'
+});
 
 const Post = require('./post');
 const User = require('./user');
@@ -160,13 +169,11 @@ app.get('/profile/:userId', async (req, res) => {
     res.status(500).json({ message: 'Помилка при отриманні даних профілю' });
   }
 });
-
 app.put('/update-profile/:userId', async (req, res) => {
   const userId = req.params.userId;
-  const { name, bio, photo } = req.body;
-
+  const { name, bio, photo} = req.body;
   try {
-    // Знаходимо профіль користувача за userId
+    // Знайдіть профіль користувача за userId
     const userProfile = await Profile.findOne({ userId });
 
     if (!userProfile) {
@@ -180,17 +187,23 @@ app.put('/update-profile/:userId', async (req, res) => {
     if (bio) {
       userProfile.bio = bio;
     }
+
+    // Завантажте фото на Cloudinary, якщо воно надійшло
     if (photo) {
-      userProfile.photo = photo;
+      const result = await cloudinary.uploader.upload(photo, {
+        folder: 'profile-photos',
+        public_id: `user_${userId}_${Date.now()}`,
+      });
+      userProfile.photo = result.secure_url;
     }
 
-    // Зберігаємо оновлений профіль користувача
+    // Збережіть оновлений профіль користувача
     await userProfile.save();
 
     // Знайдіть пости для цього користувача
     const posts = await Post.find({ userId });
 
-    // Повертаємо оновлений профіль користувача з даними про пости
+    // Поверніть оновлений профіль користувача з даними про пости
     res.json({
       userId: userProfile.userId,
       name: userProfile.name,
@@ -204,7 +217,6 @@ app.put('/update-profile/:userId', async (req, res) => {
     res.status(500).json({ message: 'Помилка при оновленні профілю' });
   }
 });
-
 
 app.post('/login', async (req, res) => {
   const { username, password } = req.body;
