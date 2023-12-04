@@ -7,6 +7,7 @@ const RETURN_CHANGE_INFO = 'RETURN_CHANGE_INFO';
 const UPDATE_CHANGE_BIO_TEXT = 'UPDATE_CHANGE_BIO_TEXT';
 const UPDATE_CHANGE_NAME_TEXT = 'UPDATE_CHANGE_NAME_TEXT';
 const UPLOAD_AVATAR = 'UPLOAD_AVATAR';
+const UPLOAD_POST_IMAGES = 'UPLOAD_POST_IMAGES';
 
 let initialState = {
     postData: [],
@@ -16,7 +17,8 @@ let initialState = {
     changingInfo: false,
     changeBioText: '',
     changeNameText: '',
-    avatar: ''
+    avatar: '',
+    newPostImages: [],
 }
 export const profileReducer = (state = initialState, action) => {
     switch (action.type) {
@@ -24,7 +26,8 @@ export const profileReducer = (state = initialState, action) => {
             return {
                 ...state,
                 postData: [...state.postData, action.post.newPost],
-                newPostText: ''
+                newPostText: '',
+                newPostImages: [],
             }
 
         case UPDATE_TEXT_POST:
@@ -32,6 +35,11 @@ export const profileReducer = (state = initialState, action) => {
                 ...state,
                 newPostText: action.newText
             }
+        case UPLOAD_POST_IMAGES:
+            return {
+                ...state,
+                newPostImages: action.images,
+            };
         case UPLOAD_AVATAR:
             return {
                 ...state,
@@ -83,6 +91,10 @@ export const updateChangeNameText = (text) => ({
     type: UPDATE_CHANGE_NAME_TEXT,
     changeNameText: text
 })
+export const uploadPostImages = (images) => ({
+    type: UPLOAD_POST_IMAGES,
+    images,
+});
 export const updateChangeBioText = (text) => ({
     type: UPDATE_CHANGE_BIO_TEXT,
     changeBioText: text

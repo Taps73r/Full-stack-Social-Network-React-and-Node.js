@@ -5,7 +5,7 @@ function ProfileInfo(props) {
     let posts;
     if (props.postData && props.postData.length > 0) {
         posts = props.postData.map(post => {
-            return <Post key={post.postId} message={post.postMessage} />;
+            return <Post key={post.postId} message={post.postMessage} photos={post.photos} />;
         });
     } else {
         posts = <p>No posts available.</p>;
@@ -15,7 +15,7 @@ function ProfileInfo(props) {
     }
     let userId = props.profileData.userId;
     let fullName = props.profileData.name;
-    let profilePhoto //= props.profileData.photos.large;
+    let profilePhoto = props.profileData.photo;
     let aboutMe = props.profileData.bio;
     return (
         <div>

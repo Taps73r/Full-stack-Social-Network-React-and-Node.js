@@ -24,7 +24,8 @@ function MainContainer({
     changeBioText,
     changeNameText,
     changingInfo,
-    avatar
+    avatar,
+    newPostImages
 }) {
     useEffect(() => {
         const requestProfileInfo = () => {
@@ -49,7 +50,8 @@ function MainContainer({
 
     let addPost = () => {
         let postMessage = newPostText;
-        axios.post('http://localhost:3002/posts', { userId, postMessage })
+        let photos = newPostImages;
+        axios.post('http://localhost:3002/posts', { userId, postMessage, photos })
             .then((response) => {
                 addPostActionCreator(response.data);
             })
@@ -102,7 +104,8 @@ const mapStateToProps = (state) => ({
     changeBioText: state.profileInfo.changeBioText,
     changeNameText: state.profileInfo.changeNameText,
     changingInfo: state.profileInfo.changingInfo,
-    avatar: state.profileInfo.avatar
+    avatar: state.profileInfo.avatar,
+    newPostImages: state.profileInfo.newPostImages
 });
 
 const ProfileContainerWithApi = connect(

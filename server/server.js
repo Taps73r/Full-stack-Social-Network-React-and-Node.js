@@ -6,7 +6,6 @@ const bcrypt = require('bcrypt');
 const jwt = require('jsonwebtoken');
 const cors = require('cors');
 const cloudinary = require('cloudinary').v2;
-const upload = multer();
 
 const app = express();
 const port = 3002;
@@ -36,7 +35,7 @@ app.use((req, res, next) => {
   next();
 });
 
-app.use(bodyParser.json());
+app.use(bodyParser.json({ limit: '50mb' }));
 
 // Реєстрація користувача
 app.post('/register', async (req, res) => {
@@ -169,52 +168,40 @@ app.get('/profile/:userId', async (req, res) => {
     res.status(500).json({ message: 'Помилка при отриманні даних профілю' });
   }
 });
-app.put('/update-profile/:userId', async (req, res) => {
-  const userId = req.params.userId;
-  const { name, bio, photo} = req.body;
+app.post('/posts', async (req, res) => {
+  const { userId, postMessage, photos } = req.body;
+
   try {
-    // Знайдіть профіль користувача за userId
-    const userProfile = await Profile.findOne({ userId });
-
-    if (!userProfile) {
-      return res.status(404).json({ message: 'Профіль користувача не знайдено' });
-    }
-
-    // Оновлюємо тільки ті дані, які надійшли з фронтенду та не є пустими
-    if (name) {
-      userProfile.name = name;
-    }
-    if (bio) {
-      userProfile.bio = bio;
-    }
-
-    // Завантажте фото на Cloudinary, якщо воно надійшло
-    if (photo) {
-      const result = await cloudinary.uploader.upload(photo, {
-        folder: 'profile-photos',
-        public_id: `user_${userId}_${Date.now()}`,
-      });
-      userProfile.photo = result.secure_url;
-    }
-
-    // Збережіть оновлений профіль користувача
-    await userProfile.save();
-
-    // Знайдіть пости для цього користувача
-    const posts = await Post.find({ userId });
-
-    // Поверніть оновлений профіль користувача з даними про пости
-    res.json({
-      userId: userProfile.userId,
-      name: userProfile.name,
-      bio: userProfile.bio,
-      photo: userProfile.photo,
-      posts: posts || [], // Додайте дані про пости користувача
-      // Додайте інші дані профілю, які вам потрібні
+    // Збереження поста в базу даних
+    const newPost = new Post({
+      userId,
+      postMessage,
+      photos, // Масив фотографій
     });
+
+    await newPost.save();
+
+    // Завантаження фотографій на Cloudinary та отримання посилань
+    const uploadedPhotoUrls = await Promise.all(
+      photos.map(async (photo, index) => {
+        const result = await cloudinary.uploader.upload(photo, {
+          folder: `post_folder/${userId}`,
+          public_id: `post_${userId}_${index + 1}_${Date.now()}`,
+        });
+        return result.secure_url;
+      })
+    );
+
+    // Додавання посилань до фотографій у пості
+    newPost.photos = uploadedPhotoUrls;
+
+    // Збереження поста з оновленими фотографіями у базу даних
+    await newPost.save();
+
+    res.status(201).json({ message: 'Пост успішно створено', newPost });
   } catch (error) {
-    console.error('Помилка при оновленні профілю:', error);
-    res.status(500).json({ message: 'Помилка при оновленні профілю' });
+    console.error('Помилка при створенні поста:', error);
+    res.status(500).json({ message: 'Помилка при створенні поста' });
   }
 });
 
@@ -282,29 +269,6 @@ app.get('/users-info', async (req, res) => {
   } catch (error) {
     console.error('Помилка при отриманні даних:', error);
     res.status(500).json({ message: 'Помилка при отриманні даних' });
-  }
-});
-
-
-app.post('/posts', async (req, res) => {
-  const { userId, postMessage } = req.body;
-
-  try {
-    // Створіть новий пост
-    const newPost = new Post({
-      userId, // Використовуйте інкрементований userId
-      postMessage,
-      // Додайте інші дані, які вам потрібні для поста
-    });
-
-    // Збережіть пост в базу даних
-    await newPost.save();
-
-    // Поверніть дані про створений пост
-    res.status(201).json({ message: 'Пост успішно створено', newPost });
-  } catch (error) {
-    console.error('Помилка при створенні поста:', error);
-    res.status(500).json({ message: 'Помилка при створенні поста' });
   }
 });
 

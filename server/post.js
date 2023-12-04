@@ -3,13 +3,16 @@ const mongoose = require('mongoose');
 const postSchema = new mongoose.Schema({
   userId: {
     type: Number,
-    ref: 'User', 
+    ref: 'User',
     required: true,
   },
   postMessage: {
     type: String,
     required: true,
   },
+  photos: [{
+    type: String, 
+  }],
   // Додайте інші поля, які вам потрібні для поста
 });
 

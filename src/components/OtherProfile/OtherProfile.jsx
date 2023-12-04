@@ -13,7 +13,7 @@ let OtherProfile = (props) => {
     let loggedInUserId = props.loggedId;
     let userId = props.profileData.userId;
     let fullName = props.profileData.name;
-    let profilePhoto //= props.profileData.photos.large;
+    let profilePhoto = props.profileData.photo;
     let aboutMe = props.profileData.bio;
     return (
         <div className="UserProfile">

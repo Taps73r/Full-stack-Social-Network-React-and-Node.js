@@ -1,5 +1,5 @@
 import './CreatePost.css';
-import { updateTextActionCreator } from './../../../redux/profile-reducer';
+import { updateTextActionCreator, uploadPostImages } from './../../../redux/profile-reducer';
 import CreatePost from './CreatePost';
 import { connect } from 'react-redux';
 
@@ -15,4 +15,5 @@ const CreatePostContainer = ({ addPost, ...props }) => {
 
 export default connect(mapProfileInfoToProps, {
     updateTextPost: updateTextActionCreator,
+    uploadPostImages
 })(CreatePostContainer);

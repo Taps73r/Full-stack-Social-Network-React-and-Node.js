@@ -20,8 +20,6 @@ let ChangeUserInfoComponent = (props) => {
     }
     let handleFileChange = (e) => {
         const file = e.target.files[0];
-
-        // Convert the selected file to base64
         if (file) {
             const reader = new FileReader();
             reader.onloadend = () => {
@@ -32,9 +30,7 @@ let ChangeUserInfoComponent = (props) => {
         }
     }
     let handleSubmit = (e) => {
-        e.preventDefault(); // Prevent the default form submission behavior
-
-        // Perform your asynchronous operations here
+        e.preventDefault();
         const file = e.target.querySelector('input[type="file"]').files[0];
         submitData(file);
     };

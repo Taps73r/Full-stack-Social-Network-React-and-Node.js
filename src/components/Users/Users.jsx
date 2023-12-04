@@ -40,7 +40,7 @@ let Users = (props) => {
                     <div className='user_area'>
                         <div className="avatar_button">
                             <NavLink to={'/user-profile/' + u.userId}>
-                                <img src={staticPhoto} alt="User-Avatar" />
+                                <img src={u.photo != null ? u.photo : staticPhoto} alt="User-Avatar" />
                             </NavLink>
                         </div>
                         <div className="users_info">
