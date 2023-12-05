@@ -1,4 +1,27 @@
-.posts img{
-    width: 200px;
-    height: 200px;
+@import url('https://fonts.googleapis.com/css2?family=Tilt+Neon&display=swap');
+.posts {
+    background-color: #0B132B;
+    padding: 20px;
+    border: 2px solid #5BC0BE;
+    border-radius: 8px;
+    margin-bottom: 20px;
+    max-width: 500px; 
+}
+.posts p {
+    color: #fff;
+    margin-bottom: 10px;
+}
+.posts img {
+    width: 100%;
+    height: auto;
+    margin-bottom: 10px;
+    border-radius: 4px;
+}
+
+.posts img:nth-child(3n + 1) {
+    margin-right: 0;
+}
+
+.posts img:not(:last-child) {
+    margin-right: 10px;
 }

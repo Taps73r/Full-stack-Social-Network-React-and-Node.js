@@ -51,6 +51,7 @@ function MainContainer({
     let addPost = () => {
         let postMessage = newPostText;
         let photos = newPostImages;
+        console.log(photos)
         axios.post('http://localhost:3002/posts', { userId, postMessage, photos })
             .then((response) => {
                 addPostActionCreator(response.data);

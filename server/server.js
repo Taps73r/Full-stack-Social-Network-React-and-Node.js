@@ -170,7 +170,7 @@ app.get('/profile/:userId', async (req, res) => {
 });
 app.post('/posts', async (req, res) => {
   const { userId, postMessage, photos } = req.body;
-
+  console.log(photos)
   try {
     // Збереження поста в базу даних
     const newPost = new Post({
