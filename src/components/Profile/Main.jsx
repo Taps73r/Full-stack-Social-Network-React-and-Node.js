@@ -1,6 +1,5 @@
 import ChangeUserInfo from './ChangeUserInfo';
 import './Main.css';
-import CreatePostContainer from './Posts/CreatePostContainer';
 import ProfileInfo from './ProfileInfo/ProfileInfo';
 
 function Main(props) {
@@ -15,8 +14,8 @@ function Main(props) {
                 <ProfileInfo
                     postData={props.postData}
                     profileData={props.profileData}
-                    changeUserInfo={props.changeUserInfo} />
-                <CreatePostContainer addPost={props.addPost} />
+                    changeUserInfo={props.changeUserInfo}
+                    addPost={props.addPost} />
             </div>
         )
     }

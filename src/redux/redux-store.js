@@ -5,13 +5,15 @@ import { usersReducer } from "./users-reducer";
 import loginReducer from "./login-reducer";
 import registrationReducer from "./register-reducer";
 import { otherProfileReducer } from "./other-profile-reducer";
+import { errorReducer } from "./error-reducer";
 let reducers = combineReducers({
     profileInfo: profileReducer,
     messageInfo: dialogReducer,
     usersInfo: usersReducer,
     loginInfo: loginReducer,
     registerInfo: registrationReducer,
-    otherProfileInfo: otherProfileReducer
+    otherProfileInfo: otherProfileReducer,
+    errorInfo: errorReducer
 
 })
 

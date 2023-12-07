@@ -1,6 +1,7 @@
 import Post from './../Posts/Post/Post';
 import './ProfileInfo.css';
 import staticPhoto from './../../../photos/userstaticavatar.jpg';
+import CreatePostContainer from '../Posts/CreatePostContainer';
 function ProfileInfo(props) {
     let posts;
     if (props.postData && props.postData.length > 0) {
@@ -10,7 +11,7 @@ function ProfileInfo(props) {
     } else {
         posts = <p>No posts available.</p>;
     }
-    let setChangingInfo = () =>{
+    let setChangingInfo = () => {
         props.changeUserInfo();
     }
     let userId = props.profileData.userId;
@@ -31,6 +32,7 @@ function ProfileInfo(props) {
                     <p>{aboutMe != null ? aboutMe : 'User has not set a bio.'}</p>
                 </div>
             </div>
+            <CreatePostContainer addPost={props.addPost} />
             <div className='Posts'>
                 {posts}
             </div>

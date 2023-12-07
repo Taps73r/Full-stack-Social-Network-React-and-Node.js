@@ -2,17 +2,18 @@ import React, { useState } from 'react';
 import './CreatePost.css';
 
 function CreatePost(props) {
+
     const [selectedImages, setSelectedImages] = useState([]);
 
     const addNewPost = () => {
         props.addPost();
-    }
+    };
 
     const handleImageChange = (e) => {
         const files = e.target.files || e.dataTransfer.files;
-        const newImages = Array.from(files).slice(0, 3); // Обмеження до 3 фотографій
+        const newImages = Array.from(files).slice(0, 3);
 
-        const promises = newImages.map((file) => {
+        const imagePromises = newImages.map((file) => {
             return new Promise((resolve, reject) => {
                 const reader = new FileReader();
                 reader.readAsDataURL(file);
@@ -22,47 +23,95 @@ function CreatePost(props) {
             });
         });
 
-        Promise.all(promises)
+        Promise.all(imagePromises)
             .then((base64Images) => {
-                setSelectedImages(base64Images);
-                props.uploadPostImages(base64Images);
+                const validationPromises = base64Images.map((base64Image) => {
+                    return new Promise((resolve, reject) => {
+                        const img = new Image();
+                        img.src = base64Image;
+
+                        img.onload = () => {
+                            if (img.width >= 600 && img.height >= 400) {
+                                resolve(base64Image);
+                            } else {
+                                reject(new Error('Розмір зображення нижче вказаних вимог'));
+                            }
+                        };
+
+                        img.onerror = (error) => reject(error);
+                    });
+                });
+
+                return Promise.all(validationPromises);
             })
-            .catch((error) => console.error('Помилка конвертації зображень в base64:', error));
+            .then((validatedImages) => {
+                setSelectedImages(validatedImages);
+                props.uploadPostImages(validatedImages);
+            })
+            .catch((error) => {
+                setSelectedImages([]);
+                console.error('Помилка конвертації зображень в base64 або розмір нижче вказаних вимог:', error);
+                showOverlay(error.message || 'Розмір зображення нижче вказаних вимог');
+            });
     };
 
+    const showOverlay = (message) => {
+        const overlay = document.getElementById('overlay');
+        const overlayMessage = document.getElementById('overlayMessage');
+
+        overlay.classList.add('active');
+        overlayMessage.innerText = message;
+    };
+
+    const handleCloseOverlayClick = () => {
+        const overlay = document.getElementById('overlay');
+        overlay.classList.remove('active');
+    };
     const updateNewText = (e) => {
         const text = e.target.value;
         props.updateTextPost(text);
-    }
+    };
 
-    const handleSubmit = () => {
-        addNewPost();
-    }
+    const handleSubmit = (e) => {
+        e.preventDefault();
+
+        if (selectedImages.length === 0) {
+            props.setImagePostLoad();
+            props.uploadPostImages('');
+        }
+        else {
+            const text = props.newPostText.trim();
+            props.dropErrors();
+            if (!text) {
+                props.setTextPostLoad();
+                props.updateTextPost('');
+            }
+            else {
+                addNewPost();
+                props.dropErrors();
+            }
+        }
+    };
 
     const handlePreviewClick = (index) => {
-        const overlay = document.getElementById("overlay");
-        const enlargedImage = document.getElementById("enlargedImage");
-        overlay.classList.add("active");
+        const overlay = document.getElementById('overlay');
+        const enlargedImage = document.getElementById('enlargedImage');
+        overlay.classList.add('active');
         enlargedImage.src = selectedImages[index];
     };
 
-    const handleCloseClick = () => {
-        const overlay = document.getElementById("overlay");
-        overlay.classList.remove("active");
-    };
-
     return (
-        <div className='Profile'>
+        <div className="Profile">
             <form encType="multipart/form-data" onSubmit={handleSubmit}>
-                <div className='Create-Post'>
+                <div className={props.imageError ? 'Create-Post Error' : 'Create-Post'}>
                     <div className="selected-images">
                         {selectedImages.map((image, index) => (
                             <img key={index} src={image} alt={`Selected ${index + 1}`} onClick={() => handlePreviewClick(index)} />
                         ))}
                     </div>
-                    <label htmlFor="fileInput" id="fileInputLabel">
+                    <label htmlFor="fileInput" id={props.imageError ? 'error_foto' : 'fileInputLabel'}>
                         <img src="icon-photo.png" alt="" />
-                        Перетягніть або виберіть фотографії (максимум 3)
+                        {props.imageError ? 'Error pictures' : 'Перетягніть або виберіть фотографії (максимум 3)'}
                     </label>
                     <input
                         type="file"
@@ -70,20 +119,18 @@ function CreatePost(props) {
                         accept="image/*"
                         multiple
                         onChange={handleImageChange}
-                        onClick={(e) => e.target.value = null}
+                        onClick={(e) => (e.target.value = null)}
                     />
-                    <input
-                        type='text'
-                        id='post_text'
-                        onChange={updateNewText}
-                        value={props.newPostText}
-                    />
-                    <button type='submit'>Submit</button>
+                    {props.textError ? <p className='text-error'>Text Error</p> : <></>}
+                    <textarea type="text" id="post_text" onChange={updateNewText} value={props.newPostText} />
+                    <button type="submit">Submit</button>
                 </div>
             </form>
-            <div id="overlay" className="overlay" onClick={handleCloseClick}>
-                <img id="enlargedImage" className="enlarged-image" alt="Enlarged" />
-                <span className="close-icon" onClick={handleCloseClick}>&times;</span>
+            <div id="overlay" className="overlay" onClick={handleCloseOverlayClick}>
+                <div id="overlayMessage" className="overlay-message"></div>
+                <span className="close-icon" onClick={handleCloseOverlayClick}>
+                    &times;
+                </span>
             </div>
         </div>
     );

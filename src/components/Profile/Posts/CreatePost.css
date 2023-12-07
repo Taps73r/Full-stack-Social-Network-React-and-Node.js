@@ -1,7 +1,11 @@
 @import url('https://fonts.googleapis.com/css2?family=Tilt+Neon&display=swap');
+:root {
+  --error-color: #c40303;
+  }
 .Profile {
-    height: 100vh;
     font-family: 'Tilt Neon', sans-serif;
+    display: flex;
+    justify-content: center;
 }
 
 .Create-Post {
@@ -20,6 +24,8 @@
     border-radius: 4px;
     background-color: #3A506B;
     color: #fff;
+    outline: none;
+    resize: none;
 }
 
 .Profile button {
@@ -38,7 +44,20 @@
     display: none;
     font-size: 16px;
 }
-
+.text-error{
+    color: var(--error-color);
+}
+#error_foto{
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    cursor: pointer;
+    color: var(--error-color);
+    margin-bottom: 10px;
+    border: 2px dashed var(--error-color);
+    padding: 20px;
+    border-radius: 8px;
+}
 #fileInputLabel {
     display: flex;
     flex-direction: column;
@@ -65,7 +84,7 @@
 }
 
 .selected-images img {
-    width: 50px; /* Розмір маленьких картинок */
+    width: 50px;
     height: 50px;
     margin-right: 5px;
     cursor: pointer;
@@ -73,7 +92,7 @@
 }
 
 .selected-images img:hover {
-    transform: scale(1.2); /* Збільшити розмір при наведенні */
+    transform: scale(1.2);
 }
 
 .overlay {

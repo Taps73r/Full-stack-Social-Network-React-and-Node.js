@@ -5,7 +5,11 @@
     padding-bottom: 20px;
     font-family: 'Tilt Neon', sans-serif;
 }
-
+.Posts {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+}
 .profile_avatar img{
     width: 150px;
     height: 150px;
