@@ -2,26 +2,63 @@
 .posts {
     background-color: #0B132B;
     padding: 20px;
-    border: 2px solid #5BC0BE;
     border-radius: 8px;
+    width: 500px; 
+    margin-top: 20px;
+}
+.userPhoto img{
+    width: 70px;
+    height: 70px;
+    border-radius: 50%;
+    margin-right: 10px;
+    object-fit: cover;
     margin-bottom: 20px;
-    max-width: 500px; 
 }
-.posts p {
+
+.userPhoto{
+    display: flex;
+    flex-direction: row;
+    font-size: 24px;
     color: #fff;
-    margin-bottom: 10px;
 }
-.posts img {
-    width: 100%;
+.postPhotos p {
+    color: #fff;
+    margin-bottom: 20px;
+    font-size: 18px;
+}
+.postPhotos img {
+    max-width: 100%;
     height: auto;
     margin-bottom: 10px;
     border-radius: 4px;
+    object-fit: cover;
+}
+.slick-slider {
+    width: 100%;
 }
 
-.posts img:nth-child(3n + 1) {
-    margin-right: 0;
+/* Настройки слайдів */
+.slick-slide {
+    width: 100%;
 }
 
-.posts img:not(:last-child) {
-    margin-right: 10px;
+/* Настройки зображень в слайді */
+.slick-slide img {
+    width: 100%;
+    height: auto;
+}
+
+/* Додайте цей стиль для налаштування стрілок слайдера */
+.slick-prev,
+.slick-next {
+    font-size: 24px;
+    z-index: 1; 
+}
+
+.slick-prev {
+    left: 10px;
+}
+
+.slick-next {
+    right: 10px;
 }

@@ -170,7 +170,6 @@ app.get('/profile/:userId', async (req, res) => {
 });
 app.post('/posts', async (req, res) => {
   const { userId, postMessage, photos } = req.body;
-  console.log(photos)
   try {
     // Збереження поста в базу даних
     const newPost = new Post({
@@ -228,6 +227,54 @@ app.post('/login', async (req, res) => {
   res.json({ token, username, userId: user.userId, bio: user.bio, photo: user.photo });
 });
 // /users-info endpoint
+app.put('/update-profile/:userId', async (req, res) => {
+  const userId = req.params.userId;
+  const { name, bio, photo} = req.body;
+  try {
+    // Знайдіть профіль користувача за userId
+    const userProfile = await Profile.findOne({ userId });
+
+    if (!userProfile) {
+      return res.status(404).json({ message: 'Профіль користувача не знайдено' });
+    }
+
+    // Оновлюємо тільки ті дані, які надійшли з фронтенду та не є пустими
+    if (name) {
+      userProfile.name = name;
+    }
+    if (bio) {
+      userProfile.bio = bio;
+    }
+
+    // Завантажте фото на Cloudinary, якщо воно надійшло
+    if (photo) {
+      const result = await cloudinary.uploader.upload(photo, {
+        folder: 'profile-photos',
+        public_id: `user_${userId}_${Date.now()}`,
+      });
+      userProfile.photo = result.secure_url;
+    }
+
+    // Збережіть оновлений профіль користувача
+    await userProfile.save();
+
+    // Знайдіть пости для цього користувача
+    const posts = await Post.find({ userId });
+
+    // Поверніть оновлений профіль користувача з даними про пости
+    res.json({
+      userId: userProfile.userId,
+      name: userProfile.name,
+      bio: userProfile.bio,
+      photo: userProfile.photo,
+      posts: posts || [], // Додайте дані про пости користувача
+      // Додайте інші дані профілю, які вам потрібні
+    });
+  } catch (error) {
+    console.error('Помилка при оновленні профілю:', error);
+    res.status(500).json({ message: 'Помилка при оновленні профілю' });
+  }
+});
 app.get('/users-info', async (req, res) => {
   try {
     const { term } = req.query;

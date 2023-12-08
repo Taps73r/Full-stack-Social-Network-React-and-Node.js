@@ -49,14 +49,17 @@ function MainContainer({
     }, [userId, setIsFetching, setProfile]);
 
     let addPost = () => {
+        setIsFetching(true);
         let postMessage = newPostText;
         let photos = newPostImages;
         console.log(photos)
         axios.post('http://localhost:3002/posts', { userId, postMessage, photos })
             .then((response) => {
                 addPostActionCreator(response.data);
+                setIsFetching(false);
             })
             .catch((error) => {
+                setIsFetching(false);
                 console.error('Error adding post:', error);
             })
     }

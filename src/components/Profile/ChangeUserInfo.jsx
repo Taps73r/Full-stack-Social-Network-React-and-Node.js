@@ -1,5 +1,6 @@
-import { connect } from "react-redux"
-import { returnChangeUserInfo, updateChangeBioText, updateChangeNameText, uploadAvatar } from "../../redux/profile-reducer"
+import { connect } from "react-redux";
+import { returnChangeUserInfo, updateChangeBioText, updateChangeNameText, uploadAvatar } from "../../redux/profile-reducer";
+import './ProfileInfo/ProfileInfo.css';
 
 let ChangeUserInfoComponent = (props) => {
 
@@ -38,23 +39,27 @@ let ChangeUserInfoComponent = (props) => {
         <div className="change_info_form">
             <form encType="multipart/form-data" onSubmit={handleSubmit}>
                 <div className="header_and_return">
-                    <h1>Edit user info</h1>
+                    <h1>Change your info</h1>
                     <button onClick={returnChanging}>Return</button>
                 </div>
-                <p>Name</p>
-                <input
-                    type="text"
-                    id="username"
-                    value={props.changeNameText}
-                    onChange={newNameText}
-                />
-                <p>Bio</p>
-                <input
-                    type="text"
-                    id="bio"
-                    value={props.changeBioText}
-                    onChange={newBioText}
-                />
+                <div className="name_bio">
+                    <p>Name</p>
+                    <input
+                        type="text"
+                        id="username"
+                        value={props.changeNameText}
+                        onChange={newNameText}
+                        placeholder="Enter your nickname here..."
+                    />
+                    <p>Bio</p>
+                    <textarea
+                        placeholder="Enter your biography here..."
+                        type="text"
+                        id="bio"
+                        value={props.changeBioText}
+                        onChange={newBioText}
+                    />
+                </div>
                 <p>Avatar</p>
                 <input
                     type="file"

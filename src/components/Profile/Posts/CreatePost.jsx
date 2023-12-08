@@ -7,6 +7,8 @@ function CreatePost(props) {
 
     const addNewPost = () => {
         props.addPost();
+        setSelectedImages([]);
+        props.updateTextPost('');
     };
 
     const handleImageChange = (e) => {
@@ -51,21 +53,9 @@ function CreatePost(props) {
             .catch((error) => {
                 setSelectedImages([]);
                 console.error('Помилка конвертації зображень в base64 або розмір нижче вказаних вимог:', error);
-                showOverlay(error.message || 'Розмір зображення нижче вказаних вимог');
+                props.setImagePostLoad();
+                props.uploadPostImages('');
             });
-    };
-
-    const showOverlay = (message) => {
-        const overlay = document.getElementById('overlay');
-        const overlayMessage = document.getElementById('overlayMessage');
-
-        overlay.classList.add('active');
-        overlayMessage.innerText = message;
-    };
-
-    const handleCloseOverlayClick = () => {
-        const overlay = document.getElementById('overlay');
-        overlay.classList.remove('active');
     };
     const updateNewText = (e) => {
         const text = e.target.value;
@@ -82,22 +72,13 @@ function CreatePost(props) {
         else {
             const text = props.newPostText.trim();
             props.dropErrors();
-            if (!text) {
+            if (text.length > 500) {
                 props.setTextPostLoad();
-                props.updateTextPost('');
-            }
-            else {
+            } else {
                 addNewPost();
                 props.dropErrors();
             }
         }
-    };
-
-    const handlePreviewClick = (index) => {
-        const overlay = document.getElementById('overlay');
-        const enlargedImage = document.getElementById('enlargedImage');
-        overlay.classList.add('active');
-        enlargedImage.src = selectedImages[index];
     };
 
     return (
@@ -106,7 +87,7 @@ function CreatePost(props) {
                 <div className={props.imageError ? 'Create-Post Error' : 'Create-Post'}>
                     <div className="selected-images">
                         {selectedImages.map((image, index) => (
-                            <img key={index} src={image} alt={`Selected ${index + 1}`} onClick={() => handlePreviewClick(index)} />
+                            <img key={index} src={image} alt={`Selected ${index + 1}`} />
                         ))}
                     </div>
                     <label htmlFor="fileInput" id={props.imageError ? 'error_foto' : 'fileInputLabel'}>
@@ -122,16 +103,11 @@ function CreatePost(props) {
                         onClick={(e) => (e.target.value = null)}
                     />
                     {props.textError ? <p className='text-error'>Text Error</p> : <></>}
-                    <textarea type="text" id="post_text" onChange={updateNewText} value={props.newPostText} />
+                    <textarea type="text" id="post_text" placeholder='Enter the text of your post here...'
+                        onChange={updateNewText} value={props.newPostText} />
                     <button type="submit">Submit</button>
                 </div>
             </form>
-            <div id="overlay" className="overlay" onClick={handleCloseOverlayClick}>
-                <div id="overlayMessage" className="overlay-message"></div>
-                <span className="close-icon" onClick={handleCloseOverlayClick}>
-                    &times;
-                </span>
-            </div>
         </div>
     );
 }

@@ -7,11 +7,11 @@ const postSchema = new mongoose.Schema({
     required: true,
   },
   postMessage: {
-    type: String,
-    required: true,
+    type: String
   },
   photos: [{
-    type: String, 
+    type: String,
+    required: true, 
   }],
   // Додайте інші поля, які вам потрібні для поста
 });
