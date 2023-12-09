@@ -1,10 +1,21 @@
 @import url('https://fonts.googleapis.com/css2?family=Tilt+Neon&display=swap');
 
-.profile_content {
+.profile._content {
     display: flex;
     flex-direction: column;
     padding-bottom: 20px;
     font-family: 'Tilt Neon', sans-serif;
+}
+
+.centerbtn {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+}
+
+.Change_info {
+    display: flex;
+    align-items: flex-start;
 }
 
 .profile_avatar {
@@ -29,6 +40,7 @@
 .name_bio {
     display: flex;
     flex-direction: column;
+    font-family: 'Tilt Neon', sans-serif;
 }
 
 .profile_name_bio {
@@ -36,6 +48,7 @@
     flex-direction: row;
     align-items: center;
     color: #fff;
+    font-family: 'Tilt Neon', sans-serif;
 }
 
 .profile_name {
@@ -59,21 +72,31 @@
     font-size: 18px;
     margin-right: 20px;
 }
-.name_bio input::placeholder{
+
+.name_bio input::placeholder {
     color: #fff;
+    opacity: 0.5;
 }
-.name_bio input{
+
+.name_bio textarea::placeholder {
+    color: #fff;
+    opacity: 0.5;
+}
+
+.name_bio input,
+.name_bio textarea {
     margin-bottom: 20px;
     padding: 10px;
     border: none;
     border-radius: 4px;
-    background-color: #1C2541;
+    background-color: #3A506B;
     color: #fff;
     outline: none;
     resize: none;
     font-size: 18px;
     font-family: 'Tilt Neon', sans-serif;
 }
+
 .profile_avatar button:hover {
     background-color: #3A506B;
 }
@@ -83,13 +106,46 @@
     flex-direction: column;
     align-items: center;
 }
-.change_info_form{
+
+.change_info_form {
     display: flex;
     align-items: center;
     margin-left: 100px;
+    justify-content: center;
+    font-family: 'Tilt Neon', sans-serif;
 }
-.header_and_return button{
-    margin-top: 20px;
+
+.formChange {
+    background-color: #1C2541;
+    border-radius: 14px;
+    padding: 20px;
+}
+
+.name_bio {
+    color: #fff;
+    font-size: 22px;
+}
+
+.ava_text {
+    color: #fff;
+    font-size: 22px;
+    margin-bottom: 10px;
+    margin-top: 10px;
+}
+
+.name_bio p {
+    margin-bottom: 10px;
+    margin-top: 10px;
+}
+
+.header_and_return {
+    color: #fff;
+    font-size: 28px;
+    text-align: center;
+    margin-bottom: 10px;
+}
+
+.Change_info button {
     background-color: #5BC0BE;
     color: #fff;
     border: none;
@@ -101,11 +157,32 @@
     display: flex;
     align-items: center;
     justify-content: center;
-
+    margin-top: 20px;
 }
-.header_and_return button:hover{
 
-}
-.header_and_return button:hover {
+.Change_info button:hover {
     background-color: #3A506B;
+}
+
+#avatar_input {
+    display: none;
+    font-size: 16px;
+}
+
+#fileInputLabel2 {
+    width: 100%;
+    font-family: 'Tilt Neon', sans-serif;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    cursor: pointer;
+    color: #5BC0BE;
+    margin-bottom: 10px;
+    border: 2px dashed #5BC0BE;
+    padding: 20px;
+    border-radius: 8px;
+}
+
+#fileInputLabel2:hover {
+    border-color: #3A506B;
 }

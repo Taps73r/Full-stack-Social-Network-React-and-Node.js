@@ -7,7 +7,7 @@ function ProfileInfo(props) {
     let posts;
     if (props.postData && props.postData.length > 0) {
         posts = props.postData.map(post => {
-            return <Post key={post.postId} message={post.postMessage} photos={post.photos} profileData={props.profileData}/>;
+            return <Post key={post.postId} message={post.postMessage} photos={post.photos} profileData={props.profileData} />;
         });
     } else {
         posts = <p>No posts available.</p>;
@@ -15,6 +15,15 @@ function ProfileInfo(props) {
 
     let setChangingInfo = () => {
         props.changeUserInfo();
+    }
+    function wrapBioText(aboutMe) {
+        const maxCharsPerLine = 20;
+        if (aboutMe.length > maxCharsPerLine) {
+            const regex = new RegExp(`.{1,${maxCharsPerLine}}`, 'g');
+            const wrappedBio = aboutMe.match(regex).join('\n');
+            return wrappedBio;
+        }
+        return aboutMe;
     }
 
     let userId = props.profileData.userId;
@@ -32,7 +41,7 @@ function ProfileInfo(props) {
                             <p>{fullName != null ? fullName : 'Id ' + userId}</p>
                         </div>
                         <div className='profile_bio'>
-                            <p>{aboutMe != null ? aboutMe : 'User has not set a bio.'}</p>
+                            <p>{aboutMe != null ? wrapBioText(aboutMe) : 'User has not set a bio.'}</p>
                         </div>
                     </div>
                 </div>
