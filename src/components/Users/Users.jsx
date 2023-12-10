@@ -52,7 +52,7 @@ let Users = (props) => {
                                     {u.followers.includes(loggedInUserId) ? 'Unfollow' : 'Follow'}
                                 </button>
                             </div>
-                            <p className='users_bio'>{u.bio}</p>
+                            <p className='users_bio'>{u.bio && u.bio.length > 20 ? `${u.bio.slice(0, 20)}...` : u.bio}</p>
                         </div>
                     </div>
                 </div>)}

@@ -90,7 +90,7 @@ app.post('/subscribe', async (req, res) => {
     if (existingSubscription) {
       // Якщо підписка вже існує, розглядаємо це як відписку
       await Subscription.deleteOne({ _id: existingSubscription._id });
-      return res.json({ message: 'Ви успішно відписалися від цього користувача', subscription: null });
+      return res.json({ message: 'Ви успішно відписалися від цього користувача', subscription: 'No' });
     }
 
     // Створення нової підписки
@@ -277,7 +277,7 @@ app.put('/update-profile/:userId', async (req, res) => {
 });
 app.get('/users-info', async (req, res) => {
   try {
-    const { term } = req.query;
+    const { term, page = 1, count = 6 } = req.query;
     let profileQuery = {};
 
     if (term) {
@@ -285,7 +285,8 @@ app.get('/users-info', async (req, res) => {
     }
 
     // Отримати всі профайли користувачів з бази даних з можливістю пошуку за іменем
-    const allProfiles = await Profile.find(profileQuery);
+    const skip = (page - 1) * count;
+    const allProfiles = await Profile.find(profileQuery).skip(skip).limit(parseInt(count));
 
     // Отримати інформацію про підписки для кожного користувача
     const subscriptions = await Subscription.find();
@@ -311,13 +312,17 @@ app.get('/users-info', async (req, res) => {
       };
     }));
 
+    // Отримати загальну кількість користувачів, щоб використовувати для пагінації
+    const totalCount = await Profile.countDocuments(profileQuery);
+
     // Поверніть дані клієнту
-    res.json({ totalCount: usersWithSubscriptions.length, items: usersWithSubscriptions });
+    res.json({ totalCount: totalCount, items: usersWithSubscriptions });
   } catch (error) {
     console.error('Помилка при отриманні даних:', error);
     res.status(500).json({ message: 'Помилка при отриманні даних' });
   }
 });
+
 
 app.listen(port, () => {
   console.log(`Сервер слухає на порту ${port}`);

@@ -1,17 +1,26 @@
-import { connect } from "react-redux";
-import { dropErrors, setImageProfileLoad, setTextBioLoad, setTextNameLoad } from "../../redux/error-reducer";
-import { returnChangeUserInfo, updateChangeBioText, updateChangeNameText, uploadAvatar } from "../../redux/profile-reducer";
+import React, { useState } from 'react';
+import { connect } from 'react-redux';
+import {
+    dropErrors,
+    setImageProfileLoad,
+    setTextBioLoad,
+    setTextNameLoad,
+} from '../../redux/error-reducer';
+import {
+    returnChangeUserInfo,
+    updateChangeBioText,
+    updateChangeNameText,
+    uploadAvatar,
+} from '../../redux/profile-reducer';
 import './ProfileInfo/ProfileInfo.css';
 
 let ChangeUserInfoComponent = (props) => {
+    const [imageLoadedText, setImageLoadedText] = useState('Drag here');
 
     let submitData = (file) => {
         props.putChangedUserInfo(file);
         props.returnChangeUserInfo();
-    }
-    let returnChanging = () => {
-        props.returnChangeUserInfo();
-    }
+    };
     let newNameText = (e) => {
         const text = e.target.value;
         props.updateChangeNameText(text);
@@ -20,6 +29,10 @@ let ChangeUserInfoComponent = (props) => {
         const text = e.target.value;
         props.updateChangeBioText(text);
     }
+    let returnChanging = () => {
+        props.returnChangeUserInfo();
+    };
+
     let handleFileChange = (e) => {
         const file = e.target.files[0];
 
@@ -35,8 +48,9 @@ let ChangeUserInfoComponent = (props) => {
                     if (img.width >= 150 && img.height >= 150) {
                         props.uploadAvatar(base64Data);
                         props.dropErrors();
+                        setImageLoadedText('Image loaded');
                     } else {
-                        props.imageError();
+                        props.setImageProfileLoad();
                     }
                 };
             };
@@ -44,8 +58,10 @@ let ChangeUserInfoComponent = (props) => {
             reader.readAsDataURL(file);
         }
     };
+
     let handleSubmit = (e) => {
         e.preventDefault();
+        props.dropErrors();
         const file = e.target.querySelector('input[type="file"]').files[0];
         const textName = props.changeNameText.trim();
         const textBio = props.changeBioText.trim();
@@ -60,6 +76,7 @@ let ChangeUserInfoComponent = (props) => {
         }
         submitData(file);
     };
+
     return (
         <div className="Change_info">
             <button onClick={returnChanging}>Return</button>
@@ -70,6 +87,8 @@ let ChangeUserInfoComponent = (props) => {
                     </div>
                     <div className="name_bio">
                         <p>Name</p>
+                        <p className='error_ava'>{props.textNameProfileLoad ? 'Maximum character limit for the name 12' : ''}</p>
+                        <p></p>
                         <input
                             type="text"
                             id="username"
@@ -78,6 +97,7 @@ let ChangeUserInfoComponent = (props) => {
                             placeholder="Enter your nickname here..."
                         />
                         <p>Bio</p>
+                        <p className='error_ava'>{props.textBioProfileLoad ? "Maximum character limit for the bio: 50": ''}</p>
                         <textarea
                             placeholder="Enter your biography here..."
                             type="text"
@@ -88,9 +108,10 @@ let ChangeUserInfoComponent = (props) => {
                     </div>
                     <p className="ava_text">Avatar</p>
                     <div className="centerbtn">
-                        <label htmlFor="avatar_input" id={props.imageError ? 'error_foto' : 'fileInputLabel2'}>
+                        <p className='error_ava'>{props.imageError ? 'Minimum height or width of the photo: 150 pixels.': ''}</p>
+                        <label htmlFor="avatar_input" id={props.imageError ? 'fileInputLabelError' : 'fileInputLabel2'}>
                             <img src="icon-photo.png" alt="" />
-                            {props.imageError ? 'Error pictures' : 'Drag here'}
+                            {props.imageError ? 'Error photo' : imageLoadedText}
                         </label>
                         <input
                             type="file"
@@ -99,22 +120,23 @@ let ChangeUserInfoComponent = (props) => {
                             onChange={handleFileChange}
                             onClick={(e) => (e.target.value = null)}
                         />
-                        <button type="submit" >Save</button>
+                        <button type="submit">Save</button>
                     </div>
                 </form>
             </div>
         </div>
-    )
-}
+    );
+};
+
 let mapStateToProps = (state) => {
     return {
         changeBioText: state.profileInfo.changeBioText,
         changeNameText: state.profileInfo.changeNameText,
         imageError: state.errorInfo.imageAvatarLoad,
         textNameProfileLoad: state.errorInfo.textNameProfileLoad,
-        textBioProfileLoad: state.errorInfo.textBioProfileLoad
-    }
-}
+        textBioProfileLoad: state.errorInfo.textBioProfileLoad,
+    };
+};
 
 let ChangeUserInfo = connect(mapStateToProps, {
     returnChangeUserInfo,
@@ -124,6 +146,7 @@ let ChangeUserInfo = connect(mapStateToProps, {
     dropErrors,
     setTextBioLoad,
     setTextNameLoad,
-    setImageProfileLoad
-})(ChangeUserInfoComponent)
+    setImageProfileLoad,
+})(ChangeUserInfoComponent);
+
 export default ChangeUserInfo;

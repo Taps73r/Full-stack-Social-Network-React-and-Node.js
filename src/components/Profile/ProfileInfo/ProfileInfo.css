@@ -1,5 +1,7 @@
 @import url('https://fonts.googleapis.com/css2?family=Tilt+Neon&display=swap');
-
+:root {
+    --error-color: #c40303;
+    }
 .profile._content {
     display: flex;
     flex-direction: column;
@@ -110,7 +112,7 @@
 .change_info_form {
     display: flex;
     align-items: center;
-    margin-left: 100px;
+    margin-left: 20px;
     justify-content: center;
     font-family: 'Tilt Neon', sans-serif;
 }
@@ -119,6 +121,7 @@
     background-color: #1C2541;
     border-radius: 14px;
     padding: 20px;
+    width: 400px;
 }
 
 .name_bio {
@@ -134,7 +137,6 @@
 }
 
 .name_bio p {
-    margin-bottom: 10px;
     margin-top: 10px;
 }
 
@@ -157,7 +159,6 @@
     display: flex;
     align-items: center;
     justify-content: center;
-    margin-top: 20px;
 }
 
 .Change_info button:hover {
@@ -170,8 +171,9 @@
 }
 
 #fileInputLabel2 {
-    width: 100%;
+    width: 25%;
     font-family: 'Tilt Neon', sans-serif;
+    font-size: 20px;
     display: flex;
     flex-direction: column;
     align-items: center;
@@ -185,4 +187,22 @@
 
 #fileInputLabel2:hover {
     border-color: #3A506B;
+}
+.error_ava{
+    color: var(--error-color);
+    font-size: 18px;
+}
+#fileInputLabelError {
+    width: 25%;
+    font-family: 'Tilt Neon', sans-serif;
+    font-size: 20px;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    cursor: pointer;
+    color: var(--error-color);
+    margin-bottom: 10px;
+    border: 2px dashed var(--error-color);
+    padding: 20px;
+    border-radius: 8px;
 }

@@ -47,8 +47,7 @@ class OtherProfileContainer extends React.Component {
     subscribeUserProfile = (followerId, followingId) => {
         axios.post('http://localhost:3002/subscribe', { followerId, followingId })
             .then(response => {
-                this.props.toggleSubscriptionProfile(response.data.subscription);
-                console.log(response)
+                this.props.toggleSubscriptionProfile(response.data.subscription.follower);
             })
             .catch(error => {
                 console.error('Error subscribing user:', error);
