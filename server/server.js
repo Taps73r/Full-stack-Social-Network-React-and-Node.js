@@ -1,51 +1,56 @@
-const express = require('express');
-const multer = require('multer');
-const mongoose = require('mongoose');
-const bodyParser = require('body-parser');
-const bcrypt = require('bcrypt');
-const jwt = require('jsonwebtoken');
-const cors = require('cors');
-const cloudinary = require('cloudinary').v2;
+const express = require("express");
+const mongoose = require("mongoose");
+const bodyParser = require("body-parser");
+const bcrypt = require("bcrypt");
+const jwt = require("jsonwebtoken");
+const cors = require("cors");
+const cloudinary = require("cloudinary").v2;
 
 const app = express();
 const port = 3002;
 
 cloudinary.config({
-  cloud_name: 'duoxvyirq',
-  api_key: '872646555943858',
-  api_secret: '8FumT857SXwXJz7dRs-mwCRBJpY'
+  cloud_name: "duoxvyirq",
+  api_key: "872646555943858",
+  api_secret: "8FumT857SXwXJz7dRs-mwCRBJpY",
 });
 
-const Post = require('./post');
-const User = require('./user');
-const Subscription = require('./subscription');
-const Profile = require('./profileSchema');
+const Post = require("./post");
+const User = require("./user");
+const Subscription = require("./subscription");
+const Profile = require("./profileSchema");
 
-const mongoURI = "mongodb+srv://taps73r:motherboard2005@cluster0.rx59bw7.mongodb.net/?retryWrites=true&w=majority";
+const mongoURI =
+  "mongodb+srv://taps73r:motherboard2005@cluster0.rx59bw7.mongodb.net/?retryWrites=true&w=majority";
 mongoose.connect(mongoURI, { useNewUrlParser: true, useUnifiedTopology: true });
 const db = mongoose.connection;
-db.on('error', console.error.bind(console, 'Помилка підключення до MongoDB:'));
-db.once('open', function () {
-  console.log('Підключено до бази даних MongoDB');
+db.on("error", console.error.bind(console, "Помилка підключення до MongoDB:"));
+db.once("open", function () {
+  console.log("Підключено до бази даних MongoDB");
 });
 app.use(cors());
 app.use((req, res, next) => {
-  res.header('Access-Control-Allow-Origin', '*');
-  res.header('Access-Control-Allow-Headers', 'Origin, X-Requested-With, Content-Type, Accept, Authorization');
+  res.header("Access-Control-Allow-Origin", "*");
+  res.header(
+    "Access-Control-Allow-Headers",
+    "Origin, X-Requested-With, Content-Type, Accept, Authorization"
+  );
   next();
 });
 
-app.use(bodyParser.json({ limit: '50mb' }));
+app.use(bodyParser.json({ limit: "50mb" }));
 
 // Реєстрація користувача
-app.post('/register', async (req, res) => {
+app.post("/register", async (req, res) => {
   const { username, password } = req.body;
 
   try {
     // Перевірка чи користувач вже існує
     const existingUser = await User.findOne({ username });
     if (existingUser) {
-      return res.status(400).json({ message: 'Користувач з таким ім\'ям вже існує' });
+      return res
+        .status(400)
+        .json({ message: "Користувач з таким ім'ям вже існує" });
     }
 
     // Створення нового користувача
@@ -66,13 +71,13 @@ app.post('/register', async (req, res) => {
     // Збереження профілю в базі даних
     await newProfile.save();
 
-    res.status(201).json({ message: 'Користувач успішно зареєстрований' });
+    res.status(201).json({ message: "Користувач успішно зареєстрований" });
   } catch (error) {
-    console.error('Помилка реєстрації:', error);
-    res.status(500).json({ message: 'Помилка реєстрації' });
+    console.error("Помилка реєстрації:", error);
+    res.status(500).json({ message: "Помилка реєстрації" });
   }
 });
-app.post('/subscribe', async (req, res) => {
+app.post("/subscribe", async (req, res) => {
   const { followerId, followingId } = req.body;
 
   try {
@@ -81,47 +86,66 @@ app.post('/subscribe', async (req, res) => {
     const following = await User.findOne({ userId: followingId });
 
     if (!follower || !following) {
-      return res.status(404).json({ message: 'Користувач не знайдено' });
+      return res.status(404).json({ message: "Користувач не знайдено" });
     }
 
     // Перевірка, чи підписка вже існує
-    const existingSubscription = await Subscription.findOne({ follower: followerId, following: followingId });
+    const existingSubscription = await Subscription.findOne({
+      follower: followerId,
+      following: followingId,
+    });
 
     if (existingSubscription) {
       // Якщо підписка вже існує, розглядаємо це як відписку
       await Subscription.deleteOne({ _id: existingSubscription._id });
-      return res.json({ message: 'Ви успішно відписалися від цього користувача', subscription: 'No' });
+      return res.json({
+        message: "Ви успішно відписалися від цього користувача",
+        subscription: "No",
+      });
     }
 
     // Створення нової підписки
-    const newSubscription = new Subscription({ follower: followerId, following: followingId });
+    const newSubscription = new Subscription({
+      follower: followerId,
+      following: followingId,
+    });
     await newSubscription.save();
 
-    res.status(201).json({ message: 'Підписка успішно додана', subscription: newSubscription });
+    res.status(201).json({
+      message: "Підписка успішно додана",
+      subscription: newSubscription,
+    });
   } catch (error) {
-    console.error('Помилка при додаванні/видаленні підписки:', error);
-    res.status(500).json({ message: 'Помилка при додаванні/видаленні підписки' });
+    console.error("Помилка при додаванні/видаленні підписки:", error);
+    res
+      .status(500)
+      .json({ message: "Помилка при додаванні/видаленні підписки" });
   }
 });
 
-app.post('/protected', (req, res) => {
+app.post("/protected", (req, res) => {
   const token = req.body.token;
 
   if (!token) {
-    return res.status(401).json(console.log('Немає токену'));
+    return res.status(401).json(console.log("Немає токену"));
   }
 
-  jwt.verify(token, 'secret_key', (err, decoded) => {
+  jwt.verify(token, "secret_key", (err, decoded) => {
     if (err) {
-      console.error('JWT verification error:', err);
-      return res.status(401).json(console.log('Немає токену'));
+      console.error("JWT verification error:", err);
+      return res.status(401).json(console.log("Немає токену"));
     }
 
-    res.json({ message: 'Доступ дозволено', username: decoded.username, userId: decoded.userId, token });
+    res.json({
+      message: "Доступ дозволено",
+      username: decoded.username,
+      userId: decoded.userId,
+      token,
+    });
   });
 });
 
-app.get('/profile/:userId', async (req, res) => {
+app.get("/profile/:userId", async (req, res) => {
   const userId = req.params.userId;
 
   try {
@@ -129,7 +153,7 @@ app.get('/profile/:userId', async (req, res) => {
     const profile = await Profile.findOne({ userId });
 
     if (!profile) {
-      return res.status(404).json({ message: 'Профіль не знайдено' });
+      return res.status(404).json({ message: "Профіль не знайдено" });
     }
 
     // Знайдіть пости для цього користувача
@@ -137,20 +161,17 @@ app.get('/profile/:userId', async (req, res) => {
 
     // Знайдіть інформацію про підписки
     const subscriptions = await Subscription.find({
-      $or: [
-        { follower: userId },
-        { following: userId }
-      ]
+      $or: [{ follower: userId }, { following: userId }],
     });
 
     // Визначте підписників та підписки для поточного користувача
     const userSubscriptions = subscriptions
-      .filter(subscription => subscription.follower.toString() === userId)
-      .map(subscription => subscription.following);
+      .filter((subscription) => subscription.follower.toString() === userId)
+      .map((subscription) => subscription.following);
 
     const followers = subscriptions
-      .filter(subscription => subscription.following.toString() === userId)
-      .map(subscription => subscription.follower);
+      .filter((subscription) => subscription.following.toString() === userId)
+      .map((subscription) => subscription.follower);
 
     // Виведіть дані профілю разом із підписками
     res.json({
@@ -164,11 +185,11 @@ app.get('/profile/:userId', async (req, res) => {
       // Додайте інші дані профілю, які вам потрібні
     });
   } catch (error) {
-    console.error('Помилка при отриманні даних профілю:', error);
-    res.status(500).json({ message: 'Помилка при отриманні даних профілю' });
+    console.error("Помилка при отриманні даних профілю:", error);
+    res.status(500).json({ message: "Помилка при отриманні даних профілю" });
   }
 });
-app.post('/posts', async (req, res) => {
+app.post("/posts", async (req, res) => {
   const { userId, postMessage, photos } = req.body;
   try {
     // Збереження поста в базу даних
@@ -197,45 +218,59 @@ app.post('/posts', async (req, res) => {
     // Збереження поста з оновленими фотографіями у базу даних
     await newPost.save();
 
-    res.status(201).json({ message: 'Пост успішно створено', newPost });
+    res.status(201).json({ message: "Пост успішно створено", newPost });
   } catch (error) {
-    console.error('Помилка при створенні поста:', error);
-    res.status(500).json({ message: 'Помилка при створенні поста' });
+    console.error("Помилка при створенні поста:", error);
+    res.status(500).json({ message: "Помилка при створенні поста" });
   }
 });
 
-app.post('/login', async (req, res) => {
+app.post("/login", async (req, res) => {
   const { username, password } = req.body;
 
   // Знаходження користувача за ім'ям
   const user = await User.findOne({ username });
 
   if (!user) {
-    return res.status(401).json({ message: 'Користувача з таким ім\'ям не існує' });
+    return res
+      .status(401)
+      .json({ message: "Користувача з таким ім'ям не існує" });
   }
 
   // Порівняння введеного паролю з хешованим паролем в базі даних
   const passwordMatch = await bcrypt.compare(password, user.password);
 
   if (!passwordMatch) {
-    return res.status(401).json({ message: 'Неправильний пароль' });
+    return res.status(401).json({ message: "Неправильний пароль" });
   }
 
   // Генерація JWT для користувача, включаючи userId
-  const token = jwt.sign({ username, userId: user.userId, bio: user.bio, photo: user.photo }, 'secret_key', { expiresIn: '1h' });
+  const token = jwt.sign(
+    { username, userId: user.userId, bio: user.bio, photo: user.photo },
+    "secret_key",
+    { expiresIn: "1h" }
+  );
 
-  res.json({ token, username, userId: user.userId, bio: user.bio, photo: user.photo });
+  res.json({
+    token,
+    username,
+    userId: user.userId,
+    bio: user.bio,
+    photo: user.photo,
+  });
 });
 // /users-info endpoint
-app.put('/update-profile/:userId', async (req, res) => {
+app.put("/update-profile/:userId", async (req, res) => {
   const userId = req.params.userId;
-  const { name, bio, photo} = req.body;
+  const { name, bio, photo } = req.body;
   try {
     // Знайдіть профіль користувача за userId
     const userProfile = await Profile.findOne({ userId });
 
     if (!userProfile) {
-      return res.status(404).json({ message: 'Профіль користувача не знайдено' });
+      return res
+        .status(404)
+        .json({ message: "Профіль користувача не знайдено" });
     }
 
     // Оновлюємо тільки ті дані, які надійшли з фронтенду та не є пустими
@@ -249,7 +284,7 @@ app.put('/update-profile/:userId', async (req, res) => {
     // Завантажте фото на Cloudinary, якщо воно надійшло
     if (photo) {
       const result = await cloudinary.uploader.upload(photo, {
-        folder: 'profile-photos',
+        folder: "profile-photos",
         public_id: `user_${userId}_${Date.now()}`,
       });
       userProfile.photo = result.secure_url;
@@ -271,46 +306,57 @@ app.put('/update-profile/:userId', async (req, res) => {
       // Додайте інші дані профілю, які вам потрібні
     });
   } catch (error) {
-    console.error('Помилка при оновленні профілю:', error);
-    res.status(500).json({ message: 'Помилка при оновленні профілю' });
+    console.error("Помилка при оновленні профілю:", error);
+    res.status(500).json({ message: "Помилка при оновленні профілю" });
   }
 });
-app.get('/users-info', async (req, res) => {
+app.get("/users-info", async (req, res) => {
   try {
     const { term, page = 1, count = 6 } = req.query;
     let profileQuery = {};
 
     if (term) {
-      profileQuery = { name: { $regex: new RegExp(term), $options: 'i' } };
+      profileQuery = { name: { $regex: new RegExp(term), $options: "i" } };
     }
 
     // Отримати всі профайли користувачів з бази даних з можливістю пошуку за іменем
     const skip = (page - 1) * count;
-    const allProfiles = await Profile.find(profileQuery).skip(skip).limit(parseInt(count));
+    const allProfiles = await Profile.find(profileQuery)
+      .skip(skip)
+      .limit(parseInt(count));
 
     // Отримати інформацію про підписки для кожного користувача
     const subscriptions = await Subscription.find();
 
     // Додати інформацію про підписки та підписників до кожного користувача
-    const usersWithSubscriptions = await Promise.all(allProfiles.map(async userProfile => {
-      const userSubscriptions = subscriptions
-        .filter(subscription => subscription.follower.toString() === userProfile.userId.toString())
-        .map(subscription => subscription.following);
+    const usersWithSubscriptions = await Promise.all(
+      allProfiles.map(async (userProfile) => {
+        const userSubscriptions = subscriptions
+          .filter(
+            (subscription) =>
+              subscription.follower.toString() === userProfile.userId.toString()
+          )
+          .map((subscription) => subscription.following);
 
-      const followers = subscriptions
-        .filter(subscription => subscription.following.toString() === userProfile.userId.toString())
-        .map(subscription => subscription.follower);
+        const followers = subscriptions
+          .filter(
+            (subscription) =>
+              subscription.following.toString() ===
+              userProfile.userId.toString()
+          )
+          .map((subscription) => subscription.follower);
 
-      return {
-        userId: userProfile.userId,
-        name: userProfile.name,
-        bio: userProfile.bio,
-        photo: userProfile.photo,
-        subscriptions: userSubscriptions,
-        followers: followers,
-        // Додайте інші дані користувача, які вам потрібні
-      };
-    }));
+        return {
+          userId: userProfile.userId,
+          name: userProfile.name,
+          bio: userProfile.bio,
+          photo: userProfile.photo,
+          subscriptions: userSubscriptions,
+          followers: followers,
+          // Додайте інші дані користувача, які вам потрібні
+        };
+      })
+    );
 
     // Отримати загальну кількість користувачів, щоб використовувати для пагінації
     const totalCount = await Profile.countDocuments(profileQuery);
@@ -318,11 +364,10 @@ app.get('/users-info', async (req, res) => {
     // Поверніть дані клієнту
     res.json({ totalCount: totalCount, items: usersWithSubscriptions });
   } catch (error) {
-    console.error('Помилка при отриманні даних:', error);
-    res.status(500).json({ message: 'Помилка при отриманні даних' });
+    console.error("Помилка при отриманні даних:", error);
+    res.status(500).json({ message: "Помилка при отриманні даних" });
   }
 });
-
 
 app.listen(port, () => {
   console.log(`Сервер слухає на порту ${port}`);
