@@ -1,64 +1,89 @@
-@import url('https://fonts.googleapis.com/css2?family=Tilt+Neon&display=swap');
+@import url("https://fonts.googleapis.com/css2?family=Tilt+Neon&display=swap");
 .posts {
-    background-color: #0B132B;
-    padding: 20px;
-    border-radius: 8px;
-    width: 500px; 
-    margin-top: 20px;
+  background-color: #0b132b;
+  padding: 20px;
+  border-radius: 8px;
+  width: 500px;
+  margin-top: 20px;
 }
-.userPhoto img{
-    width: 70px;
-    height: 70px;
-    border-radius: 50%;
-    margin-right: 10px;
-    object-fit: cover;
-    margin-bottom: 20px;
+.userPhoto img {
+  width: 70px;
+  height: 70px;
+  border-radius: 50%;
+  margin-right: 10px;
+  object-fit: cover;
+  margin-bottom: 20px;
 }
-
-.userPhoto{
-    display: flex;
-    flex-direction: row;
-    font-size: 24px;
-    color: #fff;
+.post_username_position {
+  display: flex;
+  flex-direction: row;
+}
+.userPhoto span {
+  cursor: pointer;
+}
+.userPhoto {
+  justify-content: space-between;
+  display: flex;
+  flex-direction: row;
+  font-size: 24px;
+  color: #fff;
 }
 .postPhotos p {
-    color: #fff;
-    margin-bottom: 20px;
-    font-size: 18px;
+  color: #fff;
+  margin-bottom: 20px;
+  font-size: 18px;
 }
 .postPhotos img {
-    max-width: 100%;
-    height: auto;
-    margin-bottom: 10px;
-    border-radius: 4px;
-    object-fit: cover;
+  max-width: 100%;
+  height: auto;
+  margin-bottom: 10px;
+  border-radius: 4px;
+  object-fit: cover;
 }
 .slick-slider {
-    width: 100%;
+  width: 100%;
 }
 
 /* Настройки слайдів */
 .slick-slide {
-    width: 100%;
+  width: 100%;
 }
 
 /* Настройки зображень в слайді */
 .slick-slide img {
-    width: 100%;
-    height: auto;
+  width: 100%;
+  height: auto;
 }
-
+.EditForm{
+    display: flex;
+    align-items: center;
+    flex-direction: column;
+}
+.postPhotos button {
+  background-color: #5bc0be;
+  color: #fff;
+  padding: 10px 20px;
+  font-size: 18px;
+  border: none;
+  border-radius: 4px;
+  cursor: pointer;
+  font-family: "Tilt Neon", sans-serif;
+  margin-bottom: 10px;
+}
+.postPhotos button:hover {
+  background-color: #3a506b;
+}
 /* Додайте цей стиль для налаштування стрілок слайдера */
 .slick-prev,
 .slick-next {
-    font-size: 24px;
-    z-index: 1; 
+  font-size: 24px;
+  z-index: 1;
 }
 
 .slick-prev {
-    left: 10px;
+  left: 10px;
 }
 
 .slick-next {
-    right: 10px;
+  right: 10px;
 }

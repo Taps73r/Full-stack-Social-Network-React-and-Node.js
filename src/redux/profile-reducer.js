@@ -8,6 +8,8 @@ const UPDATE_CHANGE_BIO_TEXT = "UPDATE_CHANGE_BIO_TEXT";
 const UPDATE_CHANGE_NAME_TEXT = "UPDATE_CHANGE_NAME_TEXT";
 const UPLOAD_AVATAR = "UPLOAD_AVATAR";
 const UPLOAD_POST_IMAGES = "UPLOAD_POST_IMAGES";
+const UPDATE_POST = "UPDATE_POST";
+const UPDATE_POST_TEXT = "UPDATE_POST_TEXT";
 
 let initialState = {
   postData: [],
@@ -19,6 +21,7 @@ let initialState = {
   changeNameText: "",
   avatar: "",
   newPostImages: [],
+  updatePostText: ""
 };
 export const profileReducer = (state = initialState, action) => {
   switch (action.type) {
@@ -29,7 +32,11 @@ export const profileReducer = (state = initialState, action) => {
         newPostText: "",
         newPostImages: [],
       };
-
+      case UPDATE_POST: 
+      return {
+        ...state,
+        updatePostText: ""
+      };
     case UPDATE_TEXT_POST:
       return {
         ...state,
@@ -51,6 +58,11 @@ export const profileReducer = (state = initialState, action) => {
         profileData: action.profileData,
         postData: action.profileData.posts || [],
       };
+      case UPDATE_POST_TEXT:
+        return {
+          ...state,
+          updatePostText: action.text
+        };
     case TOGGLE_IS_FETCHING:
       return {
         ...state,
@@ -122,3 +134,10 @@ export const uploadAvatar = (avatarUrl) => ({
   type: UPLOAD_AVATAR,
   avatarUrl,
 });
+export const updateTextPost = (text) => ({
+  type: UPDATE_POST_TEXT,
+  text
+})
+export const updatePost = () => ({
+  type: UPDATE_POST
+})
