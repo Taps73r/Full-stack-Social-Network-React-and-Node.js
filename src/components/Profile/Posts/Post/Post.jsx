@@ -6,12 +6,20 @@ import "./Post.css";
 import EditPost from "../../../common/EditPost/EditPost";
 
 function Post(props) {
+  let likesCount = props.likes?.count || 0;
   let userId = props.userId;
   let profileId = props.profileData.userId;
   const [expanded] = useState(false);
   const [isMenuOpen, setMenuOpen] = useState(false);
   const [updateTextMenu, setUpdateTextMenu] = useState(false);
+  //!!TO DO доробити лайки
+  const [postLiked, likePost] = useState(true);
 
+  const handleLikeClick = () => {
+    debugger
+    props.likeCurrentPost(props.postId);
+    likePost(postLiked);
+  };
   const handleMenuClick = () => {
     setMenuOpen(!isMenuOpen);
   };
@@ -24,8 +32,9 @@ function Post(props) {
     props.updateTextPost(text);
   };
   let sendUpdatePost = (e) => {
-    props.updateCurrentPost();
     e.preventDefault();
+    props.updateCurrentPost(props.postId);
+    setMenuOpen(!isMenuOpen);
   };
 
   const settings = {
@@ -67,12 +76,16 @@ function Post(props) {
         </div>
         <div>
           {userId === profileId ? (
-            <span class="material-symbols-outlined" onClick={handleMenuClick}>
+            <span
+              className="material-symbols-outlined"
+              onClick={handleMenuClick}
+            >
               more_vert
             </span>
           ) : null}
           {isMenuOpen && (
             <EditPost
+              postId={props.postId}
               deleteCurrentPost={props.deleteCurrentPost}
               editPostMenuClick={editPostMenuClick}
             />
@@ -89,7 +102,13 @@ function Post(props) {
               onChange={updateCurrentPostText}
               value={props.updatePostText}
             />
-            <button type="submit" onClick={sendUpdatePost}>Save</button>
+            <button
+              type="submit"
+              className="btn-post-save"
+              onClick={sendUpdatePost}
+            >
+              Save
+            </button>
           </form>
         ) : (
           <p style={{ wordWrap: "break-word", overflowWrap: "break-word" }}>
@@ -97,6 +116,12 @@ function Post(props) {
           </p>
         )}
         <Slider {...settings}>{photos}</Slider>
+      </div>
+      <div className="likes_and_count">
+        <button className={postLiked ? "liked_button": "like_button"} onClick={handleLikeClick}>
+          <span class="material-symbols-outlined">thumb_up</span>
+        </button>
+        <p>{`${likesCount}`}</p>
       </div>
     </div>
   );

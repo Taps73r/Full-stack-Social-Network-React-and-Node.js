@@ -9,8 +9,11 @@ function ProfileInfo(props) {
     posts = props.postData.map((post) => {
       return (
         <Post
-          key={post.postId}
+          key={post._id}
+          likes={post.likes}
+          postId={post._id}
           userId={props.userId}
+          likeCurrentPost={props.likeCurrentPost}
           updatePostText={props.updatePostText}
           updateTextPost={props.updateTextPost}
           deleteCurrentPost={props.deleteCurrentPost}

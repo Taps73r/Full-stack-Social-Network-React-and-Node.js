@@ -8,8 +8,8 @@ import {
   addPostActionCreator,
   changeUserInfo,
   setIsFetching,
+  setPostData,
   setProfile,
-  updatePost,
   updateTextPost,
 } from "../../redux/profile-reducer";
 
@@ -29,8 +29,8 @@ function MainContainer({
   avatar,
   newPostImages,
   updatePostText,
-  updatePost,
-  updateTextPost
+  updateTextPost,
+  setPostData,
 }) {
   useEffect(() => {
     const requestProfileInfo = () => {
@@ -58,7 +58,6 @@ function MainContainer({
     setIsFetching(true);
     let postMessage = newPostText;
     let photos = newPostImages;
-    console.log(photos);
     axios
       .post("http://localhost:3002/posts", { userId, postMessage, photos })
       .then((response) => {
@@ -94,9 +93,26 @@ function MainContainer({
         setIsFetching(false);
       });
   };
-  let deleteCurrentPost = () => {};
-  let updateCurrentPost = () => {};
+  let deleteCurrentPost = (postId) => {
+    setIsFetching(true);
+    axios.delete(`http://localhost:3002/posts/${postId}`).then((response) => {
+      setPostData(response.data);
+      setIsFetching(false);
+    });
+  };
+  let updateCurrentPost = (postId) => {
+    setIsFetching(true);
+    let updatedText = updatePostText;
+    axios
+      .put(`http://localhost:3002/posts/${postId}`, { updatedText })
+      .then((response) => {
+        setPostData(response.data);
+        setIsFetching(false);
+      });
+  };
+  let likeCurrentPost = () => {
 
+  }
   if (isFetching || !profileData) {
     return <Preloader />;
   }
@@ -106,11 +122,11 @@ function MainContainer({
       postData={postData}
       profileData={profileData}
       addPost={addPost}
+      likeCurrentPost={likeCurrentPost}
       changeUserInfo={changeUserInfo}
       putChangedUserInfo={putChangedUserInfo}
       changingInfo={changingInfo}
       userId={userId}
-      updatePost={updatePost}
       updatePostText={updatePostText}
       updateTextPost={updateTextPost}
       deleteCurrentPost={deleteCurrentPost}
@@ -130,7 +146,7 @@ const mapStateToProps = (state) => ({
   changingInfo: state.profileInfo.changingInfo,
   avatar: state.profileInfo.avatar,
   newPostImages: state.profileInfo.newPostImages,
-  updatePostText: state.profileInfo.updatePostText
+  updatePostText: state.profileInfo.updatePostText,
 });
 
 const ProfileContainerWithApi = connect(mapStateToProps, {
@@ -138,8 +154,8 @@ const ProfileContainerWithApi = connect(mapStateToProps, {
   setIsFetching,
   addPostActionCreator,
   setChangeUserInfo: changeUserInfo,
-  updatePost,
   updateTextPost,
+  setPostData,
 })(MainContainer);
 
 export default ProfileContainerWithApi;

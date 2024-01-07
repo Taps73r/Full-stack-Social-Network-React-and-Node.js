@@ -14,7 +14,7 @@ function Main(props) {
           changeUserInfo={props.changeUserInfo}
           addPost={props.addPost}
           userId={props.userId}
-          updatePost={props.updatePost}
+          likeCurrentPost={props.likeCurrentPost}
           updatePostText={props.updatePostText}
           updateTextPost={props.updateTextPost}
           deleteCurrentPost={props.deleteCurrentPost}

@@ -259,6 +259,129 @@ app.post("/login", async (req, res) => {
     photo: user.photo,
   });
 });
+app.delete("/posts/:postId", async (req, res) => {
+  const postId = req.params.postId;
+
+  try {
+    // Check if postId is a valid ObjectId
+    if (!mongoose.Types.ObjectId.isValid(postId)) {
+      return res.status(400).json({ message: "Невірний формат ID посту" });
+    }
+
+    // Find the post by postId
+    const post = await Post.findById(postId);
+
+    // Check if the post exists
+    if (!post) {
+      return res.status(404).json({ message: "Пост не знайдено" });
+    }
+
+    // Delete the post from Cloudinary (optional, based on your requirements)
+    if (post.photos && post.photos.length > 0) {
+      await Promise.all(
+        post.photos.map(async (photoUrl) => {
+          const publicId = photoUrl.split("/").pop().split(".")[0];
+          await cloudinary.uploader.destroy(publicId);
+        })
+      );
+    }
+
+    // Delete the post from the database
+    await Post.findByIdAndDelete(postId);
+
+    // Get all posts of the user
+    const userId = post.userId;
+    const userPosts = await Post.find({ userId });
+
+    res.json({
+      message: "Пост успішно видалено",
+      posts: userPosts || [],
+    });
+  } catch (error) {
+    console.error("Помилка при видаленні посту:", error);
+    res.status(500).json({ message: "Помилка при видаленні посту" });
+  }
+});
+app.post("/like", async (req, res) => {
+  const { userId, postId } = req.body;
+
+  try {
+    // Перевірка, чи користувач і пост існують
+    const user = await User.findOne({ userId });
+    const post = await Post.findById(postId);
+
+    if (!user || !post) {
+      return res.status(404).json({ message: "Користувач або пост не знайдено" });
+    }
+
+    // Перевірка, чи користувач не лайкає свій власний пост
+    if (userId === post.userId.toString()) {
+      return res.status(400).json({ message: "Ви не можете лайкати свій власний пост" });
+    }
+
+    // Перевірка, чи користувач вже лайкав цей пост
+    const isLiked = post.likes.includes(userId);
+
+    if (isLiked) {
+      // Якщо користувач вже лайкав, видаляємо його ID з масиву лайків
+      post.likes = post.likes.filter((likeId) => likeId.toString() !== userId);
+
+      await post.save();
+
+      res.json({ message: "Лайк успішно знято", liked: false, likeCount: post.likes.length });
+    } else {
+      // Якщо користувач не лайкав, додаємо його ID до масиву лайків
+      post.likes.push(userId);
+
+      await post.save();
+
+      res.json({ message: "Лайк успішно додано", liked: true, likeCount: post.likes.length });
+    }
+  } catch (error) {
+    console.error("Помилка при роботі з лайками:", error);
+    res.status(500).json({ message: "Помилка при роботі з лайками" });
+  }
+});
+
+app.put("/posts/:postId", async (req, res) => {
+  const postId = req.params.postId;
+  let { updatedText } = req.body;
+
+  updatedText = updatedText || "";
+  try {
+    // Перевірте, чи postId є валідним ObjectId
+    if (!mongoose.Types.ObjectId.isValid(postId)) {
+      return res.status(400).json({ message: "Невірний формат ID посту" });
+    }
+
+    // Знайдіть пост за postId
+    const post = await Post.findById(postId);
+
+    // Перевірте, чи пост існує
+    if (!post) {
+      return res.status(404).json({ message: "Пост не знайдено" });
+    }
+
+    // Оновіть текст поста
+    post.postMessage = updatedText;
+
+    // Збережіть оновлений пост в базі даних
+    await post.save();
+
+    // Отримайте всі пости користувача після оновлення
+    const userId = post.userId;
+    const userPosts = await Post.find({ userId });
+
+    res.json({
+      message: "Текст поста успішно оновлено",
+      posts: userPosts || [],
+    });
+  } catch (error) {
+    console.error("Помилка при оновленні тексту поста:", error);
+    res.status(500).json({ message: "Помилка при оновленні тексту поста" });
+  }
+});
+
 // /users-info endpoint
 app.put("/update-profile/:userId", async (req, res) => {
   const userId = req.params.userId;

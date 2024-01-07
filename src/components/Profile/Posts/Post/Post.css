@@ -59,7 +59,7 @@
     align-items: center;
     flex-direction: column;
 }
-.postPhotos button {
+.btn-post-save {
   background-color: #5bc0be;
   color: #fff;
   padding: 10px 20px;
@@ -70,8 +70,32 @@
   font-family: "Tilt Neon", sans-serif;
   margin-bottom: 10px;
 }
-.postPhotos button:hover {
+.btn-post-save:hover{
   background-color: #3a506b;
+}
+.likes_and_count{
+  font-size: 24;
+  color: #fff;
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+}
+.like_button{
+  background-color: #0b132b;
+  border: none;
+  cursor: pointer;
+  color: #fff;
+  font-size: 24px;
+}
+.like_button:hover{
+  color: #5bc0be;
+}
+.liked_button{
+  background-color: #0b132b;
+  border: none;
+  cursor: pointer;
+  color: #5bc0be;
+  font-size: 24px;
 }
 /* Додайте цей стиль для налаштування стрілок слайдера */
 .slick-prev,

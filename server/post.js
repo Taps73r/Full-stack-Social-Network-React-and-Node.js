@@ -15,6 +15,12 @@ const postSchema = new mongoose.Schema({
       required: true,
     },
   ],
+  likes: [
+    {
+      type: Number,
+      ref: "User",
+    },
+  ],
   // Додайте інші поля, які вам потрібні для поста
 });
 

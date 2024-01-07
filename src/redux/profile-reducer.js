@@ -8,8 +8,9 @@ const UPDATE_CHANGE_BIO_TEXT = "UPDATE_CHANGE_BIO_TEXT";
 const UPDATE_CHANGE_NAME_TEXT = "UPDATE_CHANGE_NAME_TEXT";
 const UPLOAD_AVATAR = "UPLOAD_AVATAR";
 const UPLOAD_POST_IMAGES = "UPLOAD_POST_IMAGES";
-const UPDATE_POST = "UPDATE_POST";
 const UPDATE_POST_TEXT = "UPDATE_POST_TEXT";
+const SET_POST_DATA = "SET_POST_DATA";
+const SET_LIKE = "SET_LIKE";
 
 let initialState = {
   postData: [],
@@ -32,21 +33,26 @@ export const profileReducer = (state = initialState, action) => {
         newPostText: "",
         newPostImages: [],
       };
-      case UPDATE_POST: 
-      return {
-        ...state,
-        updatePostText: ""
-      };
     case UPDATE_TEXT_POST:
       return {
         ...state,
         newPostText: action.newText,
+      };
+    case SET_POST_DATA:
+      return {
+        ...state,
+        postData: action.postData.posts,
+        updatePostText: "",
       };
     case UPLOAD_POST_IMAGES:
       return {
         ...state,
         newPostImages: action.images,
       };
+    case SET_LIKE:
+      return {
+
+      }
     case UPLOAD_AVATAR:
       return {
         ...state,
@@ -58,11 +64,11 @@ export const profileReducer = (state = initialState, action) => {
         profileData: action.profileData,
         postData: action.profileData.posts || [],
       };
-      case UPDATE_POST_TEXT:
-        return {
-          ...state,
-          updatePostText: action.text
-        };
+    case UPDATE_POST_TEXT:
+      return {
+        ...state,
+        updatePostText: action.text,
+      };
     case TOGGLE_IS_FETCHING:
       return {
         ...state,
@@ -93,6 +99,10 @@ export const profileReducer = (state = initialState, action) => {
   }
 };
 
+export const setPostData = (postData) => ({
+  type: SET_POST_DATA,
+  postData,
+});
 export const returnChangeUserInfo = () => ({
   type: RETURN_CHANGE_INFO,
 });
@@ -136,8 +146,5 @@ export const uploadAvatar = (avatarUrl) => ({
 });
 export const updateTextPost = (text) => ({
   type: UPDATE_POST_TEXT,
-  text
-})
-export const updatePost = () => ({
-  type: UPDATE_POST
-})
+  text,
+});
