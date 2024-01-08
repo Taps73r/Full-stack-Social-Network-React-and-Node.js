@@ -110,8 +110,12 @@ function MainContainer({
         setIsFetching(false);
       });
   };
-  let likeCurrentPost = () => {
-
+  let likeCurrentPost = (postId) => {
+    axios
+    .post(`http://localhost:3002/like`, {postId, userId})
+    .then((response) => {
+      
+    })
   }
   if (isFetching || !profileData) {
     return <Preloader />;

@@ -6,20 +6,31 @@ import "./Post.css";
 import EditPost from "../../../common/EditPost/EditPost";
 
 function Post(props) {
-  let likesCount = props.likes?.count || 0;
+  let likesCount = props.likes?.length || 0;
   let userId = props.userId;
   let profileId = props.profileData.userId;
   const [expanded] = useState(false);
   const [isMenuOpen, setMenuOpen] = useState(false);
   const [updateTextMenu, setUpdateTextMenu] = useState(false);
-  //!!TO DO доробити лайки
-  const [postLiked, likePost] = useState(true);
+  const [postLiked, likePost] = useState(
+    props.likes.includes(userId) ? true : false
+  );
+  let [plusLike, addLiketoPost] = useState(likesCount);
 
   const handleLikeClick = () => {
-    debugger
+    const newLikeState = !postLiked;
+
     props.likeCurrentPost(props.postId);
-    likePost(postLiked);
+
+    if (newLikeState) {
+      addLiketoPost(plusLike + 1);
+    } else {
+      addLiketoPost(plusLike - 1);
+    }
+
+    likePost(newLikeState);
   };
+
   const handleMenuClick = () => {
     setMenuOpen(!isMenuOpen);
   };
@@ -118,10 +129,13 @@ function Post(props) {
         <Slider {...settings}>{photos}</Slider>
       </div>
       <div className="likes_and_count">
-        <button className={postLiked ? "liked_button": "like_button"} onClick={handleLikeClick}>
+        <button
+          className={postLiked ? "liked_button" : "like_button"}
+          onClick={handleLikeClick}
+        >
           <span class="material-symbols-outlined">thumb_up</span>
         </button>
-        <p>{`${likesCount}`}</p>
+        <p>{`${plusLike}`}</p>
       </div>
     </div>
   );

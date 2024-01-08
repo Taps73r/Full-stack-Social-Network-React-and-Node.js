@@ -306,36 +306,38 @@ app.post("/like", async (req, res) => {
   const { userId, postId } = req.body;
 
   try {
-    // Перевірка, чи користувач і пост існують
+    // Check if the user and post exist
     const user = await User.findOne({ userId });
     const post = await Post.findById(postId);
 
     if (!user || !post) {
-      return res.status(404).json({ message: "Користувач або пост не знайдено" });
+      return res
+        .status(404)
+        .json({ message: "Користувач або пост не знайдено" });
     }
 
-    // Перевірка, чи користувач не лайкає свій власний пост
-    if (userId === post.userId.toString()) {
-      return res.status(400).json({ message: "Ви не можете лайкати свій власний пост" });
-    }
-
-    // Перевірка, чи користувач вже лайкав цей пост
+    // Check if the user already liked the post
     const isLiked = post.likes.includes(userId);
+    if (isLiked === true) {
+      post.likes.pull(userId);
+      await post.save(); // Save the changes to the database
 
-    if (isLiked) {
-      // Якщо користувач вже лайкав, видаляємо його ID з масиву лайків
-      post.likes = post.likes.filter((likeId) => likeId.toString() !== userId);
-
-      await post.save();
-
-      res.json({ message: "Лайк успішно знято", liked: false, likeCount: post.likes.length });
+      res.json({
+        message: "Лайк успішно знято",
+        liked: false,
+        likeCount: post.likes.length,
+      });
     } else {
-      // Якщо користувач не лайкав, додаємо його ID до масиву лайків
+      // If the user hasn't liked, add their ID to the likes array
       post.likes.push(userId);
 
-      await post.save();
+      await post.save(); // Save the changes to the database
 
-      res.json({ message: "Лайк успішно додано", liked: true, likeCount: post.likes.length });
+      res.json({
+        message: "Лайк успішно додано",
+        liked: true,
+        likeCount: post.likes.length,
+      });
     }
   } catch (error) {
     console.error("Помилка при роботі з лайками:", error);
