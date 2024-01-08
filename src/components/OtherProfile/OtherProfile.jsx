@@ -2,13 +2,24 @@ import Post from "../Profile/Posts/Post/Post";
 import staticPhoto from './../../photos/userstaticavatar.jpg';
 let OtherProfile = (props) => {
     let posts;
-    if (props.postData && props.postData.length > 0) {
-        posts = props.postData.map(post => {
-            return <Post key={post.postId} message={post.postMessage} photos={post.photos} profileData={props.profileData} />;
-        });
-    } else {
-        posts = <p>No posts available.</p>;
-    }
+  if (props.postData && props.postData.length > 0) {
+    posts = props.postData.map((post) => {
+      return (
+        <Post
+          key={post._id}
+          likes={post.likes}
+          postId={post._id}
+          userId={props.loggedId}
+          likeCurrentPost={props.likeCurrentPost}
+          message={post.postMessage}
+          photos={post.photos}
+          profileData={props.profileData}
+        />
+      );
+    });
+  } else {
+    posts = <p>No posts available.</p>;
+  }
     function wrapBioText(aboutMe) {
         const maxCharsPerLine = 20;
         if (aboutMe.length > maxCharsPerLine) {

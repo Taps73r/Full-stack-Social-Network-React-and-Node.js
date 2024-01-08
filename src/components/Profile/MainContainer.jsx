@@ -114,8 +114,11 @@ function MainContainer({
     axios
     .post(`http://localhost:3002/like`, {postId, userId})
     .then((response) => {
-      
+
     })
+    .catch((error) => {
+      console.error(error);
+    });
   }
   if (isFetching || !profileData) {
     return <Preloader />;
