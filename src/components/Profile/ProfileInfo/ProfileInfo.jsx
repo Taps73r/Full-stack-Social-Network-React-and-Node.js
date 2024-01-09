@@ -10,6 +10,7 @@ function ProfileInfo(props) {
       return (
         <Post
           key={post._id}
+          sendComent={props.sendComent}
           likes={post.likes}
           postId={post._id}
           userId={props.userId}

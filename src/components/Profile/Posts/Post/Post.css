@@ -54,10 +54,11 @@
   width: 100%;
   height: auto;
 }
-.EditForm{
-    display: flex;
-    align-items: center;
-    flex-direction: column;
+.EditForm {
+  font-family: "Tilt Neon", sans-serif;
+  display: flex;
+  align-items: center;
+  flex-direction: column;
 }
 .btn-post-save {
   background-color: #5bc0be;
@@ -70,27 +71,48 @@
   font-family: "Tilt Neon", sans-serif;
   margin-bottom: 10px;
 }
-.btn-post-save:hover{
+.btn-post-save:hover {
   background-color: #3a506b;
 }
-.likes_and_count{
-  font-size: 24;
+.likes_and_count {
+  font-size: 30px;
   color: #fff;
   display: flex;
   flex-direction: row;
+  font-family: "Tilt Neon", sans-serif;
   align-items: center;
 }
-.like_button{
+.likes_and_count p {
+  margin: 0 40px 0 10px;
+}
+.likes_and_count span {
+  font-size: 38px;
+}
+.like_button {
   background-color: #0b132b;
   border: none;
   cursor: pointer;
   color: #fff;
-  font-size: 24px;
 }
-.like_button:hover{
+.coment_btn {
+  background-color: #0b132b;
+  border: none;
+  cursor: pointer;
+  color: #fff;
+}
+.active_coment_btn {
+  color: #5bc0be;
+  background-color: #0b132b;
+  border: none;
+  cursor: pointer;
+}
+.coment_btn:hover {
   color: #5bc0be;
 }
-.liked_button{
+.like_button:hover {
+  color: #5bc0be;
+}
+.liked_button {
   background-color: #0b132b;
   border: none;
   cursor: pointer;

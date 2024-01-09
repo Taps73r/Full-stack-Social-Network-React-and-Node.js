@@ -9,6 +9,7 @@ function Main(props) {
     return (
       <div className="maincontent">
         <ProfileInfo
+          sendComent={props.sendComent}
           postData={props.postData}
           profileData={props.profileData}
           changeUserInfo={props.changeUserInfo}

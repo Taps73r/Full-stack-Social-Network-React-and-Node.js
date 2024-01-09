@@ -123,6 +123,9 @@ function MainContainer({
   if (isFetching || !profileData) {
     return <Preloader />;
   }
+  const sendComent = (postId) => {
+    
+  }
 
   return (
     <Main
@@ -138,6 +141,7 @@ function MainContainer({
       updateTextPost={updateTextPost}
       deleteCurrentPost={deleteCurrentPost}
       updateCurrentPost={updateCurrentPost}
+      sendComent={sendComent}
     />
   );
 }
