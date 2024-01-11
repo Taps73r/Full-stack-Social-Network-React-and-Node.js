@@ -123,8 +123,12 @@ function MainContainer({
   if (isFetching || !profileData) {
     return <Preloader />;
   }
-  const sendComent = (postId) => {
-    
+  const sendComent = (postId, commentText) => {
+    axios
+    .post(`http://localhost:3002/comments/${postId}`, {userId, commentText})
+    .then((response) => {
+      console.log(response)
+    })
   }
 
   return (

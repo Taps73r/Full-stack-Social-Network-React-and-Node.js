@@ -4,7 +4,8 @@ import "slick-carousel/slick/slick.css";
 import "slick-carousel/slick/slick-theme.css";
 import "./Post.css";
 import EditPost from "../../../common/EditPost/EditPost";
-// TODO Develop comment block
+import Coments from "../../../common/Coments/Coments";
+// TODO: Develop comment block
 function Post(props) {
   let likesCount = props.likes?.length || 0;
   let userId = props.userId;
@@ -18,8 +19,14 @@ function Post(props) {
     props.likes.includes(userId) ? true : false
   );
   let [plusLike, addLiketoPost] = useState(likesCount);
+  let [commentText, changeCommentText] = useState("");
+
   const handleSendComent = () => {
-    props.sendComent();
+    props.sendComent(props.postId, commentText);
+  };
+  const updateCommentText = (e) => {
+    const text = e.target.value;
+    changeCommentText(text);
   };
   const showHideComent = () => {
     setShowComents(!showComents);
@@ -141,7 +148,10 @@ function Post(props) {
             <span class="material-symbols-outlined">thumb_up</span>
           </button>
           <p>{`${plusLike}`}</p>
-          <button className={showComents ? "active_coment_btn" : "coment_btn"} onClick={showHideComent}>
+          <button
+            className={showComents ? "active_coment_btn" : "coment_btn"}
+            onClick={showHideComent}
+          >
             <span class="material-symbols-outlined">chat_bubble</span>
           </button>
           <p>{``}</p>
@@ -150,9 +160,15 @@ function Post(props) {
       {showComents ? (
         <div className="coment_block">
           <form>
-            <textarea></textarea>
-            <button type="submit">Send</button>
+            <textarea
+              onChange={updateCommentText}
+              value={commentText}
+            ></textarea>
+            <button onClick={handleSendComent} type="submit">
+              Send
+            </button>
           </form>
+          <Coments postId={props.postId} />
         </div>
       ) : null}
     </>

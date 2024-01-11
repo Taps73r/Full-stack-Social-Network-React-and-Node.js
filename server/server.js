@@ -19,6 +19,7 @@ const Post = require("./post");
 const User = require("./user");
 const Subscription = require("./subscription");
 const Profile = require("./profileSchema");
+const Comment = require("./commentSchema");
 
 const mongoURI =
   "mongodb+srv://taps73r:motherboard2005@cluster0.rx59bw7.mongodb.net/?retryWrites=true&w=majority";
@@ -491,6 +492,88 @@ app.get("/users-info", async (req, res) => {
   } catch (error) {
     console.error("Помилка при отриманні даних:", error);
     res.status(500).json({ message: "Помилка при отриманні даних" });
+  }
+});
+// ...
+
+// Ручка для отримання коментарів певного поста за його postId
+app.get("/comments/:postId", async (req, res) => {
+  const postId = req.params.postId;
+
+  try {
+    // Перевірка, чи postId є валідним ObjectId
+    if (!mongoose.Types.ObjectId.isValid(postId)) {
+      return res.status(400).json({ message: "Невірний формат ID посту" });
+    }
+
+    // Знайдення коментарів для даного поста за postId
+    const comments = await Comment.find({ postId });
+
+    res.json({ comments });
+  } catch (error) {
+    console.error("Помилка при отриманні коментарів:", error);
+    res.status(500).json({ message: "Помилка при отриманні коментарів" });
+  }
+});
+// Ручка для видалення коментаря за його commentId
+app.delete("/comments/:commentId", async (req, res) => {
+  const commentId = req.params.commentId;
+
+  try {
+    // Перевірка, чи commentId є валідним ObjectId
+    if (!mongoose.Types.ObjectId.isValid(commentId)) {
+      return res.status(400).json({ message: "Невірний формат ID коментаря" });
+    }
+
+    // Знайдення і видалення коментаря за commentId
+    await Comment.findByIdAndDelete(commentId);
+
+    res.json({ message: "Коментар успішно видалено" });
+  } catch (error) {
+    console.error("Помилка при видаленні коментаря:", error);
+    res.status(500).json({ message: "Помилка при видаленні коментаря" });
+  }
+});
+
+// Ручка для створення нового коментаря
+app.post("/comments/:postId", async (req, res) => {
+  const postId = req.params.postId;
+  const { userId, commentText } = req.body;
+
+  try {
+    // Перевірка, чи postId є валідним ObjectId
+    if (!mongoose.Types.ObjectId.isValid(postId)) {
+      return res.status(400).json({ message: "Невірний формат ID посту" });
+    }
+
+    // Знайдення поста за postId
+    const post = await Post.findById(postId);
+
+    // Перевірка, чи пост існує
+    if (!post) {
+      return res.status(404).json({ message: "Пост не знайдено" });
+    }
+
+    // Створення нового коментаря
+    const newComment = new Comment({
+      postId,
+      userId,
+      commentText,
+    });
+
+    // Збереження коментаря в базі даних
+    await newComment.save();
+
+    // Додавання коментаря до масиву коментарів у пості
+    post.comments.push(newComment);
+
+    // Збереження оновленого поста в базі даних
+    await post.save();
+
+    res.status(201).json({ message: "Коментар успішно створено", newComment });
+  } catch (error) {
+    console.error("Помилка при створенні коментаря:", error);
+    res.status(500).json({ message: "Помилка при створенні коментаря" });
   }
 });
 
