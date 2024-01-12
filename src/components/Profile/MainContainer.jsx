@@ -124,10 +124,14 @@ function MainContainer({
     return <Preloader />;
   }
   const sendComent = (postId, commentText) => {
+    console.log(postId, commentText, userId)
     axios
     .post(`http://localhost:3002/comments/${postId}`, {userId, commentText})
     .then((response) => {
       console.log(response)
+    })
+    .catch((response) => {
+
     })
   }
 

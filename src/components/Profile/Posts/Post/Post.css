@@ -116,8 +116,7 @@
   background-color: #0b132b;
   border: none;
   cursor: pointer;
-  color: #5bc0be;
-  font-size: 24px;
+  color: #5bc0be; 
 }
 /* Додайте цей стиль для налаштування стрілок слайдера */
 .slick-prev,

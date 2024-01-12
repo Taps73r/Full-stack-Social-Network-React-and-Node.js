@@ -509,7 +509,7 @@ app.get("/comments/:postId", async (req, res) => {
     // Знайдення коментарів для даного поста за postId
     const comments = await Comment.find({ postId });
 
-    res.json({ comments });
+    res.json({ comments, count: comments.length });
   } catch (error) {
     console.error("Помилка при отриманні коментарів:", error);
     res.status(500).json({ message: "Помилка при отриманні коментарів" });
@@ -518,6 +518,7 @@ app.get("/comments/:postId", async (req, res) => {
 // Ручка для видалення коментаря за його commentId
 app.delete("/comments/:commentId", async (req, res) => {
   const commentId = req.params.commentId;
+  const postId = req.body;
 
   try {
     // Перевірка, чи commentId є валідним ObjectId
@@ -528,7 +529,10 @@ app.delete("/comments/:commentId", async (req, res) => {
     // Знайдення і видалення коментаря за commentId
     await Comment.findByIdAndDelete(commentId);
 
-    res.json({ message: "Коментар успішно видалено" });
+    // Отримання оновленного масиву коментарів для даного поста
+    const comments = await Comment.find({ postId });
+
+    res.json({ message: "Коментар успішно видалено", comments });
   } catch (error) {
     console.error("Помилка при видаленні коментаря:", error);
     res.status(500).json({ message: "Помилка при видаленні коментаря" });
@@ -541,37 +545,37 @@ app.post("/comments/:postId", async (req, res) => {
   const { userId, commentText } = req.body;
 
   try {
-    // Перевірка, чи postId є валідним ObjectId
     if (!mongoose.Types.ObjectId.isValid(postId)) {
       return res.status(400).json({ message: "Невірний формат ID посту" });
     }
 
-    // Знайдення поста за postId
     const post = await Post.findById(postId);
-
-    // Перевірка, чи пост існує
     if (!post) {
       return res.status(404).json({ message: "Пост не знайдено" });
     }
 
-    // Створення нового коментаря
+    // Перевірка, чи існує користувач з вказаним userId
+    const user = await User.findOne({ userId });
+    if (!user) {
+      return res.status(404).json({ message: "Користувача не знайдено" });
+    }
+
     const newComment = new Comment({
       postId,
       userId,
       commentText,
     });
 
-    // Збереження коментаря в базі даних
     await newComment.save();
-
-    // Додавання коментаря до масиву коментарів у пості
-    post.comments.push(newComment);
-
-    // Збереження оновленого поста в базі даних
     await post.save();
 
     res.status(201).json({ message: "Коментар успішно створено", newComment });
   } catch (error) {
+    // Обробка помилок валідації Mongoose
+    if (error.name === "ValidationError") {
+      return res.status(400).json({ message: error.message });
+    }
+
     console.error("Помилка при створенні коментаря:", error);
     res.status(500).json({ message: "Помилка при створенні коментаря" });
   }

@@ -1,16 +1,16 @@
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import Slider from "react-slick";
 import "slick-carousel/slick/slick.css";
 import "slick-carousel/slick/slick-theme.css";
 import "./Post.css";
 import EditPost from "../../../common/EditPost/EditPost";
-import Coments from "../../../common/Coments/Coments";
+import Comments from "../../../common/Comments/Comments";
+import axios from "axios";
 // TODO: Develop comment block
 function Post(props) {
-  let likesCount = props.likes?.length || 0;
-  let userId = props.userId;
-  let commentsCount = props;
-  let profileId = props.profileData.userId;
+  const likesCount = props.likes?.length || 0;
+  const userId = props.userId;
+  const profileId = props.profileData.userId;
   const [expanded] = useState(false);
   const [isMenuOpen, setMenuOpen] = useState(false);
   const [updateTextMenu, setUpdateTextMenu] = useState(false);
@@ -18,11 +18,25 @@ function Post(props) {
   const [postLiked, likePost] = useState(
     props.likes.includes(userId) ? true : false
   );
+  const [commentsCount, changeCommentsCount] = useState();
   let [plusLike, addLiketoPost] = useState(likesCount);
   let [commentText, changeCommentText] = useState("");
-
-  const handleSendComent = () => {
+  useEffect(() => {
+    const getCommentsCount = () => {
+      axios
+        .get(`http://localhost:3002/comments/${props.postId}`)
+        .then((response) => {
+          console.log(response);
+          changeCommentsCount(response.data.count);
+        })
+        .catch((error) => {});
+    };
+    getCommentsCount();
+  }, [props.postId]);
+  const handleSendComent = (e) => {
+    e.preventDefault();
     props.sendComent(props.postId, commentText);
+    changeCommentText("");
   };
   const updateCommentText = (e) => {
     const text = e.target.value;
@@ -154,7 +168,7 @@ function Post(props) {
           >
             <span class="material-symbols-outlined">chat_bubble</span>
           </button>
-          <p>{``}</p>
+          <p>{`${commentsCount}`}</p>
         </div>
       </div>
       {showComents ? (
@@ -168,7 +182,7 @@ function Post(props) {
               Send
             </button>
           </form>
-          <Coments postId={props.postId} />
+          <Comments loggedId={props.userId} postId={props.postId} />
         </div>
       ) : null}
     </>
