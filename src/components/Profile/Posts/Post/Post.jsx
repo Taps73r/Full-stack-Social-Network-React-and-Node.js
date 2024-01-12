@@ -20,11 +20,10 @@ function Post(props) {
   );
   const [commentsCount, changeCommentsCount] = useState();
   let [plusLike, addLiketoPost] = useState(likesCount);
-  let [commentText, changeCommentText] = useState("");
   useEffect(() => {
     const getCommentsCount = () => {
       axios
-        .get(`http://localhost:3002/comments/${props.postId}`)
+        .get(`http://localhost:3002/comments/${props.postId}/count`)
         .then((response) => {
           console.log(response);
           changeCommentsCount(response.data.count);
@@ -33,15 +32,7 @@ function Post(props) {
     };
     getCommentsCount();
   }, [props.postId]);
-  const handleSendComent = (e) => {
-    e.preventDefault();
-    props.sendComent(props.postId, commentText);
-    changeCommentText("");
-  };
-  const updateCommentText = (e) => {
-    const text = e.target.value;
-    changeCommentText(text);
-  };
+
   const showHideComent = () => {
     setShowComents(!showComents);
   };
@@ -159,31 +150,20 @@ function Post(props) {
             className={postLiked ? "liked_button" : "like_button"}
             onClick={handleLikeClick}
           >
-            <span class="material-symbols-outlined">thumb_up</span>
+            <span className="material-symbols-outlined">thumb_up</span>
           </button>
           <p>{`${plusLike}`}</p>
           <button
             className={showComents ? "active_coment_btn" : "coment_btn"}
             onClick={showHideComent}
           >
-            <span class="material-symbols-outlined">chat_bubble</span>
+            <span className="material-symbols-outlined">chat_bubble</span>
           </button>
           <p>{`${commentsCount}`}</p>
         </div>
       </div>
       {showComents ? (
-        <div className="coment_block">
-          <form>
-            <textarea
-              onChange={updateCommentText}
-              value={commentText}
-            ></textarea>
-            <button onClick={handleSendComent} type="submit">
-              Send
-            </button>
-          </form>
-          <Comments loggedId={props.userId} postId={props.postId} />
-        </div>
+        <Comments loggedId={props.userId} postId={props.postId} />
       ) : null}
     </>
   );

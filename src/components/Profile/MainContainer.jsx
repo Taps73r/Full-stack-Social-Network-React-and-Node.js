@@ -37,7 +37,6 @@ function MainContainer({
       setIsFetching(true);
 
       const url = `http://localhost:3002/profile/${userId}`;
-
       axios
         .get(url)
         .then((response) => {
@@ -123,18 +122,6 @@ function MainContainer({
   if (isFetching || !profileData) {
     return <Preloader />;
   }
-  const sendComent = (postId, commentText) => {
-    console.log(postId, commentText, userId)
-    axios
-    .post(`http://localhost:3002/comments/${postId}`, {userId, commentText})
-    .then((response) => {
-      console.log(response)
-    })
-    .catch((response) => {
-
-    })
-  }
-
   return (
     <Main
       postData={postData}
@@ -149,7 +136,6 @@ function MainContainer({
       updateTextPost={updateTextPost}
       deleteCurrentPost={deleteCurrentPost}
       updateCurrentPost={updateCurrentPost}
-      sendComent={sendComent}
     />
   );
 }

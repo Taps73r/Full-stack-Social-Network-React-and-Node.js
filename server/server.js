@@ -509,30 +509,73 @@ app.get("/comments/:postId", async (req, res) => {
     // Знайдення коментарів для даного поста за postId
     const comments = await Comment.find({ postId });
 
-    res.json({ comments, count: comments.length });
+    const populatedComments = await Promise.all(
+      comments.map(async (comment) => {
+        const user = await Profile.findOne({ userId: comment.userId });
+        return {
+          comment,
+          user: { name: user.name, photo: user.photo },
+        };
+      })
+    );
+
+    res.json({ comments: populatedComments, count: populatedComments.length });
   } catch (error) {
     console.error("Помилка при отриманні коментарів:", error);
     res.status(500).json({ message: "Помилка при отриманні коментарів" });
   }
 });
-// Ручка для видалення коментаря за його commentId
+app.get("/comments/:postId/count", async (req, res) => {
+  const postId = req.params.postId;
+
+  try {
+    // Перевірка, чи postId є валідним ObjectId
+    if (!mongoose.Types.ObjectId.isValid(postId)) {
+      return res.status(400).json({ message: "Невірний формат ID посту" });
+    }
+
+    // Знайдення кількості коментарів для даного поста за postId
+    const count = await Comment.countDocuments({ postId });
+
+    res.json({ count });
+  } catch (error) {
+    console.error("Помилка при отриманні кількості коментарів:", error);
+    res
+      .status(500)
+      .json({ message: "Помилка при отриманні кількості коментарів" });
+  }
+});
 app.delete("/comments/:commentId", async (req, res) => {
   const commentId = req.params.commentId;
-  const postId = req.body;
 
   try {
     // Перевірка, чи commentId є валідним ObjectId
     if (!mongoose.Types.ObjectId.isValid(commentId)) {
       return res.status(400).json({ message: "Невірний формат ID коментаря" });
     }
-
+    // Отримання postId з видаленого коментаря
+    const deletedComment = await Comment.findById(commentId);
+    const postId = deletedComment.postId;
     // Знайдення і видалення коментаря за commentId
+
     await Comment.findByIdAndDelete(commentId);
-
     // Отримання оновленного масиву коментарів для даного поста
-    const comments = await Comment.find({ postId });
 
-    res.json({ message: "Коментар успішно видалено", comments });
+    const comments = await Comment.find({ postId });
+    const populatedComments = await Promise.all(
+      comments.map(async (comment) => {
+        const user = await Profile.findOne({ userId: comment.userId });
+        return {
+          comment,
+          user: { name: user.name, photo: user.photo },
+        };
+      })
+    );
+
+    res.json({
+      message: "Коментар успішно видалено",
+      comments: populatedComments,
+    });
   } catch (error) {
     console.error("Помилка при видаленні коментаря:", error);
     res.status(500).json({ message: "Помилка при видаленні коментаря" });
@@ -560,16 +603,27 @@ app.post("/comments/:postId", async (req, res) => {
       return res.status(404).json({ message: "Користувача не знайдено" });
     }
 
-    const newComment = new Comment({
+    // Знайти профіль за userId
+    const userProfile = await Profile.findOne({ userId });
+
+    const comment = new Comment({
       postId,
       userId,
       commentText,
     });
 
-    await newComment.save();
+    await comment.save();
     await post.save();
 
-    res.status(201).json({ message: "Коментар успішно створено", newComment });
+    res
+      .status(201)
+      .json({
+        message: "Коментар успішно створено",
+        newComment: {
+          comment,
+          user: { name: userProfile.name, photo: userProfile.photo },
+        },
+      });
   } catch (error) {
     // Обробка помилок валідації Mongoose
     if (error.name === "ValidationError") {

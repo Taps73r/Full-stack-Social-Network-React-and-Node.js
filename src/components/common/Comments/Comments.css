@@ -1,0 +1,30 @@
+.comment_text {
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+  justify-content: space-between;
+  font-size: 18px;
+  border: 2px solid #5bc0be;
+  margin-top: 10px;
+  width: 500px;
+  padding: 10px;
+  border-radius: 10px;
+}
+.comment_text button {
+    
+}
+.comment_text button:hover {
+}
+.comment_text img{
+  border-radius: 50%;
+  height: 50px;
+  width: 50px;
+}
+.photo_name_userComment{
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+}
+.photo_name_userComment p{
+  margin-left: 10px;
+}
