@@ -6,8 +6,15 @@ const router = express.Router();
 const Post = require("../Schema/post");
 const User = require("../Schema/user");
 
+const postValidation = require("../Validation/postValidation");
+
 router.post("/posts", async (req, res) => {
   const { userId, postMessage, photos } = req.body;
+
+  const validation = postValidation(postMessage);
+  if (!validation.isValid) {
+    return res.status(400).json({ message: validation.errorMessage });
+  }
   try {
     const newPost = new Post({
       userId,
@@ -120,11 +127,15 @@ router.put("/posts/:postId", async (req, res) => {
   let { updatedText } = req.body;
 
   updatedText = updatedText || "";
+  const validation = postValidation(updatedText);
+  if (!validation.isValid) {
+    return res.status(400).json({ message: validation.errorMessage });
+  }
   try {
     if (!mongoose.Types.ObjectId.isValid(postId)) {
       return res.status(400).json({ message: "Невірний формат ID посту" });
     }
-
+    
     const post = await Post.findById(postId);
 
     if (!post) {
