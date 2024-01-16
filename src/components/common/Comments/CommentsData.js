@@ -5,6 +5,7 @@ import staticPhoto from "./../../../photos/userstaticavatar.jpg";
 const CommentsData = (props) => {
   const handleDeleteComment = () => {
     props.deleteComment(props.comment.comment._id);
+     props.deleteCommentFromCount();
   };
   return (
     <div>
@@ -20,14 +21,18 @@ const CommentsData = (props) => {
               alt="User-Avatar"
             />
           </NavLink>
-          <NavLink to={`/user-profile/${props.comment.user.userId}`}>
+          <NavLink
+            id="post_userName"
+            to={`/user-profile/${props.comment.user.userId}`}
+          >
             <p>{props.comment.user.name}</p>
           </NavLink>
         </div>
         <div>
           <p>{props.comment.comment.commentText}</p>
         </div>
-        {props.loggedId === props.comment.comment.userId ? (
+        {props.loggedId === props.comment.comment.userId ||
+        props.loggedId === props.profileId ? (
           <button onClick={handleDeleteComment}>
             <span className="material-symbols-outlined">delete</span>
           </button>

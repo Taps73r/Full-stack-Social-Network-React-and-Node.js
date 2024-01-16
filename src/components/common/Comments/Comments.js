@@ -22,8 +22,10 @@ const Comments = (props) => {
     axios
       .post(`http://localhost:3002/comments/${postId}`, { userId, commentText })
       .then((response) => {
-        console.log(response.data);
-        setCommentsFromResponse([...responseComments, response.data.newComment]);
+        setCommentsFromResponse([
+          ...responseComments,
+          response.data.newComment,
+        ]);
       })
       .catch((response) => {});
   };
@@ -31,6 +33,7 @@ const Comments = (props) => {
     e.preventDefault();
     sendComent(props.postId, commentText);
     changeCommentText("");
+    props.addCommentToCount();
   };
   const updateCommentText = (e) => {
     const text = e.target.value;
@@ -41,7 +44,6 @@ const Comments = (props) => {
       .get(`http://localhost:3002/comments/${props.postId}`)
       .then((response) => {
         setCommentsFromResponse(response.data.comments);
-        
       })
       .catch((error) => {
         console.error("Error fetching comments:", error);
@@ -58,7 +60,9 @@ const Comments = (props) => {
   if (responseComments && responseComments.length > 0) {
     commentsMapping = responseComments.map((comment) => (
       <CommentsData
+        deleteCommentFromCount={props.deleteCommentFromCount}
         loggedId={props.loggedId}
+        profileId={props.profileId}
         deleteComment={deleteComment}
         comment={comment}
         key={comment._id}
@@ -66,16 +70,22 @@ const Comments = (props) => {
     ));
   }
   return (
-    <div>
+    <div className="all-comment-block">
       <div className="coment_block">
         <form>
-          <textarea onChange={updateCommentText} value={commentText}></textarea>
+          <textarea
+            onChange={updateCommentText}
+            id="post_comment-text"
+            value={commentText}
+            maxLength={20}
+            placeholder="Enter here text of your comment"
+          ></textarea>
           <button onClick={handleSendComent} type="submit">
             Send
           </button>
         </form>
       </div>
-      <button onClick={handleShowHideComments}>
+      <button id="show-more-comments" onClick={handleShowHideComments}>
         {showOtherComments ? "Hide Comments" : "Show Comments"}
       </button>
       <div className="comments_block">

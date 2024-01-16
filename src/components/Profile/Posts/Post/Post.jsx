@@ -6,7 +6,7 @@ import "./Post.css";
 import EditPost from "../../../common/EditPost/EditPost";
 import Comments from "../../../common/Comments/Comments";
 import axios from "axios";
-// TODO: Develop comment block
+
 function Post(props) {
   const likesCount = props.likes?.length || 0;
   const userId = props.userId;
@@ -18,7 +18,7 @@ function Post(props) {
   const [postLiked, likePost] = useState(
     props.likes.includes(userId) ? true : false
   );
-  const [commentsCount, changeCommentsCount] = useState();
+  let [commentsCount, changeCommentsCount] = useState();
   let [plusLike, addLiketoPost] = useState(likesCount);
   useEffect(() => {
     const getCommentsCount = () => {
@@ -46,7 +46,12 @@ function Post(props) {
     }
     likePost(newLikeState);
   };
-
+  const deleteCommentFromCount = () => {
+    changeCommentsCount(--commentsCount);
+  };
+  const addCommentToCount = () => {
+    changeCommentsCount(++commentsCount);
+  }
   const handleMenuClick = () => {
     setMenuOpen(!isMenuOpen);
   };
@@ -163,7 +168,13 @@ function Post(props) {
         </div>
       </div>
       {showComents ? (
-        <Comments loggedId={props.userId} postId={props.postId} />
+        <Comments
+          addCommentToCount={addCommentToCount}
+          deleteCommentFromCount={deleteCommentFromCount}
+          postId={props.postId}
+          loggedId={props.userId}
+          profileId={profileId}
+        />
       ) : null}
     </>
   );

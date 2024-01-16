@@ -5,26 +5,90 @@
   justify-content: space-between;
   font-size: 18px;
   border: 2px solid #5bc0be;
-  margin-top: 10px;
-  width: 500px;
+  margin: 10px 0;
+  width: 440px;
   padding: 10px;
   border-radius: 10px;
+  background-color: #fff;
+}
+.coment_block button {
+  background-color: #5bc0be;
+  color: #fff;
+  padding: 10px 20px;
+  font-size: 18px;
+  border: none;
+  border-radius: 4px;
+  cursor: pointer;
+  font-family: "Tilt Neon", sans-serif;
+}
+#show-more-comments{
+  background-color: #0b132b;
+  border: none;
+  color: #fff;
+  font-size: 18px ;
+  cursor: pointer;
+  margin: 10px 0;
+}
+#show-more-comments:hover{
+  color: #5bc0be;
+}
+.coment_block form {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+}
+.all-comment-block {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  background-color: #0b132b;
+  border-radius: 0 0 8px 8px;
+  width: 500px;
 }
 .comment_text button {
-    
+  background-color: #fff;
+  border: none;
+}
+#post_comment-text {
+  width: 440px;
+  margin-bottom: 10px;
+  padding: 10px;
+  border: none;
+  border-radius: 4px;
+  background-color: #3a506b;
+  color: #fff;
+  outline: none;
+  resize: none;
+  font-size: 18px;
+  font-family: "Tilt Neon", sans-serif;
+}
+#post_comment-text::placeholder {
+  color: #fff;
 }
 .comment_text button:hover {
+  color: #5bc0be;
+  cursor: pointer;
 }
-.comment_text img{
+.comment_text img {
   border-radius: 50%;
   height: 50px;
   width: 50px;
+  border: 2px solid #5bc0be;
 }
-.photo_name_userComment{
+.photo_name_userComment {
   display: flex;
   flex-direction: row;
   align-items: center;
 }
-.photo_name_userComment p{
+.photo_name_userComment p {
   margin-left: 10px;
+}
+#post_userName {
+  text-decoration: none;
+  color: #0b132b;
+  font-weight: 600;
+}
+#post_userName:hover {
+  color: #5bc0be;
 }

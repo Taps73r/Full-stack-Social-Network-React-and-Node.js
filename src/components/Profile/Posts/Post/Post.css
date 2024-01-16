@@ -2,7 +2,7 @@
 .posts {
   background-color: #0b132b;
   padding: 20px;
-  border-radius: 8px;
+  border-radius: 8px 8px 0 0;
   width: 500px;
   margin-top: 20px;
 }
