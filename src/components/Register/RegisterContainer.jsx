@@ -14,7 +14,7 @@ class RegisterContainer extends React.Component {
         const username = this.props.username;
         const password = this.props.password;
 
-        axios.post('http://localhost:3002/register', { username, password })
+        axios.post('http://localhost:3002/auth/register', { username, password })
             .then((response) => {
                 this.props.registerSuccess();
                 // Виконайте додаткові дії для успішної реєстрації
