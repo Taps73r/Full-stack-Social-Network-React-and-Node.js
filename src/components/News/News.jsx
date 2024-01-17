@@ -10,7 +10,7 @@ function News (props) {
             key={post._id}
             likes={post.likes}
             postId={post._id}
-            userId={post.userId.userId}
+            userId={props.userId}
             likeCurrentPost={props.likeCurrentPost}
             message={post.postMessage}
             photos={post.photos}

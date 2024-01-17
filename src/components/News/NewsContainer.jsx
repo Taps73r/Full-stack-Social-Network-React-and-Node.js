@@ -4,7 +4,7 @@ import axios from "axios";
 import { connect } from "react-redux";
 import { getNewsData } from "../../redux/news-reducer";
 
-const NewsContainer = ({ newsData, getNewsData }) => {
+const NewsContainer = ({ newsData, getNewsData, userId }) => {
   useEffect(() => {
     const getAllPosts = () => {
       axios
@@ -17,12 +17,27 @@ const NewsContainer = ({ newsData, getNewsData }) => {
     };
     getAllPosts();
   }, [getNewsData]);
-  return <News newsData={newsData} />;
+  let likeCurrentPost = (postId) => {
+    axios
+      .post(`http://localhost:3002/like`, { postId, userId })
+      .then((response) => {})
+      .catch((error) => {
+        console.error(error);
+      });
+  };
+  return (
+    <News
+      likeCurrentPost={likeCurrentPost}
+      userId={userId}
+      newsData={newsData}
+    />
+  );
 };
 
 let mapStateToProps = (state) => {
   return {
     newsData: state.newsInfo.newsData,
+    userId: state.loginInfo.userId,
   };
 };
 
