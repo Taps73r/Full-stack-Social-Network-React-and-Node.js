@@ -2,8 +2,6 @@ import './App.css';
 import Header from './components/Header/Header';
 import Sidebar from './components/Sidebar/Sidebar';
 import Dialogs from './components/Dialogs/Dialogs';
-import News from './components/News/News';
-import Music from './components/Music/Music';
 import Footer from './components/Footer/Footer';
 import { Route, Routes } from 'react-router-dom';
 import UsersContainer from './components/Users/UsersContainer';
@@ -17,6 +15,7 @@ import { loginSuccess } from './redux/login-reducer';
 import axios from 'axios';
 import SettingsContainer from './components/Settings/SettingsContainer';
 import OtherProfileContainerWithApi from './components/OtherProfile/OtherProfileContainer';
+import NewsContainerWithRedux from './components/News/NewsContainer';
 
 class App extends React.Component {
   componentDidMount() {
@@ -48,16 +47,21 @@ class App extends React.Component {
         {isAuthenticated ? (
           <>
             <Sidebar />
-            <div className='route_side_bar'>
+            <div className="route_side_bar">
               <Routes>
-                <Route path="/profile/:userId" element={<ProfileContainerWithApi />} />
+                <Route
+                  path="/profile/:userId"
+                  element={<ProfileContainerWithApi />}
+                />
                 <Route path="/profile/" element={<ProfileContainerWithApi />} />
                 <Route path="/dialogs/*" element={<Dialogs />} />
                 <Route path="/users/" element={<UsersContainer />} />
-                <Route path="/news" element={<News />} />
-                <Route path="/music" element={<Music />} />
+                <Route path="/news" element={<NewsContainerWithRedux />} />
                 <Route path="/settings" element={<SettingsContainer />} />
-                <Route path="/user-profile/:userId" element={<OtherProfileContainerWithApi />} />
+                <Route
+                  path="/user-profile/:userId"
+                  element={<OtherProfileContainerWithApi />}
+                />
               </Routes>
             </div>
           </>

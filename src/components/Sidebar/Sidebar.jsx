@@ -36,14 +36,6 @@ function Sidebar() {
           News
         </div>
       </NavLink>
-      <NavLink to='/music'>
-        <div className="sidebaritem">
-          <span className="material-symbols-outlined">
-            library_music
-          </span>
-          Music
-        </div>
-      </NavLink>
       <NavLink to='/settings' id='l-a'>
         <div className='last-item'>
           <span className="material-symbols-outlined">

@@ -5,6 +5,7 @@ const router = express.Router();
 
 const Post = require("../Schema/post");
 const User = require("../Schema/user");
+const Profile = require("../Schema/profileSchema");
 
 const postValidation = require("../Validation/postValidation");
 
@@ -42,6 +43,38 @@ router.post("/posts", async (req, res) => {
   } catch (error) {
     console.error("Помилка при створенні поста:", error);
     res.status(500).json({ message: "Помилка при створенні поста" });
+  }
+});
+
+router.get("/news-post", async (req, res) => {
+  try {
+    const allPosts = await Post.find();
+
+    if (!allPosts || allPosts.length === 0) {
+      return res.status(404).json({ message: "Пости не знайдено" });
+    }
+
+    const postsWithUserInfo = await Promise.all(
+      allPosts.map(async (post) => {
+        const userProfile = await Profile.findOne({ userId: post.userId });
+        return {
+          _id: post._id,
+          postMessage: post.postMessage,
+          photos: post.photos,
+          userId: {
+            userId: userProfile ? userProfile.userId : null,
+            name: userProfile ? userProfile.name : null,
+            photo: userProfile ? userProfile.photo : null,
+          },
+          likes: post.likes,
+        };
+      })
+    );
+
+    res.json({ posts: postsWithUserInfo });
+  } catch (error) {
+    console.error("Помилка при отриманні постів:", error);
+    res.status(500).json({ message: "Помилка при отриманні постів" });
   }
 });
 
@@ -135,7 +168,7 @@ router.put("/posts/:postId", async (req, res) => {
     if (!mongoose.Types.ObjectId.isValid(postId)) {
       return res.status(400).json({ message: "Невірний формат ID посту" });
     }
-    
+
     const post = await Post.findById(postId);
 
     if (!post) {

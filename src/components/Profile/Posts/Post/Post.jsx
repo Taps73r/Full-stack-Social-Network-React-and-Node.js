@@ -12,7 +12,7 @@ import staticPhoto from "../../../../photos/userstaticavatar.jpg";
 function Post(props) {
   const likesCount = props.likes?.length || 0;
   const userId = props.userId;
-  const profileId = props.profileData.userId;
+  const profileId = props.profileData.userId && null;
   const [expanded] = useState(false);
   const [isMenuOpen, setMenuOpen] = useState(false);
   const [updateTextMenu, setUpdateTextMenu] = useState(false);
