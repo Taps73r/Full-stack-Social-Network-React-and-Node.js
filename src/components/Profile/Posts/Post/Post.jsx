@@ -6,6 +6,8 @@ import "./Post.css";
 import EditPost from "../../../common/EditPost/EditPost";
 import Comments from "../../../common/Comments/Comments";
 import axios from "axios";
+import { NavLink } from "react-router-dom";
+import staticPhoto from "../../../../photos/userstaticavatar.jpg";
 
 function Post(props) {
   const likesCount = props.likes?.length || 0;
@@ -25,7 +27,6 @@ function Post(props) {
       axios
         .get(`http://localhost:3002/comments/${props.postId}/count`)
         .then((response) => {
-          console.log(response);
           changeCommentsCount(response.data.count);
         })
         .catch((error) => {});
@@ -51,7 +52,7 @@ function Post(props) {
   };
   const addCommentToCount = () => {
     changeCommentsCount(++commentsCount);
-  }
+  };
   const handleMenuClick = () => {
     setMenuOpen(!isMenuOpen);
   };
@@ -104,8 +105,22 @@ function Post(props) {
       <div className="posts">
         <div className="userPhoto">
           <div className="post_username_position">
-            <img src={props.profileData.photo} alt="" />
-            <p>{props.profileData.name}</p>
+            <NavLink to={`/user-profile/${props.profileData.userId}`}>
+              <img
+                src={
+                  props.profileData.photo != null
+                    ? props.profileData.photo
+                    : staticPhoto
+                }
+                alt=""
+              />
+            </NavLink>
+            <NavLink
+              id="post_userLink"
+              to={`/user-profile/${props.profileData.userId}`}
+            >
+              <p>{props.profileData.name}</p>
+            </NavLink>
           </div>
           <div>
             {userId === profileId ? (

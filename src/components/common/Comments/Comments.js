@@ -43,6 +43,7 @@ const Comments = (props) => {
     axios
       .get(`http://localhost:3002/comments/${props.postId}`)
       .then((response) => {
+        console.log(response.data)
         setCommentsFromResponse(response.data.comments);
       })
       .catch((error) => {
@@ -58,14 +59,14 @@ const Comments = (props) => {
   };
   let commentsMapping;
   if (responseComments && responseComments.length > 0) {
-    commentsMapping = responseComments.map((comment) => (
+    commentsMapping = responseComments.map((comment, index) => (
       <CommentsData
         deleteCommentFromCount={props.deleteCommentFromCount}
         loggedId={props.loggedId}
         profileId={props.profileId}
         deleteComment={deleteComment}
         comment={comment}
-        key={comment._id}
+        key={index}
       />
     ));
   }

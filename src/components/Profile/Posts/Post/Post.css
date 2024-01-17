@@ -6,6 +6,12 @@
   width: 500px;
   margin-top: 20px;
 }
+#post_userLink{
+  text-decoration: none;
+  color: #fff;
+  font-weight: 600;
+  font-family: "Tilt Neon", sans-serif;
+}
 .userPhoto img {
   width: 70px;
   height: 70px;

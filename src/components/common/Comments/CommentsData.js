@@ -5,28 +5,30 @@ import staticPhoto from "./../../../photos/userstaticavatar.jpg";
 const CommentsData = (props) => {
   const handleDeleteComment = () => {
     props.deleteComment(props.comment.comment._id);
-     props.deleteCommentFromCount();
+    props.deleteCommentFromCount();
   };
   return (
     <div>
       <div className="comment_text">
         <div className="photo_name_userComment">
-          <NavLink to={`/user-profile/${props.comment.user.userId}`}>
-            <img
-              src={
-                props.comment.user.photo != null
-                  ? props.comment.user.photo
-                  : staticPhoto
-              }
-              alt="User-Avatar"
-            />
-          </NavLink>
-          <NavLink
-            id="post_userName"
-            to={`/user-profile/${props.comment.user.userId}`}
-          >
-            <p>{props.comment.user.name}</p>
-          </NavLink>
+          <div className="post_username_position">
+            <NavLink to={`/user-profile/${props.comment.comment.userId}`}>
+              <img
+                src={
+                  props.comment.user.photo != null
+                    ? props.comment.user.photo
+                    : staticPhoto
+                }
+                alt="User-Avatar"
+              />
+            </NavLink>
+            <NavLink
+              id="post_userName"
+              to={`/user-profile/${props.comment.comment.userId}`}
+            >
+              <p>{props.comment.user.name}</p>
+            </NavLink>
+          </div>
         </div>
         <div>
           <p>{props.comment.comment.commentText}</p>
