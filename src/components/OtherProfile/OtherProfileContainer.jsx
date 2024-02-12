@@ -32,7 +32,6 @@ class OtherProfileContainer extends React.Component {
       .then((response) => {
         this.props.setProfile(response.data);
         this.props.setIsFetching(false);
-        console.log(response.data)
       })
       .catch((error) => {
         // Обробка помилки
@@ -44,6 +43,10 @@ class OtherProfileContainer extends React.Component {
     axios
       .post("http://localhost:3002/subscribe", { followerId, followingId })
       .then((response) => {
+        if (response.data.subscription === "No") {
+          const no = [0];
+          this.props.toggleSubscriptionProfile(no);
+        }
         this.props.toggleSubscriptionProfile(
           response.data.subscription.follower
         );
@@ -56,8 +59,7 @@ class OtherProfileContainer extends React.Component {
     let userId = this.props.loginUser;
     axios
       .post(`http://localhost:3002/like`, { postId, userId })
-      .then((response) => {
-      })
+      .then((response) => {})
       .catch((error) => {
         console.error(error);
       });
