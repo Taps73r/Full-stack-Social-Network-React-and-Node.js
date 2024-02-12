@@ -80,24 +80,21 @@ router.get("/news-post", async (req, res) => {
 
 router.delete("/posts/:postId", async (req, res) => {
   const postId = req.params.postId;
-  const userId = req.body.userId; // Додали отримання айді користувача з тіла запиту
+  const userId = req.body.userId;
 
   try {
     if (!mongoose.Types.ObjectId.isValid(postId)) {
-      return res.status(400).json({ message: "Невірний формат ID посту" });
+      return res.status(400).json({ message: "Invalid post ID format" });
     }
 
     const post = await Post.findById(postId);
 
     if (!post) {
-      return res.status(404).json({ message: "Пост не знайдено" });
+      return res.status(404).json({ message: "Post not found" });
     }
 
-    // Перевірка чи айді користувача співпадає з айді поста
     if (post.userId !== userId) {
-      return res
-        .status(403)
-        .json({ message: "Ви не можете видалити цей пост" });
+      return res.status(403).json({ message: "You cannot delete this post" });
     }
 
     if (post.photos && post.photos.length > 0) {
@@ -114,12 +111,12 @@ router.delete("/posts/:postId", async (req, res) => {
     const userPosts = await Post.find({ userId });
 
     res.json({
-      message: "Пост успішно видалено",
+      message: "Post successfully deleted",
       posts: userPosts || [],
     });
   } catch (error) {
-    console.error("Помилка при видаленні посту:", error);
-    res.status(500).json({ message: "Помилка при видаленні посту" });
+    console.error("Error deleting post:", error);
+    res.status(500).json({ message: "Error deleting post" });
   }
 });
 
@@ -131,9 +128,7 @@ router.post("/like", async (req, res) => {
     const post = await Post.findById(postId);
 
     if (!user || !post) {
-      return res
-        .status(404)
-        .json({ message: "Користувач або пост не знайдено" });
+      return res.status(404).json({ message: "User or post not found" });
     }
 
     const isLiked = post.likes.includes(userId);
@@ -142,7 +137,7 @@ router.post("/like", async (req, res) => {
       await post.save();
 
       res.json({
-        message: "Лайк успішно знято",
+        message: "Like removed successfully",
         liked: false,
         likeCount: post.likes.length,
       });
@@ -152,14 +147,14 @@ router.post("/like", async (req, res) => {
       await post.save();
 
       res.json({
-        message: "Лайк успішно додано",
+        message: "Like added successfully",
         liked: true,
         likeCount: post.likes.length,
       });
     }
   } catch (error) {
-    console.error("Помилка при роботі з лайками:", error);
-    res.status(500).json({ message: "Помилка при роботі з лайками" });
+    console.error("Error handling likes:", error);
+    res.status(500).json({ message: "Error handling likes" });
   }
 });
 
@@ -172,17 +167,17 @@ router.put("/posts/:postId", async (req, res) => {
 
   try {
     if (!mongoose.Types.ObjectId.isValid(postId)) {
-      return res.status(400).json({ message: "Невірний формат ID посту" });
+      return res.status(400).json({ message: "Invalid post ID format" });
     }
 
     const post = await Post.findById(postId);
 
     if (!post) {
-      return res.status(404).json({ message: "Пост не знайдено" });
+      return res.status(404).json({ message: "Post not found" });
     }
 
     if (post.userId !== userId) {
-      return res.status(403).json({ message: "Ви не можете оновити цей пост" });
+      return res.status(403).json({ message: "You cannot update this post" });
     }
 
     const validation = postValidation(updatedText);
@@ -196,12 +191,12 @@ router.put("/posts/:postId", async (req, res) => {
     const userPosts = await Post.find({ userId });
 
     res.json({
-      message: "Текст поста успішно оновлено",
+      message: "Post text updated successfully",
       posts: userPosts || [],
     });
   } catch (error) {
-    console.error("Помилка при оновленні тексту поста:", error);
-    res.status(500).json({ message: "Помилка при оновленні тексту поста" });
+    console.error("Error updating post text:", error);
+    res.status(500).json({ message: "Error updating post text" });
   }
 });
 
