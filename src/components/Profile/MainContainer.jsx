@@ -42,7 +42,7 @@ function MainContainer({
         .then((response) => {
           setProfile(response.data);
           setIsFetching(false);
-          console.log(response.data)
+          console.log(response.data);
         })
         .catch((error) => {
           // Обробка помилки
@@ -94,16 +94,18 @@ function MainContainer({
   };
   let deleteCurrentPost = (postId) => {
     setIsFetching(true);
-    axios.delete(`http://localhost:3002/posts/${postId}`).then((response) => {
-      setPostData(response.data);
-      setIsFetching(false);
-    });
+    axios
+      .delete(`http://localhost:3002/posts/${postId}`, { userId })
+      .then((response) => {
+        setPostData(response.data);
+        setIsFetching(false);
+      });
   };
   let updateCurrentPost = (postId) => {
     setIsFetching(true);
     let updatedText = updatePostText;
     axios
-      .put(`http://localhost:3002/posts/${postId}`, { updatedText })
+      .put(`http://localhost:3002/posts/${postId}`, { updatedText, userId })
       .then((response) => {
         setPostData(response.data);
         setIsFetching(false);
@@ -111,14 +113,12 @@ function MainContainer({
   };
   let likeCurrentPost = (postId) => {
     axios
-    .post(`http://localhost:3002/like`, {postId, userId})
-    .then((response) => {
-
-    })
-    .catch((error) => {
-      console.error(error);
-    });
-  }
+      .post(`http://localhost:3002/like`, { postId, userId })
+      .then((response) => {})
+      .catch((error) => {
+        console.error(error);
+      });
+  };
   if (isFetching || !profileData) {
     return <Preloader />;
   }

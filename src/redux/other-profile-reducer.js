@@ -14,7 +14,7 @@ export const otherProfileReducer = (state = initialState, action) => {
         ...state,
         profileData: {
           ...state.profileData,
-          followers: action.newFollowers,
+          followers: [action.newFollowers],
         },
       };
     case SET_PROFILE:

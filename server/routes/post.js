@@ -39,10 +39,10 @@ router.post("/posts", async (req, res) => {
 
     await newPost.save();
 
-    res.status(201).json({ message: "Пост успішно створено", newPost });
+    res.status(201).json({ message: "Post successfully created", newPost });
   } catch (error) {
-    console.error("Помилка при створенні поста:", error);
-    res.status(500).json({ message: "Помилка при створенні поста" });
+    console.error("Error creating post:", error);
+    res.status(500).json({ message: "Error creating post" });
   }
 });
 
@@ -51,7 +51,7 @@ router.get("/news-post", async (req, res) => {
     const allPosts = await Post.find();
 
     if (!allPosts || allPosts.length === 0) {
-      return res.status(404).json({ message: "Пости не знайдено" });
+      return res.status(404).json({ message: "Posts not found" });
     }
 
     const postsWithUserInfo = await Promise.all(
@@ -73,13 +73,14 @@ router.get("/news-post", async (req, res) => {
 
     res.json({ posts: postsWithUserInfo });
   } catch (error) {
-    console.error("Помилка при отриманні постів:", error);
-    res.status(500).json({ message: "Помилка при отриманні постів" });
+    console.error("Error getting posts:", error);
+    res.status(500).json({ message: "Error getting posts" });
   }
 });
 
 router.delete("/posts/:postId", async (req, res) => {
   const postId = req.params.postId;
+  const userId = req.body.userId; // Додали отримання айді користувача з тіла запиту
 
   try {
     if (!mongoose.Types.ObjectId.isValid(postId)) {
@@ -90,6 +91,13 @@ router.delete("/posts/:postId", async (req, res) => {
 
     if (!post) {
       return res.status(404).json({ message: "Пост не знайдено" });
+    }
+
+    // Перевірка чи айді користувача співпадає з айді поста
+    if (post.userId !== userId) {
+      return res
+        .status(403)
+        .json({ message: "Ви не можете видалити цей пост" });
     }
 
     if (post.photos && post.photos.length > 0) {
@@ -103,7 +111,6 @@ router.delete("/posts/:postId", async (req, res) => {
 
     await Post.findByIdAndDelete(postId);
 
-    const userId = post.userId;
     const userPosts = await Post.find({ userId });
 
     res.json({
@@ -115,6 +122,7 @@ router.delete("/posts/:postId", async (req, res) => {
     res.status(500).json({ message: "Помилка при видаленні посту" });
   }
 });
+
 router.post("/like", async (req, res) => {
   const { userId, postId } = req.body;
 
@@ -157,13 +165,11 @@ router.post("/like", async (req, res) => {
 
 router.put("/posts/:postId", async (req, res) => {
   const postId = req.params.postId;
-  let { updatedText } = req.body;
+  const userId = req.body.userId;
 
+  let { updatedText } = req.body;
   updatedText = updatedText || "";
-  const validation = postValidation(updatedText);
-  if (!validation.isValid) {
-    return res.status(400).json({ message: validation.errorMessage });
-  }
+
   try {
     if (!mongoose.Types.ObjectId.isValid(postId)) {
       return res.status(400).json({ message: "Невірний формат ID посту" });
@@ -175,11 +181,18 @@ router.put("/posts/:postId", async (req, res) => {
       return res.status(404).json({ message: "Пост не знайдено" });
     }
 
-    post.postMessage = updatedText;
+    if (post.userId !== userId) {
+      return res.status(403).json({ message: "Ви не можете оновити цей пост" });
+    }
 
+    const validation = postValidation(updatedText);
+    if (!validation.isValid) {
+      return res.status(400).json({ message: validation.errorMessage });
+    }
+
+    post.postMessage = updatedText;
     await post.save();
 
-    const userId = post.userId;
     const userPosts = await Post.find({ userId });
 
     res.json({
@@ -191,4 +204,5 @@ router.put("/posts/:postId", async (req, res) => {
     res.status(500).json({ message: "Помилка при оновленні тексту поста" });
   }
 });
+
 module.exports = router;
