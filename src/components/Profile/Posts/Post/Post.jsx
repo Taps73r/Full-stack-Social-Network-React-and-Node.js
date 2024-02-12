@@ -12,7 +12,7 @@ import staticPhoto from "../../../../photos/userstaticavatar.jpg";
 function Post(props) {
   const likesCount = props.likes?.length || 0;
   const userId = props.userId;
-  const profileId = props.profileData.userId && null;
+  const profileId = props.profileData.userId;
   const [expanded] = useState(false);
   const [isMenuOpen, setMenuOpen] = useState(false);
   const [updateTextMenu, setUpdateTextMenu] = useState(false);
@@ -38,6 +38,8 @@ function Post(props) {
     setShowComents(!showComents);
   };
   const handleLikeClick = () => {
+    console.log(userId, profileId)
+    debugger
     const newLikeState = !postLiked;
     props.likeCurrentPost(props.postId);
     if (newLikeState) {

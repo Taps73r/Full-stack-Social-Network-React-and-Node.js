@@ -78,9 +78,9 @@ router.get("/news-post", async (req, res) => {
   }
 });
 
-router.delete("/posts/:postId", async (req, res) => {
+router.delete("/posts/:postId/:userId", async (req, res) => {
   const postId = req.params.postId;
-  const userId = req.body.userId;
+  const userId = req.params.userId;
 
   try {
     if (!mongoose.Types.ObjectId.isValid(postId)) {
@@ -88,12 +88,11 @@ router.delete("/posts/:postId", async (req, res) => {
     }
 
     const post = await Post.findById(postId);
-
     if (!post) {
       return res.status(404).json({ message: "Post not found" });
     }
 
-    if (post.userId !== userId) {
+    if (post.userId != userId) {
       return res.status(403).json({ message: "You cannot delete this post" });
     }
 

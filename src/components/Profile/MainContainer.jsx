@@ -42,7 +42,6 @@ function MainContainer({
         .then((response) => {
           setProfile(response.data);
           setIsFetching(false);
-          console.log(response.data);
         })
         .catch((error) => {
           // Обробка помилки
@@ -93,9 +92,10 @@ function MainContainer({
       });
   };
   let deleteCurrentPost = (postId) => {
+    console.log(postId, userId)
     setIsFetching(true);
     axios
-      .delete(`http://localhost:3002/posts/${postId}`, { userId })
+      .delete(`http://localhost:3002/posts/${postId}/${userId}`)
       .then((response) => {
         setPostData(response.data);
         setIsFetching(false);
