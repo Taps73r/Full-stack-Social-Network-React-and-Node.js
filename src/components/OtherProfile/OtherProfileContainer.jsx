@@ -32,6 +32,7 @@ class OtherProfileContainer extends React.Component {
       .then((response) => {
         this.props.setProfile(response.data);
         this.props.setIsFetching(false);
+        console.log(response.data)
       })
       .catch((error) => {
         // Обробка помилки

@@ -34,7 +34,8 @@ let OtherProfile = (props) => {
     let fullName = props.profileData.name;
     let profilePhoto = props.profileData.photo;
     let aboutMe = props.profileData.bio;
-    let follower = props.profileData.followers;
+    let follower = props.profileData.followers.include(loggedInUserId);
+    console.log(follower)
     return (
         <div className="UserProfile">
             <div className='profile_content'>
@@ -51,7 +52,7 @@ let OtherProfile = (props) => {
                         </div>
                     </div>
                     <button onClick={() => props.handleSubscribe(loggedInUserId, userId)}>
-                        {follower === loggedInUserId ? 'Follow' : 'Unfollow'}
+                        { loggedInUserId ? 'Follow' : 'Unfollow'}
                     </button>
                 </div>
                 <div className='Posts'>
