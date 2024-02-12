@@ -13,11 +13,9 @@ class LoginContainer extends React.Component {
 
         try {
             const response = await axios.post('http://localhost:3002/auth/login', { username, password });
-            console.log(response);
             const token = response.data.token;
             const data = response.data;
             localStorage.setItem('token', token);
-            // localStorage.removeItem('token');
             loginSuccess(data);
             setProfile(data);
 
