@@ -97,10 +97,8 @@
 
 @media screen and (max-width: 880px) {
   .comment_text img {
-    border-radius: 50%;
     height: 30px;
     width: 30px;
-    border: 2px solid #5bc0be;
   }
   .coment_block button {
     padding: 1svw 2svw;
@@ -108,5 +106,19 @@
   }
   #show-more-comments {
     font-size: 2svw;
+  }
+}
+
+@media screen and (max-width: 680px) {
+  .comment_text img {
+    height: 50px;
+    width: 50px;
+  }
+  .coment_block button {
+    padding: 2svw 4svw;
+    font-size: 4svw;
+  }
+  #show-more-comments {
+    font-size: 4svw;
   }
 }

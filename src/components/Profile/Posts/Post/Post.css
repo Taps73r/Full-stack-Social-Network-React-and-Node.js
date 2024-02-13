@@ -168,4 +168,21 @@
   .posts {
     width: 80svw;
   }
+  .userPhoto {
+    font-size: 4svw;
+    letter-spacing: 1px;
+  }
+  .postPhotos p {
+    margin-bottom: 1.5svw;
+    font-size: 3svw;
+  }
+  .likes_and_count p {
+    margin: 0 4svw 0 1svw;
+  }
+  .likes_and_count span {
+    font-size: 4svw;
+  }
+  .likes_and_count {
+    font-size: 4svw;
+  }
 }
