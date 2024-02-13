@@ -213,12 +213,12 @@
     height: 8svw;
   }
   .profile_name {
-    font-size: 2svw;
+    font-size: 2.5svw;
     margin-bottom: 20px;
   }
 
   .profile_bio {
-    font-size: 1.5svw;
+    font-size: 2svw;
   }
 
   .profile_avatar button {
