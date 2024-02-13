@@ -163,3 +163,9 @@
     font-size: 3svw;
   }
 }
+
+@media screen and (max-width: 680px) {
+  .posts {
+    width: 80svw;
+  }
+}

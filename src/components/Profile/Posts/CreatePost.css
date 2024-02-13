@@ -124,3 +124,9 @@
     padding: 1.2svw;
   }
 }
+
+@media screen and (max-width: 680px) {
+    .Create-Post{
+        width: 80svw;
+    }
+}
