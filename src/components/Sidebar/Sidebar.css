@@ -73,9 +73,25 @@
   border-bottom-left-radius: 20px;
   border-bottom-right-radius: 20px;
 }
-
+.sidebar-mobile {
+  display: none;
+}
 @media screen and (max-width: 680px) {
   .sidebar {
     display: none;
+  }
+  .sidebar-mobile {
+    display: flex;
+    width: 100%;
+    flex-direction: row;
+  }
+  .sidebar-mobile a {
+    background-color: #fff;
+    color: #1c2541;
+    font-size: 26px;
+    display: flex;
+    flex-direction: column;
+    text-decoration: none;
+    font-family: "Tilt Neon", sans-serif;
   }
 }

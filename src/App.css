@@ -49,6 +49,7 @@ body {
   .App {
     display: flex;
     justify-content: center;
+    flex-direction: column;
   }
   .route_side_bar {
     width: 100%;
