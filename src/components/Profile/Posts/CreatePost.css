@@ -13,7 +13,7 @@
   padding: 20px;
   border-radius: 8px;
   box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
-  width: 500px;
+  width: 40svw;
   display: flex;
   flex-direction: column;
   align-items: center;
@@ -122,6 +122,5 @@
 @media screen and (max-width: 880px) {
   .Create-Post {
     padding: 1.2svw;
-    width: 34svw;
   }
 }

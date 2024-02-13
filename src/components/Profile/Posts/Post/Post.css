@@ -3,10 +3,10 @@
   background-color: #0b132b;
   padding: 20px;
   border-radius: 8px 8px 0 0;
-  width: 500px;
+  width: 40svw;
   margin-top: 20px;
 }
-#post_userLink{
+#post_userLink {
   text-decoration: none;
   color: #fff;
   font-weight: 600;
@@ -122,7 +122,7 @@
   background-color: #0b132b;
   border: none;
   cursor: pointer;
-  color: #5bc0be; 
+  color: #5bc0be;
 }
 /* Додайте цей стиль для налаштування стрілок слайдера */
 .slick-prev,
@@ -137,4 +137,23 @@
 
 .slick-next {
   right: 10px;
+}
+
+@media screen and (max-width: 880px) {
+  .userPhoto img {
+    width: 50px;
+    height: 50px;
+    margin-bottom: 1svw;
+  }
+  .userPhoto {
+    font-size: 24px;
+  }
+  .postPhotos p {
+    margin-bottom: 1.5svw;
+    font-size: 2svw;
+  }
+
+  .likes_and_count span {
+    font-size: 3svw;
+  }
 }
