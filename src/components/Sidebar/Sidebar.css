@@ -1,75 +1,81 @@
-@import url('https://fonts.googleapis.com/css2?family=Tilt+Neon&display=swap');
-.sidebar{
+@import url("https://fonts.googleapis.com/css2?family=Tilt+Neon&display=swap");
+.sidebar {
   grid-area: 2 / 1 / 4 / 2;
   border-radius: 20px;
 }
-.sidebar a{
-    background-color: #fff;
-    width: 300px;
-    color: #1C2541;
-    font-size: 26px;
-    display: flex;
-    flex-direction: column;
-    text-decoration: none;
-    font-family: 'Tilt Neon', sans-serif;
-  }
-  .sidebaritem{
-    display: flex;
-    align-items: center;
-  }
-  .first-item{
-    border-top-left-radius: 20px;
-    border-top-right-radius: 20px;
-    display: flex;
-    align-items: center;
-  }
-  .first-item:hover{
-    background-color: #5BC0BE;
-    border-top-left-radius: 20px;
-    border-top-right-radius: 20px;
-  }
-  .first-item span{
-    font-size: 40px;
-    padding-right: 8px;
-  }
-  .last-item{
-    border-bottom-left-radius: 20px;
-    border-bottom-right-radius: 20px;
-    display: flex;
-    align-items: center;
-  }
-  .last-item:hover{
-    background-color: #5BC0BE;
-    border-bottom-left-radius: 20px;
-    border-bottom-right-radius: 20px;
-  }
-  .last-item span{
-    font-size: 40px;
-    padding-right: 8px;
-  }
-  .sidebar div{
-    cursor: pointer;
-    padding: 16px;
-    font-family: 'Tilt Neon', sans-serif;
-  }
-  .sidebaritem span{
-    font-size: 40px;
-    padding-right: 8px;
-  }
-  .sidebar div:hover{
-    background-color: #3A506B;
-    color: white
-  }
-  
-  .sidebar a.active{
-    color: #5BC0BE;
-    background-color: #1C2541;
-  }
-#f-a{
+.sidebar a {
+  background-color: #fff;
+  width: 300px;
+  color: #1c2541;
+  font-size: 26px;
+  display: flex;
+  flex-direction: column;
+  text-decoration: none;
+  font-family: "Tilt Neon", sans-serif;
+}
+.sidebaritem {
+  display: flex;
+  align-items: center;
+}
+.first-item {
+  border-top-left-radius: 20px;
+  border-top-right-radius: 20px;
+  display: flex;
+  align-items: center;
+}
+.first-item:hover {
+  background-color: #5bc0be;
   border-top-left-radius: 20px;
   border-top-right-radius: 20px;
 }
-#l-a{
+.first-item span {
+  font-size: 40px;
+  padding-right: 8px;
+}
+.last-item {
   border-bottom-left-radius: 20px;
   border-bottom-right-radius: 20px;
+  display: flex;
+  align-items: center;
+}
+.last-item:hover {
+  background-color: #5bc0be;
+  border-bottom-left-radius: 20px;
+  border-bottom-right-radius: 20px;
+}
+.last-item span {
+  font-size: 40px;
+  padding-right: 8px;
+}
+.sidebar div {
+  cursor: pointer;
+  padding: 16px;
+  font-family: "Tilt Neon", sans-serif;
+}
+.sidebaritem span {
+  font-size: 40px;
+  padding-right: 8px;
+}
+.sidebar div:hover {
+  background-color: #3a506b;
+  color: white;
+}
+
+.sidebar a.active {
+  color: #5bc0be;
+  background-color: #1c2541;
+}
+#f-a {
+  border-top-left-radius: 20px;
+  border-top-right-radius: 20px;
+}
+#l-a {
+  border-bottom-left-radius: 20px;
+  border-bottom-right-radius: 20px;
+}
+
+@media screen and (max-width: 680px) {
+  .sidebar {
+    display: none;
+  }
 }

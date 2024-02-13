@@ -231,3 +231,9 @@
     margin-right: 8px;
   }
 }
+
+@media screen and (max-width: 680px) {
+    .profile_content {
+        width: 100%;
+    }
+}
