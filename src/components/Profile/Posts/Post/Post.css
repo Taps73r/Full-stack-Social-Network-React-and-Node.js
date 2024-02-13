@@ -154,12 +154,12 @@
     font-size: 2svw;
   }
   .likes_and_count p {
-  margin: 0 4svw 0 1svw;
-}
-.likes_and_count span {
-  font-size: 3svw;
-}
-.likes_and_count {
-  font-size: 3svw;
-}
+    margin: 0 4svw 0 1svw;
+  }
+  .likes_and_count span {
+    font-size: 3svw;
+  }
+  .likes_and_count {
+    font-size: 3svw;
+  }
 }
