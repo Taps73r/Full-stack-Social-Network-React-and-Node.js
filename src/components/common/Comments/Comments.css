@@ -110,15 +110,24 @@
 }
 
 @media screen and (max-width: 680px) {
+  #post_comment-text {
+    width: 70svw;
+  }
   .comment_text img {
     height: 50px;
     width: 50px;
   }
   .coment_block button {
-    padding: 2svw 4svw;
-    font-size: 4svw;
+    padding: 1.5svw 3svw;
+    font-size: 3svw;
   }
   #show-more-comments {
     font-size: 4svw;
+  }
+  .comment_text {
+    width: 70svw;
+  }
+  .all-comment-block {
+    width: 80svw;
   }
 }
