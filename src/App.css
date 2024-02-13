@@ -32,7 +32,7 @@ body {
   grid-template-rows: 150px repeat(2, 1fr) 100px;
   grid-column-gap: 20px;
   grid-row-gap: 20px;
-  height: 100vh;
+  height: 100svh;
   width: 100%;
   padding: 20px;
 }
@@ -50,6 +50,7 @@ body {
     display: flex;
     justify-content: center;
     flex-direction: column;
+    padding: 0;
   }
   .route_side_bar {
     width: 100%;
