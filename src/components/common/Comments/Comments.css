@@ -1,15 +1,17 @@
 .comment_text {
   display: flex;
-  flex-direction: row;
-  align-items: center;
+  flex-direction: column;
   justify-content: space-between;
   font-size: 18px;
   border: 2px solid #5bc0be;
   margin: 10px 0;
-  width: 440px;
+  width: 36svw;
   padding: 10px;
   border-radius: 10px;
   background-color: #fff;
+}
+.basket_delete {
+  align-self: flex-end;
 }
 .coment_block button {
   background-color: #5bc0be;
@@ -21,15 +23,15 @@
   cursor: pointer;
   font-family: "Tilt Neon", sans-serif;
 }
-#show-more-comments{
+#show-more-comments {
   background-color: #0b132b;
   border: none;
   color: #fff;
-  font-size: 18px ;
+  font-size: 18px;
   cursor: pointer;
   margin: 10px 0;
 }
-#show-more-comments:hover{
+#show-more-comments:hover {
   color: #5bc0be;
 }
 .coment_block form {
@@ -44,14 +46,14 @@
   align-items: center;
   background-color: #0b132b;
   border-radius: 0 0 8px 8px;
-  width: 500px;
+  width: 40svw;
 }
 .comment_text button {
   background-color: #fff;
   border: none;
 }
 #post_comment-text {
-  width: 440px;
+  width: 36svw;
   margin-bottom: 10px;
   padding: 10px;
   border: none;
@@ -91,4 +93,20 @@
 }
 #post_userName:hover {
   color: #5bc0be;
+}
+
+@media screen and (max-width: 880px) {
+  .comment_text img {
+    border-radius: 50%;
+    height: 30px;
+    width: 30px;
+    border: 2px solid #5bc0be;
+  }
+  .coment_block button {
+    padding: 1svw 2svw;
+    font-size: 2svw;
+  }
+  #show-more-comments {
+    font-size: 2svw;
+  }
 }

@@ -35,7 +35,7 @@ const CommentsData = (props) => {
         </div>
         {props.loggedId === props.comment.comment.userId ||
         props.loggedId === props.profileId ? (
-          <button onClick={handleDeleteComment}>
+          <button className="basket_delete" onClick={handleDeleteComment}>
             <span className="material-symbols-outlined">delete</span>
           </button>
         ) : null}
