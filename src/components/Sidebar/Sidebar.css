@@ -95,6 +95,7 @@
     font-family: "Tilt Neon", sans-serif;
   }
   .sidebaritem_item {
+    padding: 10px;
     display: flex;
     align-items: center;
   }
@@ -105,6 +106,7 @@
     font-size: 7svw;
   }
   .first-item_mobile {
+    padding: 10px;
     display: flex;
     align-items: center;
     border-radius: 0 0 0 15px;
@@ -116,6 +118,7 @@
     font-size: 7svw;
   }
   .last-item_mobile {
+    padding: 10px;
     display: flex;
     align-items: center;
     border-radius: 0 0 15px 0;
