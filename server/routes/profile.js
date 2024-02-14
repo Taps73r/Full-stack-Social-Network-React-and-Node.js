@@ -6,7 +6,10 @@ const Profile = require("../Schema/profileSchema");
 const Post = require("../Schema/post");
 const Subscription = require("../Schema/subscription");
 
-router.get("/profile/:userId", async (req, res) => {
+const verifyTokenAndUser = require("../Security/SecurityUser");
+const verifyToken = require("../Security/SecurityToken");
+
+router.get("/profile/:userId", verifyToken, async (req, res) => {
   const userId = req.params.userId;
 
   try {
@@ -45,8 +48,8 @@ router.get("/profile/:userId", async (req, res) => {
   }
 });
 
-router.put("/update-profile/:userId", async (req, res) => {
-  const userId = req.params.userId;
+router.put("/update-profile", verifyToken, async (req, res) => {
+  const userId = req.userId;
   const { name, bio, photo } = req.body;
   try {
     const userProfile = await Profile.findOne({ userId });

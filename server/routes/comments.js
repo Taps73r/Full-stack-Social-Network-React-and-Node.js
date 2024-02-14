@@ -6,7 +6,7 @@ const Post = require("../Schema/post");
 const Profile = require("../Schema/profileSchema");
 const Comment = require("../Schema/commentSchema");
 
-const verifyTokenAndUser = require("../Security/Security");
+const verifyTokenAndUser = require("../Security/SecurityUser");
 
 router.get("/comments/:postId", verifyTokenAndUser, async (req, res) => {
   const postId = req.params.postId;
