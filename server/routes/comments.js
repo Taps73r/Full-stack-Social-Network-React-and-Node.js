@@ -8,7 +8,7 @@ const Comment = require("../Schema/commentSchema");
 
 const verifyTokenAndUser = require("../Security/Security");
 
-router.get("/comments/:postId", async (req, res) => {
+router.get("/comments/:postId", verifyTokenAndUser, async (req, res) => {
   const postId = req.params.postId;
 
   try {
@@ -35,7 +35,7 @@ router.get("/comments/:postId", async (req, res) => {
   }
 });
 
-router.get("/comments/:postId/count", async (req, res) => {
+router.get("/comments/:postId/count", verifyTokenAndUser, async (req, res) => {
   const postId = req.params.postId;
 
   try {
@@ -53,6 +53,8 @@ router.get("/comments/:postId/count", async (req, res) => {
       .json({ message: "Помилка при отриманні кількості коментарів" });
   }
 });
+
+module.exports = router;
 
 router.delete("/comments/:commentId", verifyTokenAndUser, async (req, res) => {
   const commentId = req.params.commentId;
@@ -93,7 +95,7 @@ router.delete("/comments/:commentId", verifyTokenAndUser, async (req, res) => {
 
 router.post("/comments/:postId", verifyTokenAndUser, async (req, res) => {
   const postId = req.params.postId;
-  const userId = req.userData.userId; // Отримання ідентифікатора користувача з токену
+  const userId = req.userData.userId;
   const { commentText } = req.body;
 
   try {

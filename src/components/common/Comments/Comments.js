@@ -52,8 +52,13 @@ const Comments = (props) => {
     changeCommentText(text);
   };
   const getComments = () => {
+    const token = localStorage.getItem("token");
     axios
-      .get(`http://localhost:3002/comments/${props.postId}`)
+      .get(`http://localhost:3002/comments/${props.postId}`, {
+        headers: {
+          Authorization: `Bearer ${token}`,
+        },
+      })
       .then((response) => {
         setCommentsFromResponse(response.data.comments);
       })
