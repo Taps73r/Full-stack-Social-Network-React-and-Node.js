@@ -24,8 +24,13 @@ function Post(props) {
   let [plusLike, addLiketoPost] = useState(likesCount);
   useEffect(() => {
     const getCommentsCount = () => {
+      const token = localStorage.getItem("token");
       axios
-        .get(`http://localhost:3002/comments/${props.postId}/count`)
+        .get(`http://localhost:3002/comments/${props.postId}/count`, {
+          headers: {
+            Authorization: `Bearer ${token}`,
+          },
+        })
         .then((response) => {
           changeCommentsCount(response.data.count);
         })
@@ -38,8 +43,8 @@ function Post(props) {
     setShowComents(!showComents);
   };
   const handleLikeClick = () => {
-    console.log(userId, profileId)
-    debugger
+    console.log(userId, profileId);
+    debugger;
     const newLikeState = !postLiked;
     props.likeCurrentPost(props.postId);
     if (newLikeState) {
