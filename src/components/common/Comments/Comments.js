@@ -9,8 +9,13 @@ const Comments = (props) => {
   let [commentText, changeCommentText] = useState("");
 
   const deleteComment = (commentId) => {
+    const token = localStorage.getItem("token");
     axios
-      .delete(`http://localhost:3002/comments/${commentId}`)
+      .delete(`http://localhost:3002/comments/${commentId}`, {
+        headers: {
+          Authorization: `Bearer ${token}`, // Додавання токену у хедери запиту
+        },
+      })
       .then((response) => {
         setCommentsFromResponse(response.data.comments);
       })
@@ -43,7 +48,7 @@ const Comments = (props) => {
     axios
       .get(`http://localhost:3002/comments/${props.postId}`)
       .then((response) => {
-        console.log(response.data)
+        console.log(response.data);
         setCommentsFromResponse(response.data.comments);
       })
       .catch((error) => {

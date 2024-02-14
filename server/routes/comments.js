@@ -57,43 +57,34 @@ router.get("/comments/:postId/count", async (req, res) => {
 
 router.delete("/comments/:commentId", verifyTokenAndUser, async (req, res) => {
   const commentId = req.params.commentId;
-  const userId = req.userData.userId; // Отримання ідентифікатора користувача з токену
 
   try {
     if (!mongoose.Types.ObjectId.isValid(commentId)) {
       return res.status(400).json({ message: "Невірний формат ID коментаря" });
     }
 
-    // Перевірка, чи ідентифікатор користувача співпадає з ідентифікатором користувача, який зробив коментар
     const comment = await Comment.findById(commentId);
     if (!comment) {
       return res.status(404).json({ message: "Коментар не знайдено" });
     }
 
-    if (comment.userId !== userId) {
+    const post = await Post.findById(comment.postId);
+    if (!post) {
       return res
-        .status(403)
-        .json({ message: "Ви не маєте дозволу на видалення цього коментаря" });
+        .status(404)
+        .json({ message: "Пост, пов'язаний з цим коментарем, не знайдено" });
     }
 
-    const postId = comment.postId;
+    if (post.userId !== req.userData.userId) {
+      return res
+        .status(403)
+        .json({ message: "Ви не маєте дозволу на видалення коментаря" });
+    }
 
     await Comment.findByIdAndDelete(commentId);
 
-    const comments = await Comment.find({ postId });
-    const populatedComments = await Promise.all(
-      comments.map(async (comment) => {
-        const user = await Profile.findOne({ userId: comment.userId });
-        return {
-          comment,
-          user: { name: user.name, photo: user.photo },
-        };
-      })
-    );
-
     res.json({
       message: "Коментар успішно видалено",
-      comments: populatedComments,
     });
   } catch (error) {
     console.error("Помилка при видаленні коментаря:", error);
