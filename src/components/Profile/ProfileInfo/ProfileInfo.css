@@ -208,6 +208,9 @@
 }
 
 @media screen and (max-width: 940px) {
+  .change_info_form {
+    width: 40svw;
+  }
   .profile_name_bio img {
     width: 8svw;
     height: 8svw;
@@ -233,14 +236,65 @@
 }
 
 @media screen and (max-width: 680px) {
-    .profile_content {
-        width: 100%;
-        display: flex;
-        justify-content: center;
-        align-items: center;
-        flex-direction: column;
-    }
-    .profile_avatar {
-        width: 80svw;
-    }
+  .profile_content {
+    width: 100%;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    flex-direction: column;
+  }
+  .profile_avatar {
+    width: 90svw;
+  }
+  .profile_name_bio img {
+    width: 10svw;
+    height: 10svw;
+  }
+  .profile_name {
+    font-size: 4svw;
+  }
+
+  .profile_bio {
+    font-size: 3svw;
+  }
+
+  .profile_avatar button {
+    margin-top: 1.2svw;
+    padding: 1.2svw 2.2svw;
+    border-radius: 6px;
+    cursor: pointer;
+    font-family: "Tilt Neon", sans-serif;
+    font-size: 2svw;
+    margin-right: 8px;
+  }
+}
+
+@media screen and (max-width: 830px) {
+  .Change_info {
+    width: 100%;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    gap: 20px;
+  }
+  .Change_info button {
+    width: 100%;
+  }
+  .change_info_form {
+    width: 90%;
+    margin: 0;
+  }
+}
+
+@media screen and (max-width: 680px) {
+  .Change_info button {
+    width: 90%;
+  }
+  .formChange {
+    background-color: #1c2541;
+    border-radius: 14px;
+    padding: 20px;
+    width: 100%;
+  }
 }

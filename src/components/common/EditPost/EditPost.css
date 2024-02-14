@@ -1,20 +1,23 @@
-.editpost_ul li{
-    list-style: none;
-    padding: 10px;
-    background-color: #fff;
-    font-size: 18px;
-    color: #5bc0be;
-    cursor: pointer;
-    text-align: center;
+.editpost_ul li {
+  position: relative;
+  left: -50px;
+  list-style: none;
+  padding: 10px;
+  background-color: #fff;
+  font-size: 18px;
+  color: #5bc0be;
+  cursor: pointer;
+  text-align: center;
 }
-.editpost_ul li:hover{
-    background-color: #3a506b;
+.editpost_ul li:hover {
+  background-color: #3a506b;
 }
-#li_bottom_border_edit{
-    border-bottom-left-radius: 10px;
-    border-bottom-right-radius: 10px;
+#li_bottom_border_edit {
+  border-bottom-left-radius: 10px;
+  border-bottom-right-radius: 10px;
 }
-#li_top_border_edit{
-    border-top-right-radius: 10px;
-    border-top-left-radius: 10px;
+#li_top_border_edit {
+  border-top-right-radius: 10px;
+  border-top-left-radius: 10px;
 }
+

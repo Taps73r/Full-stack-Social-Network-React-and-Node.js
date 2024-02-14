@@ -131,3 +131,12 @@
     width: 80svw;
   }
 }
+
+@media screen and (max-width: 400px) {
+  #post_userName {
+    font-size: 4.2svw;
+  }
+  .comment_text {
+    font-size: 4svw;
+  }
+}
