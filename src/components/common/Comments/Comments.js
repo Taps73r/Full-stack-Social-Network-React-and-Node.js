@@ -22,10 +22,17 @@ const Comments = (props) => {
       .catch((error) => {});
   };
   const sendComent = (postId, commentText) => {
-    const userId = props.loggedId;
-    console.log(postId, commentText, userId);
+    const token = localStorage.getItem("token");
     axios
-      .post(`http://localhost:3002/comments/${postId}`, { userId, commentText })
+      .post(
+        `http://localhost:3002/comments/${postId}`,
+        { commentText },
+        {
+          headers: {
+            Authorization: `Bearer ${token}`,
+          },
+        }
+      )
       .then((response) => {
         setCommentsFromResponse([
           ...responseComments,
@@ -48,7 +55,6 @@ const Comments = (props) => {
     axios
       .get(`http://localhost:3002/comments/${props.postId}`)
       .then((response) => {
-        console.log(response.data);
         setCommentsFromResponse(response.data.comments);
       })
       .catch((error) => {
