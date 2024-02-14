@@ -1,142 +1,165 @@
-@import url('https://fonts.googleapis.com/css2?family=Tilt+Neon&display=swap');
+@import url("https://fonts.googleapis.com/css2?family=Tilt+Neon&display=swap");
 
 #selectedPage {
-    background-color: #0B132B;
-    color: #fff;
+  background-color: #0b132b;
+  color: #fff;
 }
 
-.find_user{
-    display: flex;
-    flex-direction: row;
-    justify-content: center;
-    padding-bottom: 30px;
+.find_user {
+  display: flex;
+  flex-direction: row;
+  justify-content: center;
+  padding-bottom: 30px;
 }
 
-.find_user_border{
-    display: flex;
-    flex-direction: row;
-    justify-content: center;
-    border: 3px solid #5BC0BE;
-    border-radius: 5px;
+.find_user_border {
+  display: flex;
+  flex-direction: row;
+  justify-content: center;
+  border: 3px solid #5bc0be;
+  border-radius: 5px;
 }
-.find_user_border:hover{
-    border: 3px solid #3A506B;
+.find_user_border:hover {
+  border: 3px solid #3a506b;
 }
-.find_user_border:hover button{
-    background-color: #3A506B;
+.find_user_border:hover button {
+  background-color: #3a506b;
 }
-.find_user button{
-    background-color:#5BC0BE;
-    border: none;
-    font-size: 20px;
-    font-family: 'Tilt Neon', sans-serif;
-    color: white;
-    padding: 8px 10px 10px 8px;
-    cursor: pointer;
-    text-align: center;
+.find_user button {
+  background-color: #5bc0be;
+  border: none;
+  font-size: 20px;
+  font-family: "Tilt Neon", sans-serif;
+  color: white;
+  padding: 8px 10px 10px 8px;
+  cursor: pointer;
+  text-align: center;
 }
 
-
-.find_user_border textarea{
-    resize: none;
-    padding: 8px 8px 8px 10px;
-    width: 350px;
-    height: 50px;
-    border: none;
-    font-size: 20px;
-    font-family: 'Tilt Neon', sans-serif;
-    outline: none;
+.find_user_border textarea {
+  resize: none;
+  padding: 8px 8px 8px 10px;
+  width: 350px;
+  height: 50px;
+  border: none;
+  font-size: 20px;
+  font-family: "Tilt Neon", sans-serif;
+  outline: none;
 }
 .pagination {
-    display: flex;
-    flex-direction: row;
-    justify-content: center;
-    border-radius: 20px;
-    gap: 10px;
-    font-family: 'Tilt Neon', sans-serif;
+  display: flex;
+  flex-direction: row;
+  justify-content: center;
+  border-radius: 20px;
+  gap: 10px;
+  font-family: "Tilt Neon", sans-serif;
 }
 
 .pagination div {
-    background-color: #5BC0BE;
-    display: flex;
-    justify-content: center;
-    align-items: center;
-    color: #fff;
-    font-size: 22px;
-    border-radius: 10px;
-    width: 50px;
-    height: 40px;
-
+  background-color: #5bc0be;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  color: #fff;
+  font-size: 22px;
+  border-radius: 10px;
+  width: 50px;
+  height: 40px;
 }
 
 .pagination div:hover {
-    background-color: #3A506B;
-    cursor: pointer;
-    color: #fff;
+  background-color: #3a506b;
+  cursor: pointer;
+  color: #fff;
 }
 
 .users_area {
-    display: flex;
-    flex-wrap: wrap;
-    justify-content: space-between;
-    gap: 20px;
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: space-between;
+  gap: 20px;
 }
 
 .user_area {
-    display: flex;
-    flex-direction: row;
-    width: calc(100% - 10px);
-    padding-bottom: 30px;
+  display: flex;
+  flex-direction: row;
+  width: calc(100% - 10px);
+  padding-bottom: 30px;
 }
 
 .avatar_button {
-    display: flex;
-    flex-direction: column;
+  display: flex;
+  flex-direction: column;
 }
 
 .avatar_button img {
-    width: 70px;
-    height: 70px;
-    border-radius: 50px;
+  width: 70px;
+  height: 70px;
+  border-radius: 50px;
 }
 
 .users_name button {
-    width: 90px;
-    height: 35px;
-    color: #1C2541;
-    background-color: #fff;
-    border: 2px solid #5BC0BE;
-    border-radius: 10px;
-    font-size: 19px;
-    font-family: 'Tilt Neon', sans-serif;
+  width: 90px;
+  height: 35px;
+  color: #1c2541;
+  background-color: #fff;
+  border: 2px solid #5bc0be;
+  border-radius: 10px;
+  font-size: 19px;
+  font-family: "Tilt Neon", sans-serif;
 }
 
 .users_name button:hover {
-    color: #fff;
-    border-color: #1C2541;
-    background-color: #3A506B;
-    cursor: pointer;
+  color: #fff;
+  border-color: #1c2541;
+  background-color: #3a506b;
+  cursor: pointer;
 }
 
 .users_info {
-    font-family: 'Tilt Neon', sans-serif;
-    margin-left: 20px;
-    width: 300px;
+  font-family: "Tilt Neon", sans-serif;
+  margin-left: 20px;
+  width: 300px;
 }
 
-.Remove_style{
-    text-decoration: none;
-    color: inherit;
+.Remove_style {
+  text-decoration: none;
+  color: inherit;
 }
 .users_name {
-    display: flex;
-    justify-content: space-between;
-    color: #1C2541;
-    font-size: 20px;
-    margin-bottom: 10px;
+  display: flex;
+  justify-content: space-between;
+  color: #1c2541;
+  font-size: 20px;
+  margin-bottom: 10px;
 }
 
 .users_bio {
-    color: #0B132B;
-    font-size: 16px;
+  color: #0b132b;
+  font-size: 16px;
+}
+
+@media screen and (max-width: 780px) {
+  .find_user_border textarea {
+    width: 100%;
+  }
+  .user_area {
+    width: 90%;
+  }
+  .users_info {
+    margin: 0;
+    width: 260px;
+  }
+}
+
+@media screen and (max-width: 680px) {
+  .user_area {
+    width: 100svw;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+  }
+  .users_info {
+    width: 60svw;
+  }
 }
