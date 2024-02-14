@@ -13,7 +13,7 @@ const Comments = (props) => {
     axios
       .delete(`http://localhost:3002/comments/${commentId}`, {
         headers: {
-          Authorization: `Bearer ${token}`, // Додавання токену у хедери запиту
+          Authorization: `Bearer ${token}`,
         },
       })
       .then((response) => {

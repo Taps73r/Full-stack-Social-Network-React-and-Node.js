@@ -3,7 +3,6 @@ const express = require("express");
 const router = express.Router();
 
 const Post = require("../Schema/post");
-const User = require("../Schema/user");
 const Profile = require("../Schema/profileSchema");
 const Comment = require("../Schema/commentSchema");
 
@@ -92,9 +91,10 @@ router.delete("/comments/:commentId", verifyTokenAndUser, async (req, res) => {
   }
 });
 
-router.post("/comments/:postId", async (req, res) => {
+router.post("/comments/:postId", verifyTokenAndUser, async (req, res) => {
   const postId = req.params.postId;
-  const { userId, commentText } = req.body;
+  const userId = req.userData.userId; // Отримання ідентифікатора користувача з токену
+  const { commentText } = req.body;
 
   try {
     if (!mongoose.Types.ObjectId.isValid(postId)) {
@@ -104,11 +104,6 @@ router.post("/comments/:postId", async (req, res) => {
     const post = await Post.findById(postId);
     if (!post) {
       return res.status(404).json({ message: "Пост не знайдено" });
-    }
-
-    const user = await User.findOne({ userId });
-    if (!user) {
-      return res.status(404).json({ message: "Користувача не знайдено" });
     }
 
     const userProfile = await Profile.findOne({ userId });
@@ -138,4 +133,5 @@ router.post("/comments/:postId", async (req, res) => {
     res.status(500).json({ message: "Помилка при створенні коментаря" });
   }
 });
+
 module.exports = router;
