@@ -35,10 +35,15 @@ function MainContainer({
   useEffect(() => {
     const requestProfileInfo = () => {
       setIsFetching(true);
-
+      const token = localStorage.getItem("token");
       const url = `http://localhost:3002/profile/${userId}`;
+      console.log(userId)
       axios
-        .get(url)
+        .get(url, {
+          headers: {
+            Authorization: `Bearer ${token}`,
+          },
+        })
         .then((response) => {
           setProfile(response.data);
           setIsFetching(false);
@@ -56,8 +61,17 @@ function MainContainer({
     setIsFetching(true);
     let postMessage = newPostText;
     let photos = newPostImages;
+    const token = localStorage.getItem("token");
     axios
-      .post("http://localhost:3002/posts", { userId, postMessage, photos })
+      .post(
+        "http://localhost:3002/posts",
+        { userId, postMessage, photos },
+        {
+          headers: {
+            Authorization: `Bearer ${token}`,
+          },
+        }
+      )
       .then((response) => {
         addPostActionCreator(response.data);
         setIsFetching(false);
@@ -73,14 +87,23 @@ function MainContainer({
   let putChangedUserInfo = () => {
     const name = changeNameText;
     const bio = changeBioText;
+    const token = localStorage.getItem("token");
     const photo = avatar;
     setIsFetching(true);
     axios
-      .put(`http://localhost:3002/update-profile/${userId}`, {
-        name,
-        bio,
-        photo,
-      })
+      .put(
+        `http://localhost:3002/update-profile`,
+        {
+          name,
+          bio,
+          photo,
+        },
+        {
+          headers: {
+            Authorization: `Bearer ${token}`,
+          },
+        }
+      )
       .then((response) => {
         setProfile(response.data);
         setIsFetching(false);
@@ -92,10 +115,14 @@ function MainContainer({
       });
   };
   let deleteCurrentPost = (postId) => {
-    console.log(postId, userId)
+    const token = localStorage.getItem("token");
     setIsFetching(true);
     axios
-      .delete(`http://localhost:3002/posts/${postId}/${userId}`)
+      .delete(`http://localhost:3002/posts/${postId}/${userId}`, {
+        headers: {
+          Authorization: `Bearer ${token}`,
+        },
+      })
       .then((response) => {
         setPostData(response.data);
         setIsFetching(false);
@@ -104,16 +131,34 @@ function MainContainer({
   let updateCurrentPost = (postId) => {
     setIsFetching(true);
     let updatedText = updatePostText;
+    const token = localStorage.getItem("token");
     axios
-      .put(`http://localhost:3002/posts/${postId}`, { updatedText, userId })
+      .put(
+        `http://localhost:3002/posts/${postId}`,
+        { updatedText, userId },
+        {
+          headers: {
+            Authorization: `Bearer ${token}`,
+          },
+        }
+      )
       .then((response) => {
         setPostData(response.data);
         setIsFetching(false);
       });
   };
   let likeCurrentPost = (postId) => {
+    const token = localStorage.getItem("token");
     axios
-      .post(`http://localhost:3002/like`, { postId, userId })
+      .post(
+        `http://localhost:3002/like`,
+        { postId, userId },
+        {
+          headers: {
+            Authorization: `Bearer ${token}`,
+          },
+        }
+      )
       .then((response) => {})
       .catch((error) => {
         console.error(error);
