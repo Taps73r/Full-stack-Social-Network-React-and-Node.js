@@ -7,6 +7,8 @@ const User = require("../Schema/user");
 const Profile = require("../Schema/profileSchema");
 const Comment = require("../Schema/commentSchema");
 
+const verifyTokenAndUser = require("../Security/Security");
+
 router.get("/comments/:postId", async (req, res) => {
   const postId = req.params.postId;
 
@@ -53,16 +55,28 @@ router.get("/comments/:postId/count", async (req, res) => {
   }
 });
 
-router.delete("/comments/:commentId", async (req, res) => {
+router.delete("/comments/:commentId", verifyTokenAndUser, async (req, res) => {
   const commentId = req.params.commentId;
+  const userId = req.userData.userId; // Отримання ідентифікатора користувача з токену
 
   try {
     if (!mongoose.Types.ObjectId.isValid(commentId)) {
       return res.status(400).json({ message: "Невірний формат ID коментаря" });
     }
 
-    const deletedComment = await Comment.findById(commentId);
-    const postId = deletedComment.postId;
+    // Перевірка, чи ідентифікатор користувача співпадає з ідентифікатором користувача, який зробив коментар
+    const comment = await Comment.findById(commentId);
+    if (!comment) {
+      return res.status(404).json({ message: "Коментар не знайдено" });
+    }
+
+    if (comment.userId !== userId) {
+      return res
+        .status(403)
+        .json({ message: "Ви не маєте дозволу на видалення цього коментаря" });
+    }
+
+    const postId = comment.postId;
 
     await Comment.findByIdAndDelete(commentId);
 
