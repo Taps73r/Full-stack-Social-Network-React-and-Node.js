@@ -6,7 +6,6 @@ const Profile = require("../Schema/profileSchema");
 const Post = require("../Schema/post");
 const Subscription = require("../Schema/subscription");
 
-const verifyTokenAndUser = require("../Security/SecurityUser");
 const verifyToken = require("../Security/SecurityToken");
 
 router.get("/profile/:userId", verifyToken, async (req, res) => {
