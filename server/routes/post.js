@@ -8,6 +8,7 @@ const User = require("../Schema/user");
 const Profile = require("../Schema/profileSchema");
 
 const postValidation = require("../Validation/postValidation");
+const verifyTokenAndUser = require("../Security/SecurityUser");
 
 router.post("/posts", async (req, res) => {
   const { userId, postMessage, photos } = req.body;
@@ -119,19 +120,19 @@ router.delete("/posts/:postId/:userId", async (req, res) => {
   }
 });
 
-router.post("/like", async (req, res) => {
-  const { userId, postId } = req.body;
+router.post("/like", verifyTokenAndUser, async (req, res) => {
+  const userId = req.userData.userId; // Getting the user ID from the token
+  const { postId } = req.body;
 
   try {
-    const user = await User.findOne({ userId });
     const post = await Post.findById(postId);
 
-    if (!user || !post) {
-      return res.status(404).json({ message: "User or post not found" });
+    if (!post) {
+      return res.status(404).json({ message: "Post not found" });
     }
 
     const isLiked = post.likes.includes(userId);
-    if (isLiked === true) {
+    if (isLiked) {
       post.likes.pull(userId);
       await post.save();
 
@@ -142,7 +143,6 @@ router.post("/like", async (req, res) => {
       });
     } else {
       post.likes.push(userId);
-
       await post.save();
 
       res.json({
@@ -157,9 +157,9 @@ router.post("/like", async (req, res) => {
   }
 });
 
-router.put("/posts/:postId", async (req, res) => {
+router.put("/posts/:postId", verifyTokenAndUser, async (req, res) => {
   const postId = req.params.postId;
-  const userId = req.body.userId;
+  const userId = req.userData.userId;
 
   let { updatedText } = req.body;
   updatedText = updatedText || "";
@@ -176,7 +176,9 @@ router.put("/posts/:postId", async (req, res) => {
     }
 
     if (post.userId !== userId) {
-      return res.status(403).json({ message: "You cannot update this post" });
+      return res
+        .status(403)
+        .json({ message: "You do not have permission to update this post" });
     }
 
     const validation = postValidation(updatedText);
