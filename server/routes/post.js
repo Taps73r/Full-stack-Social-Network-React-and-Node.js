@@ -47,7 +47,7 @@ router.post("/posts", async (req, res) => {
   }
 });
 
-router.get("/news-post", async (req, res) => {
+router.get("/news-post", verifyTokenAndUser, async (req, res) => {
   try {
     const allPosts = await Post.find();
 

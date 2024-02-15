@@ -15,8 +15,13 @@ const NewsContainer = ({
   useEffect(() => {
     const getAllPosts = () => {
       setIsFetching(true);
+      const token = localStorage.getItem("token");
       axios
-        .get(`http://localhost:3002/news-post`)
+        .get(`http://localhost:3002/news-post`, {
+          headers: {
+            Authorization: `Bearer ${token}`,
+          },
+        })
         .then((response) => {
           getNewsData(response.data);
           setIsFetching(false);
