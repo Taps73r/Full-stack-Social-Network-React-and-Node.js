@@ -33,8 +33,17 @@ const NewsContainer = ({
     getAllPosts();
   }, [getNewsData, setIsFetching]);
   let likeCurrentPost = (postId) => {
+    const token = localStorage.getItem("token");
     axios
-      .post(`http://localhost:3002/like`, { postId, userId })
+      .post(
+        `http://localhost:3002/like`,
+        { postId, userId },
+        {
+          headers: {
+            Authorization: `Bearer ${token}`,
+          },
+        }
+      )
       .then((response) => {})
       .catch((error) => {
         console.error(error);

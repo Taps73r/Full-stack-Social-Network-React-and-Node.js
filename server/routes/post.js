@@ -4,19 +4,20 @@ const express = require("express");
 const router = express.Router();
 
 const Post = require("../Schema/post");
-const User = require("../Schema/user");
 const Profile = require("../Schema/profileSchema");
 
 const postValidation = require("../Validation/postValidation");
 const verifyTokenAndUser = require("../Security/SecurityUser");
 
-router.post("/posts", async (req, res) => {
-  const { userId, postMessage, photos } = req.body;
+router.post("/posts", verifyTokenAndUser, async (req, res) => {
+  const userId = req.userData.userId;
+  const { postMessage, photos } = req.body;
 
   const validation = postValidation(postMessage);
   if (!validation.isValid) {
     return res.status(400).json({ message: validation.errorMessage });
   }
+
   try {
     const newPost = new Post({
       userId,
