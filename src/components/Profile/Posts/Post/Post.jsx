@@ -43,8 +43,6 @@ function Post(props) {
     setShowComents(!showComents);
   };
   const handleLikeClick = () => {
-    console.log(userId, profileId);
-    debugger;
     const newLikeState = !postLiked;
     props.likeCurrentPost(props.postId);
     if (newLikeState) {
