@@ -37,7 +37,6 @@ function MainContainer({
       setIsFetching(true);
       const token = localStorage.getItem("token");
       const url = `http://localhost:3002/profile/${userId}`;
-      console.log(userId)
       axios
         .get(url, {
           headers: {
@@ -118,7 +117,7 @@ function MainContainer({
     const token = localStorage.getItem("token");
     setIsFetching(true);
     axios
-      .delete(`http://localhost:3002/posts/${postId}/${userId}`, {
+      .delete(`http://localhost:3002/posts/${postId}`, {
         headers: {
           Authorization: `Bearer ${token}`,
         },
@@ -135,7 +134,7 @@ function MainContainer({
     axios
       .put(
         `http://localhost:3002/posts/${postId}`,
-        { updatedText, userId },
+        { updatedText },
         {
           headers: {
             Authorization: `Bearer ${token}`,
@@ -152,7 +151,7 @@ function MainContainer({
     axios
       .post(
         `http://localhost:3002/like`,
-        { postId, userId },
+        { postId },
         {
           headers: {
             Authorization: `Bearer ${token}`,

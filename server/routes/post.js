@@ -79,9 +79,9 @@ router.get("/news-post", async (req, res) => {
   }
 });
 
-router.delete("/posts/:postId/:userId", async (req, res) => {
+router.delete("/posts/:postId", verifyTokenAndUser, async (req, res) => {
   const postId = req.params.postId;
-  const userId = req.params.userId;
+  const userId = req.userData.userId;
 
   try {
     if (!mongoose.Types.ObjectId.isValid(postId)) {
@@ -121,7 +121,7 @@ router.delete("/posts/:postId/:userId", async (req, res) => {
 });
 
 router.post("/like", verifyTokenAndUser, async (req, res) => {
-  const userId = req.userData.userId; // Getting the user ID from the token
+  const userId = req.userData.userId;
   const { postId } = req.body;
 
   try {
