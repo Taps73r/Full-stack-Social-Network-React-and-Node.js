@@ -4,14 +4,17 @@ const router = express.Router();
 const Subscription = require("../Schema/subscription");
 const User = require("../Schema/user");
 
-router.post("/subscribe", async (req, res) => {
-  const { followerId, followingId } = req.body;
+const verifyTokenAndUser = require("../Security/SecurityUser");
+
+router.post("/subscribe", verifyTokenAndUser, async (req, res) => {
+  const followerId = req.userData.userId;
+  const followingId = req.body.followingId;
 
   try {
     // Перевірка, чи обидва користувачі існують
     const follower = await User.findOne({ userId: followerId });
     const following = await User.findOne({ userId: followingId });
-
+    console.log(followerId, followingId);
     if (!follower || !following) {
       return res.status(404).json({ message: "Користувач не знайдено" });
     }

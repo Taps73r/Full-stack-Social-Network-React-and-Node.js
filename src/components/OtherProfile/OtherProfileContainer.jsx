@@ -25,24 +25,38 @@ class OtherProfileContainer extends React.Component {
     this.requestProfileInfo(profileId);
   }
   requestProfileInfo = (userId) => {
+    const token = localStorage.getItem("token");
     this.props.setIsFetching(true);
     const url = `http://localhost:3002/profile/${userId}`;
     axios
-      .get(url)
+      .get(url, {
+        headers: {
+          Authorization: `Bearer ${token}`,
+        },
+      })
       .then((response) => {
         this.props.setProfile(response.data);
         this.props.setIsFetching(false);
       })
       .catch((error) => {
-        // Обробка помилки
         console.error("Error fetching profile data:", error);
         this.props.setIsFetching(false);
       });
   };
   subscribeUserProfile = (followerId, followingId) => {
+    const token = localStorage.getItem("token");
     axios
-      .post("http://localhost:3002/subscribe", { followerId, followingId })
+      .post(
+        "http://localhost:3002/subscribe",
+        { followerId, followingId },
+        {
+          headers: {
+            Authorization: `Bearer ${token}`,
+          },
+        }
+      )
       .then((response) => {
+        console.log(response);
         if (response.data.subscription === "No") {
           const no = [0];
           this.props.toggleSubscriptionProfile(no);
@@ -56,9 +70,18 @@ class OtherProfileContainer extends React.Component {
       });
   };
   likeCurrentPost = (postId) => {
+    const token = localStorage.getItem("token");
     let userId = this.props.loginUser;
     axios
-      .post(`http://localhost:3002/like`, { postId, userId })
+      .post(
+        `http://localhost:3002/like`,
+        { postId, userId },
+        {
+          headers: {
+            Authorization: `Bearer ${token}`,
+          },
+        }
+      )
       .then((response) => {})
       .catch((error) => {
         console.error(error);
