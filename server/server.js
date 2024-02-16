@@ -1,7 +1,6 @@
 const express = require("express");
 const mongoose = require("mongoose");
 const bodyParser = require("body-parser");
-const bcrypt = require("bcrypt");
 const jwt = require("jsonwebtoken");
 const cors = require("cors");
 const cloudinary = require("cloudinary").v2;
@@ -20,9 +19,6 @@ cloudinary.config({
   api_key: "872646555943858",
   api_secret: "8FumT857SXwXJz7dRs-mwCRBJpY",
 });
-
-const Subscription = require("./Schema/subscription");
-const Profile = require("./Schema/profileSchema");
 
 const mongoURI =
   "mongodb+srv://taps73r:motherboard2005@cluster0.rx59bw7.mongodb.net/?retryWrites=true&w=majority";
@@ -71,67 +67,6 @@ app.post("/protected", (req, res) => {
     });
   });
 });
-
-// /users-info endpoint
-app.get("/users-info", async (req, res) => {
-  try {
-    const { term, page = 1, count = 6 } = req.query;
-    let profileQuery = {};
-
-    if (term) {
-      profileQuery = { name: { $regex: new RegExp(term), $options: "i" } };
-    }
-
-    // Отримати всі профайли користувачів з бази даних з можливістю пошуку за іменем
-    const skip = (page - 1) * count;
-    const allProfiles = await Profile.find(profileQuery)
-      .skip(skip)
-      .limit(parseInt(count));
-
-    // Отримати інформацію про підписки для кожного користувача
-    const subscriptions = await Subscription.find();
-
-    // Додати інформацію про підписки та підписників до кожного користувача
-    const usersWithSubscriptions = await Promise.all(
-      allProfiles.map(async (userProfile) => {
-        const userSubscriptions = subscriptions
-          .filter(
-            (subscription) =>
-              subscription.follower.toString() === userProfile.userId.toString()
-          )
-          .map((subscription) => subscription.following);
-
-        const followers = subscriptions
-          .filter(
-            (subscription) =>
-              subscription.following.toString() ===
-              userProfile.userId.toString()
-          )
-          .map((subscription) => subscription.follower);
-
-        return {
-          userId: userProfile.userId,
-          name: userProfile.name,
-          bio: userProfile.bio,
-          photo: userProfile.photo,
-          subscriptions: userSubscriptions,
-          followers: followers,
-          // Додайте інші дані користувача, які вам потрібні
-        };
-      })
-    );
-
-    // Отримати загальну кількість користувачів, щоб використовувати для пагінації
-    const totalCount = await Profile.countDocuments(profileQuery);
-
-    // Поверніть дані клієнту
-    res.json({ totalCount: totalCount, items: usersWithSubscriptions });
-  } catch (error) {
-    console.error("Помилка при отриманні даних:", error);
-    res.status(500).json({ message: "Помилка при отриманні даних" });
-  }
-});
-
 
 app.listen(port, () => {
   console.log(`Сервер слухає на порту ${port}`);
