@@ -10,6 +10,7 @@ const profileRoutes = require("./routes/profile");
 const subscriptionRoutes = require("./routes/subscription");
 const postRoutes = require("./routes/post");
 const commentsRoutes = require("./routes/comments");
+const userRouter = require("./routes/users");
 
 const app = express();
 const port = 3002;
@@ -45,6 +46,7 @@ app.use("", profileRoutes);
 app.use("", subscriptionRoutes);
 app.use("", postRoutes);
 app.use("", commentsRoutes);
+app.use("", userRouter);
 
 app.post("/protected", (req, res) => {
   const token = req.body.token;
