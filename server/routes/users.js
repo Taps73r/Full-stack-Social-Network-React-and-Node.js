@@ -3,7 +3,9 @@ const router = express.Router();
 const Profile = require("../Schema/profile");
 const Subscription = require("../Schema/subscription");
 
-router.get("/users-info", async (req, res) => {
+const verifyToken = require("../Security/SecurityToken");
+
+router.get("/users-info", verifyToken, async (req, res) => {
   try {
     const { term, page = 1, count = 6 } = req.query;
     let profileQuery = {};
