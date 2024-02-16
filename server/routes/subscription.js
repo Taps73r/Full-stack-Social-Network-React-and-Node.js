@@ -11,22 +11,18 @@ router.post("/subscribe", verifyTokenAndUser, async (req, res) => {
   const followingId = req.body.followingId;
 
   try {
-    // Перевірка, чи обидва користувачі існують
     const follower = await User.findOne({ userId: followerId });
     const following = await User.findOne({ userId: followingId });
-    console.log(followerId, followingId);
     if (!follower || !following) {
       return res.status(404).json({ message: "Користувач не знайдено" });
     }
 
-    // Перевірка, чи підписка вже існує
     const existingSubscription = await Subscription.findOne({
       follower: followerId,
       following: followingId,
     });
 
     if (existingSubscription) {
-      // Якщо підписка вже існує, розглядаємо це як відписку
       await Subscription.deleteOne({ _id: existingSubscription._id });
       return res.json({
         message: "Ви успішно відписалися від цього користувача",
@@ -34,7 +30,6 @@ router.post("/subscribe", verifyTokenAndUser, async (req, res) => {
       });
     }
 
-    // Створення нової підписки
     const newSubscription = new Subscription({
       follower: followerId,
       following: followingId,
