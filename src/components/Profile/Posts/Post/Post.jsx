@@ -128,15 +128,15 @@ function Post(props) {
             </NavLink>
           </div>
           <div>
-            {userId === profileId ? (
+            {!props.newsPage && userId === profileId && (
               <span
                 className="material-symbols-outlined"
                 onClick={handleMenuClick}
               >
                 more_vert
               </span>
-            ) : null}
-            {isMenuOpen && (
+            )}
+            {!props.newsPage && isMenuOpen && (
               <EditPost
                 postId={props.postId}
                 deleteCurrentPost={props.deleteCurrentPost}

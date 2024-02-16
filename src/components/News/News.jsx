@@ -12,6 +12,7 @@ function News(props) {
       return (
         <div className="Posts">
           <Post
+            newsPage={true}
             key={post._id}
             likes={post.likes}
             postId={post._id}
