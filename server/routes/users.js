@@ -1,6 +1,6 @@
 const express = require("express");
 const router = express.Router();
-const Profile = require("../Schema/profile");
+const Profile = require("../Schema/profileSchema");
 const Subscription = require("../Schema/subscription");
 
 const verifyToken = require("../Security/SecurityToken");

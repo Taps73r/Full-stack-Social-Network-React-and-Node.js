@@ -22,7 +22,6 @@ class UsersAPIComponent extends React.Component {
       })
       .then((response) => {
         this.props.setUsers(response.data.items);
-        console.log(response.data.items);
         this.props.setTotalUsersCount(response.data.totalCount);
         this.props.setIsFetching(false);
       });
@@ -33,7 +32,7 @@ class UsersAPIComponent extends React.Component {
     axios
       .post(
         "http://localhost:3002/subscribe",
-        {  followingId },
+        { followingId },
         {
           headers: {
             Authorization: `Bearer ${token}`,
@@ -41,7 +40,6 @@ class UsersAPIComponent extends React.Component {
         }
       )
       .then((response) => {
-        console.log(response);
         this.props.toggleSubscription(followerId, followingId);
       })
       .catch((error) => {
