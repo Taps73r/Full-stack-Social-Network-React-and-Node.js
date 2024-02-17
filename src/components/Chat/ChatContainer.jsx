@@ -3,6 +3,7 @@ import Chat from "./Chat";
 import axios from "axios";
 import { connect } from "react-redux";
 import { setIsFetching } from "../../redux/profile-reducer";
+import Preloader from "../common/Preloader/Preloader";
 
 function ChatContainer({ userId, isFetching, setIsFetching }) {
   const [chats, setChats] = useState([]);
@@ -31,13 +32,18 @@ function ChatContainer({ userId, isFetching, setIsFetching }) {
 
     fetchChats();
   }, [setIsFetching, userId]);
-
+  if (isFetching || !chats) {
+    return <Preloader />;
+  }
   return (
     <div className="chat-page">
       <div className="chat-route">
         {chats.map((element) => {
-          return <div className=""></div>;
+          return <div className="chat-list-block"></div>;
         })}
+        <div className="create-chat">
+            
+        </div>
       </div>
       <Chat />
     </div>
