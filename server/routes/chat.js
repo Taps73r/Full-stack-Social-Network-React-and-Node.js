@@ -1,8 +1,9 @@
 const express = require("express");
 const router = express.Router();
 
-const PrivateChat = require("../models/privateChatModel");
+const PrivateChat = require("../Schema/PrivateChat");
 const verifyTokenAndUser = require("../Security/SecurityUser");
+const Profile = require("../Schema/profileSchema");
 
 router.post("/private-chats", verifyTokenAndUser, async (req, res) => {
   try {
@@ -57,11 +58,35 @@ router.post(
 router.get("/private-chats/:userId", verifyTokenAndUser, async (req, res) => {
   try {
     const userId = req.params.userId;
-    if (userId !== req.userData.userId) {
+    if (userId != req.userData.userId) {
       return res.status(403).json({ message: "Недостатньо прав доступу" });
     }
+    console.log(userId);
     const privateChats = await PrivateChat.find({ participants: userId });
-    res.json(privateChats);
+
+    if (!privateChats || privateChats.length === 0) {
+      return res.json([]);
+    }
+
+    let formattedChats = [];
+
+    for (const chat of privateChats) {
+      const otherParticipantId = chat.participants.find(
+        (participantId) => participantId !== userId
+      );
+      const otherParticipantProfile = await Profile.findOne({
+        userId: otherParticipantId,
+      });
+      if (otherParticipantProfile) {
+        formattedChats.push({
+          chatId: chat._id,
+          username: otherParticipantProfile.name,
+          avatar: otherParticipantProfile.photo,
+        });
+      }
+    }
+
+    res.json(formattedChats);
   } catch (error) {
     res.status(500).json({ message: error.message });
   }
