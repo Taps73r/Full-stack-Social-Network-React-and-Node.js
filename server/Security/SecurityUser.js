@@ -14,7 +14,7 @@ function verifyTokenAndUser(req, res, next) {
       console.error("JWT verification error:", err);
       return res.status(401).json({ message: "Недійсний токен" });
     }
-    if (req.params.userId && req.params.userId !== decoded.userId) {
+    if (req.params.userId && req.params.userId != decoded.userId) {
       return res.status(403).json({ message: "Недостатньо прав доступу" });
     }
     req.userData = { userId: decoded.userId };
