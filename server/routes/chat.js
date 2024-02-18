@@ -7,9 +7,21 @@ const Profile = require("../Schema/profileSchema");
 
 router.post("/private-chats", verifyTokenAndUser, async (req, res) => {
   try {
-    const { participants } = req.body;
-    participants.push(req.userData.userId);
-    const newPrivateChat = await PrivateChat.create({ participants });
+    const { partId } = req.body;
+    const currentUserId = req.userData.userId;
+
+    const existingChat = await PrivateChat.findOne({
+      participants: { $all: [currentUserId, partId] },
+    });
+
+    if (existingChat) {
+      return res.status(400).json({ message: "Чат уже существует" });
+    }
+
+    const newPrivateChat = await PrivateChat.create({
+      participants: [currentUserId, partId],
+    });
+
     res.status(201).json(newPrivateChat);
   } catch (error) {
     res.status(500).json({ message: error.message });
@@ -58,11 +70,18 @@ router.post(
 router.get("/private-chats/:userId", verifyTokenAndUser, async (req, res) => {
   try {
     const userId = req.params.userId;
-    if (userId != req.userData.userId) {
+    const requestingUserId = req.userData.userId;
+
+    if (userId != requestingUserId) {
       return res.status(403).json({ message: "Недостатньо прав доступу" });
     }
-    console.log(userId);
-    const privateChats = await PrivateChat.find({ participants: userId });
+
+    const { page = 1, limit = 20 } = req.query;
+    const skip = (page - 1) * limit;
+
+    const privateChats = await PrivateChat.find({ participants: userId })
+      .skip(skip)
+      .limit(parseInt(limit));
 
     if (!privateChats || privateChats.length === 0) {
       return res.json([]);
@@ -72,16 +91,17 @@ router.get("/private-chats/:userId", verifyTokenAndUser, async (req, res) => {
 
     for (const chat of privateChats) {
       const otherParticipantId = chat.participants.find(
-        (participantId) => participantId !== userId
+        (participantId) => participantId != userId
       );
       const otherParticipantProfile = await Profile.findOne({
         userId: otherParticipantId,
       });
       if (otherParticipantProfile) {
         formattedChats.push({
-          chatId: chat._id,
+          userId: otherParticipantProfile.userId,
           username: otherParticipantProfile.name,
           avatar: otherParticipantProfile.photo,
+          chatId: chat._id,
         });
       }
     }
