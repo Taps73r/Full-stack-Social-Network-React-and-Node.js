@@ -1,0 +1,61 @@
+@import url("https://fonts.googleapis.com/css2?family=Tilt+Neon&display=swap");
+.Create-chat {
+  display: flex;
+  flex-direction: column;
+  background-color: #1c2541;
+  border-radius: 10px;
+  font-family: "Tilt Neon", sans-serif;
+}
+
+.Create-chat p {
+    font-size: 1.2svw;
+}
+
+.back-btn {
+  border-radius: 10px 10px 0 0;
+  border: none;
+  background-color: #1c2541;
+  cursor: pointer;
+  font-size: 2svw;
+  font-family: "Tilt Neon", sans-serif;
+  color: #fff;
+}
+
+.Create-chat button:hover {
+  background-color: #5bc0be;
+}
+
+.create-chat-card {
+  display: flex;
+  flex-direction: row;
+  width: 90%;
+  color: #fff;
+  margin-bottom: 20px;
+}
+
+.create-chat-card img {
+  width: 5svw;
+  height: 5svw;
+  border-radius: 50%;
+  margin-right: 1.5svw;
+  margin-left: 1.5svw;
+}
+
+.create-chat-btn {
+  width: 20svw;
+  border: 2px solid #5bc0be;
+  font-family: "Tilt Neon", sans-serif;
+  border-radius: 10px;
+  font-size: 2svw;
+  background-color: #fff;
+  cursor: pointer;
+  margin-right: 20px;
+}
+
+.create-chat-block {
+  margin-top: 20px;
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+  justify-content: space-between;
+}
