@@ -3,6 +3,7 @@ const router = express.Router();
 
 const Subscription = require("../Schema/subscription");
 const User = require("../Schema/user");
+const Profile = require("../Schema/profileSchema");
 
 const verifyTokenAndUser = require("../Security/SecurityUser");
 
@@ -47,4 +48,23 @@ router.post("/subscribe", verifyTokenAndUser, async (req, res) => {
       .json({ message: "Помилка при додаванні/видаленні підписки" });
   }
 });
+
+router.get("/subscriptions", verifyTokenAndUser, async (req, res) => {
+  try {
+    const userId = req.userData.userId;
+    const subscriptions = await Subscription.find({ follower: userId });
+
+    const followedUserIds = subscriptions.map(
+      (subscription) => subscription.following
+    );
+
+    const usersInfo = await Profile.find({ userId: { $in: followedUserIds } });
+
+    res.json(usersInfo);
+  } catch (error) {
+    console.error("Помилка при отриманні даних:", error);
+    res.status(500).json({ message: "Помилка при отриманні даних" });
+  }
+});
+
 module.exports = router;
