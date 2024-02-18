@@ -8,7 +8,7 @@
 }
 
 .Create-chat p {
-    font-size: 1.2svw;
+  font-size: 1.2svw;
 }
 
 .back-btn {
@@ -39,6 +39,7 @@
   border-radius: 50%;
   margin-right: 1.5svw;
   margin-left: 1.5svw;
+  object-fit: cover;
 }
 
 .create-chat-btn {

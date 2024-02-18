@@ -1,0 +1,21 @@
+.chat-page {
+  width: 30svw;
+  background-color: #1c2541;
+  border-radius: 20px;
+}
+
+.chat-list-block img {
+  width: 5svw;
+  height: 5svw;
+  object-fit: cover;
+  border-radius: 50%;
+}
+.chat-list-block {
+  display: flex;
+  flex-direction: row;
+  margin-bottom: 20px;
+}
+
+.create-chat button {
+  margin-bottom: 20px;
+}

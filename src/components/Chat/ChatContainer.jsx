@@ -78,7 +78,7 @@ function ChatContainer({ userId, isFetching, setIsFetching }) {
         {chats.map((element) => {
           return (
             <div className="chat-list-block" key={element.userId}>
-              <NavLink>
+              <NavLink className="chat-list-block">
                 <img src={element.avatar} alt="" />
                 <p>{element.username}</p>
               </NavLink>
