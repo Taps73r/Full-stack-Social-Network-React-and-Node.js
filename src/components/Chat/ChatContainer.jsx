@@ -10,6 +10,7 @@ import "./Chat.css";
 
 function ChatContainer({ userId, isFetching, setIsFetching }) {
   const [chats, setChats] = useState([]);
+  const [selectedChat, setSelectedChat] = useState(null);
   const [followedUsers, setFollowedUsers] = useState(false);
 
   useEffect(() => {
@@ -36,7 +37,9 @@ function ChatContainer({ userId, isFetching, setIsFetching }) {
 
     fetchChats();
   }, [setIsFetching, userId]);
-
+  const handleCheckChat = (chatId) => {
+    setSelectedChat(chatId);
+  };
   const createChat = async (participantId) => {
     const token = localStorage.getItem("token");
     const partId = participantId;
@@ -77,8 +80,12 @@ function ChatContainer({ userId, isFetching, setIsFetching }) {
       <div className="chat-route">
         {chats.map((element) => {
           return (
-            <div className="chat-list-block" key={element.userId}>
-              <NavLink className="chat-list-block">
+            <div className="chat-list-div" key={element.userId}>
+              <NavLink
+                to={`/dialogs/${element.chatId}`}
+                className="chat-list-block"
+                onClick={() => handleCheckChat(element.chatId)}
+              >
                 <img src={element.avatar} alt="" />
                 <p>{element.username}</p>
               </NavLink>
@@ -95,7 +102,7 @@ function ChatContainer({ userId, isFetching, setIsFetching }) {
           </button>
         </div>
       </div>
-      <Chat />
+      <Chat selectedChat={selectedChat} />
     </div>
   );
 }
