@@ -1,21 +1,50 @@
 .chat-page {
-  width: 30svw;
-  background-color: #1c2541;
+  width: 100%;
   border-radius: 20px;
 }
 
 .chat-list-block img {
-  width: 5svw;
-  height: 5svw;
+  width: 4.5svw;
+  height: 4.5svw;
   object-fit: cover;
   border-radius: 50%;
+  margin-left: 10px;
 }
 .chat-list-block {
   display: flex;
   flex-direction: row;
-  margin-bottom: 20px;
+  margin: 10px 0 10px 0;
+  text-decoration: none;
+  border-radius: 10px;
+  cursor: pointer;
 }
 
+.chat-list-block p {
+  color: #fff;
+  margin-left: 10px;
+  font-size: 1.3svw;
+}
+.chat-list-block:hover {
+  background-color: #3a506b;
+}
 .create-chat button {
+  width: 100%;
   margin-bottom: 20px;
+  background-color: #1c2541;
+  border: none;
+  color: #fff;
+  font-size: 1.3svw;
+  cursor: pointer;
+  padding: 10px;
+  border-radius: 10px;
+}
+
+.create-chat button:hover {
+  background-color: #3a506b;
+}
+
+.chat-route {
+  border-radius: 10px;
+  width: 20svw;
+  background-color: #1c2541;
 }
