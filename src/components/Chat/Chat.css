@@ -1,6 +1,9 @@
 .chat-page {
   width: 100%;
   border-radius: 20px;
+  display: flex;
+  flex-direction: row;
+  height: 100%;
 }
 
 .chat-list-block img {
@@ -13,10 +16,14 @@
 .chat-list-block {
   display: flex;
   flex-direction: row;
-  margin: 10px 0 10px 0;
+  padding: 10px 0 10px 0;
   text-decoration: none;
   border-radius: 10px;
   cursor: pointer;
+}
+.chat-route a.active {
+  width: 100%;
+  background-color: #5bc0be;
 }
 
 .chat-list-block p {
@@ -29,7 +36,7 @@
 }
 .create-chat button {
   width: 100%;
-  margin-bottom: 20px;
+  margin: 10px 0;
   background-color: #1c2541;
   border: none;
   color: #fff;
@@ -47,4 +54,55 @@
   border-radius: 10px;
   width: 20svw;
   background-color: #1c2541;
+}
+
+.chat {
+  width: 100%;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: end;
+  border-radius: 10px;
+  margin-left: 10px;
+  background-color: #3a506b;
+}
+
+.enter-message {
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+  width: 100%;
+  border-radius: 0 0 10px 10px;
+  background-color: #1c2541;
+}
+.enter-message button{
+  border: none;
+  width: 16%;
+  background-color: #5bc0be;
+  height: 100%;
+  font-size: 2svw;
+  border-radius: 0 0 10px 0;
+  color: #fff;
+  cursor: pointer;
+}
+.enter-message button:hover{
+  background-color: #0B132B;
+  color: #5bc0be;
+}
+.enter-message textarea {
+  padding-left: 10px;
+  padding-top: 10px;
+  width: 86%;
+  font-size: 1.3svw;
+  background-color: #1c2541;
+  border: none;
+  height: 100%;
+  resize: none;
+  border-radius: 0 0 0 10px;
+  display: flex;
+  outline: none;
+  color: #fff;
+}
+.enter-message textarea::placeholder{
+  color: #fff;
 }
