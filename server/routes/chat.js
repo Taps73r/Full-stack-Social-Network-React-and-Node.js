@@ -28,6 +28,36 @@ router.post("/private-chats", verifyTokenAndUser, async (req, res) => {
   }
 });
 
+router.delete(
+  "/private-chats/:chatId/messages/:messageId",
+  verifyTokenAndUser,
+  async (req, res) => {
+    try {
+      const chatId = req.params.chatId;
+      const messageId = req.params.messageId;
+
+      const chat = await PrivateChat.findById(chatId);
+      if (!chat) {
+        return res.status(404).json({ message: "Чат не знайдено" });
+      }
+
+      const messageIndex = chat.messages.findIndex(
+        (message) => message._id == messageId
+      );
+      if (messageIndex === -1) {
+        return res.status(404).json({ message: "Повідомлення не знайдено" });
+      }
+
+      chat.messages.splice(messageIndex, 1);
+      await chat.save();
+
+      res.json({ message: "Повідомлення успішно видалено" });
+    } catch (error) {
+      res.status(500).json({ message: error.message });
+    }
+  }
+);
+
 router.get(
   "/private-chats/:chatId/messages",
   verifyTokenAndUser,
