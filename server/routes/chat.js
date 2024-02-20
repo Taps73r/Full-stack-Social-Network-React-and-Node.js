@@ -38,7 +38,22 @@ router.get(
       if (!chat) {
         return res.status(404).json({ message: "Чат не знайдено" });
       }
-      res.json(chat.messages);
+
+      let messages = [];
+
+      for (const message of chat.messages) {
+        const senderProfile = await Profile.findOne({ userId: message.sender });
+        if (senderProfile) {
+          messages.push({
+            userId: senderProfile.userId,
+            name: senderProfile.name,
+            avatar: senderProfile.photo,
+            content: message.content,
+          });
+        }
+      }
+
+      res.json(messages);
     } catch (error) {
       res.status(500).json({ message: error.message });
     }
