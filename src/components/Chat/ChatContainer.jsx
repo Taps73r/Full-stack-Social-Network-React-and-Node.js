@@ -7,6 +7,7 @@ import Preloader from "../common/Preloader/Preloader";
 import CreateChat from "../common/CreateChat/CreateChat";
 import { NavLink } from "react-router-dom";
 import "./Chat.css";
+import staticPhoto from "../../photos/userstaticavatar.jpg";
 
 function ChatContainer({ userId, isFetching, setIsFetching }) {
   const [chats, setChats] = useState([]);
@@ -25,7 +26,6 @@ function ChatContainer({ userId, isFetching, setIsFetching }) {
             },
           })
           .then((response) => {
-            console.log(response);
             setChats(response.data);
             setIsFetching(false);
           });
@@ -55,7 +55,7 @@ function ChatContainer({ userId, isFetching, setIsFetching }) {
           }
         )
         .then((response) => {
-          console.log(response);
+          return <></>;
         });
     } catch (error) {
       setIsFetching(false);
@@ -78,15 +78,15 @@ function ChatContainer({ userId, isFetching, setIsFetching }) {
   return (
     <div className="chat-page">
       <div className="chat-route">
-        {chats.map((element) => {
+        {chats.map((element, index) => {
           return (
-            <div className="chat-list-div" key={element.userId}>
+            <div className="chat-list-div" key={index}>
               <NavLink
                 to={`/dialogs/${element.chatId}`}
                 className="chat-list-block"
                 onClick={() => handleCheckChat(element.chatId)}
               >
-                <img src={element.avatar} alt="" />
+                <img src={element.avatar || staticPhoto} alt="" />
                 <p>{element.username}</p>
               </NavLink>
             </div>
