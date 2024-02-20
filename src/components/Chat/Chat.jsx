@@ -48,7 +48,9 @@ function Chat(props) {
   };
 
   const handleSendMessage = () => {
-    if (newMessageContent.trim() !== "") {
+    if (newMessageContent.length > 140) {
+      return <></>;
+    } else if (newMessageContent.trim() !== "") {
       sendMessage();
     }
   };
@@ -56,15 +58,21 @@ function Chat(props) {
   const handleInputChange = (event) => {
     setNewMessageContent(event.target.value);
   };
+  //TODO:  видалення чату
 
   return (
     <div className="chat">
       <div className="chat-messages">
         {messages.map((message, index) => (
-          <div key={index}>
-            <p>
-              {message.sender}: {message.content}
-            </p>
+          <div
+            key={index}
+            className={`Message ${
+              message.userId === props.userId
+                ? "justifycontent-flex-end"
+                : "justifycontent-flex-start"
+            }`}
+          >
+            {message.content}
           </div>
         ))}
       </div>
