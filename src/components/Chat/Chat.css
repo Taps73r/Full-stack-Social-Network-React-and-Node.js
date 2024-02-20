@@ -3,6 +3,7 @@
   border-radius: 20px;
   display: flex;
   flex-direction: row;
+  font-family: "Tilt Neon", sans-serif;
   height: 100%;
 }
 
@@ -44,6 +45,7 @@
   cursor: pointer;
   padding: 10px;
   border-radius: 10px;
+  font-family: "Tilt Neon", sans-serif;
 }
 
 .create-chat button:hover {
@@ -53,7 +55,9 @@
 .chat-route {
   border-radius: 10px;
   width: 20svw;
+  height: auto;
   background-color: #1c2541;
+  overflow-y: auto;
 }
 
 .chat {
@@ -65,6 +69,7 @@
   border-radius: 10px;
   margin-left: 10px;
   background-color: #3a506b;
+  overflow: hidden;
 }
 
 .enter-message {
@@ -74,11 +79,13 @@
   width: 100%;
   border-radius: 0 0 10px 10px;
   background-color: #1c2541;
+  font-family: "Tilt Neon", sans-serif;
 }
 .enter-message button {
   border: none;
   width: 16%;
   background-color: #5bc0be;
+  font-family: "Tilt Neon", sans-serif;
   height: 100%;
   font-size: 2svw;
   border-radius: 0 0 10px 0;
@@ -91,6 +98,7 @@
 }
 .enter-message textarea {
   padding-left: 10px;
+  font-family: "Tilt Neon", sans-serif;
   padding-top: 10px;
   width: 86%;
   font-size: 1.3svw;
@@ -106,26 +114,30 @@
 .enter-message textarea::placeholder {
   color: #fff;
 }
-.Message {
-  display: flex;
-  align-items: row;
-  margin-bottom: 20px;
-  color: #fff;
-  font-size: 1.2svw;
-  padding: 1.3svw;
-  border-radius: 15px;
-  background-color: #1c2541;
-}
 .justifycontent-flex-end {
-  display: flex;
-  justify-content: flex-end;
+  align-self: flex-end;
 }
 .justifycontent-flex-start {
-  display: flex;
-  justify-content: flex-start;
+  align-self: flex-start;
 }
+
 .chat-messages {
   width: 94%;
+  display: flex;
+  flex-direction: column;
   overflow-y: auto;
-  margin-top: 10px;
+}
+.Message{
+  margin: 10px 0;
+  width: 50%;
+  display: flex;
+  flex-direction: row;
+  flex-wrap: nowrap;
+  justify-content: flex-start;
+  word-break: break-all;
+  background-color: #1c2541;
+  border-radius: 15px;
+  color: #fff;
+  padding: 10px;
+  font-size: 1.2svw;
 }
