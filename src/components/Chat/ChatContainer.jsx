@@ -1,119 +1,124 @@
-import { useEffect, useState } from "react";
-import Chat from "./Chat";
 import axios from "axios";
-import { connect } from "react-redux";
-import { setIsFetching } from "../../redux/profile-reducer";
-import Preloader from "../common/Preloader/Preloader";
-import CreateChat from "../common/CreateChat/CreateChat";
-import { NavLink } from "react-router-dom";
-import "./Chat.css";
-import staticPhoto from "../../photos/userstaticavatar.jpg";
+import { useEffect, useState } from "react";
 
-function ChatContainer({ userId, isFetching, setIsFetching }) {
-  const [chats, setChats] = useState([]);
-  const [selectedChat, setSelectedChat] = useState(null);
-  const [followedUsers, setFollowedUsers] = useState(false);
+function Chat(props) {
+  const [messages, setMessages] = useState([]);
+  const [newMessageContent, setNewMessageContent] = useState("");
 
   useEffect(() => {
-    const fetchChats = async () => {
+    const fetchChat = async (chatId) => {
       try {
-        setIsFetching(true);
         const token = localStorage.getItem("token");
-        await axios
-          .get(`http://localhost:3002/private-chats/${userId}`, {
-            headers: {
-              Authorization: `Bearer ${token}`,
-            },
-          })
-          .then((response) => {
-            setChats(response.data);
-            setIsFetching(false);
-          });
-      } catch (error) {
-        setIsFetching(false);
-        console.error("Помилка отримання списку чатів:", error);
-      }
-    };
-
-    fetchChats();
-  }, [setIsFetching, userId]);
-  const handleCheckChat = (chatId) => {
-    setSelectedChat(chatId);
-  };
-  const createChat = async (participantId) => {
-    const token = localStorage.getItem("token");
-    const partId = participantId;
-    try {
-      await axios
-        .post(
-          `http://localhost:3002/private-chats`,
-          { partId },
+        const response = await axios.get(
+          `http://localhost:3002/private-chats/${chatId}/messages`,
           {
             headers: {
               Authorization: `Bearer ${token}`,
             },
           }
-        )
-        .then((response) => {
-          return <></>;
-        });
+        );
+        setMessages(response.data);
+      } catch (error) {
+        console.error("Помилка отримання повідомлень чата:", error);
+      }
+    };
+
+    if (props.selectedChat) {
+      fetchChat(props.selectedChat);
+      const intervalId = setInterval(() => {
+        fetchChat(props.selectedChat);
+      }, 10000);
+      return () => clearInterval(intervalId);
+    }
+  }, [props.selectedChat]);
+
+  const sendMessage = async () => {
+    try {
+      const token = localStorage.getItem("token");
+      const response = await axios.post(
+        `http://localhost:3002/private-chats/${props.selectedChat}/messages`,
+        { content: newMessageContent },
+        {
+          headers: {
+            Authorization: `Bearer ${token}`,
+          },
+        }
+      );
+      setMessages([...messages, response.data]);
+      setNewMessageContent("");
     } catch (error) {
-      setIsFetching(false);
-      console.error("Помилка створення чату:", error);
+      console.error("Помилка відправлення повідомлення:", error);
     }
   };
-  if (isFetching || !chats) {
-    return <Preloader />;
-  }
-  if (followedUsers === true) {
-    return (
-      <CreateChat
-        createChat={createChat}
-        followedUsers={followedUsers}
-        setFollowedUsers={setFollowedUsers}
-      />
-    );
-  }
+  const deleteMessage = (messageId) => {
+    const token = localStorage.getItem("token");
+    axios
+      .delete(
+        `http://localhost:3002/private-chats/${props.selectedChat}/messages/${messageId}`,
+        {
+          headers: {
+            Authorization: `Bearer ${token}`,
+          },
+        }
+      )
+      .then(() => {
+        setMessages(
+          messages.filter((message) => message.messageId !== messageId)
+        );
+      })
+      .catch(() => {});
+  };
+
+  const handleSendMessage = () => {
+    if (newMessageContent.length > 140) {
+      return <></>;
+    } else if (newMessageContent.trim() !== "") {
+      sendMessage();
+    }
+  };
+
+  const handleInputChange = (event) => {
+    setNewMessageContent(event.target.value);
+  };
 
   return (
-    <div className="chat-page">
-      <div className="chat-route">
-        {chats.map((element, index) => {
-          return (
-            <div className="chat-list-div" key={index}>
-              <NavLink
-                to={`/dialogs/${element.chatId}`}
-                className="chat-list-block"
-                onClick={() => handleCheckChat(element.chatId)}
-              >
-                <img src={element.avatar || staticPhoto} alt="" />
-                <p>{element.username}</p>
-              </NavLink>
-            </div>
-          );
-        })}
-        <div className="create-chat">
-          <button
-            onClick={() => {
-              setFollowedUsers(true);
-            }}
+    <div className="chat">
+      <div className="chat-messages">
+        {messages.map((message, index) => (
+          <div
+            key={index}
+            className={`Message ${
+              message.userId === props.userId
+                ? "justifycontent-flex-end"
+                : "justifycontent-flex-start"
+            }`}
           >
-            Create Chat
-          </button>
-        </div>
+            <p>{message.content}</p>
+            {message.userId === props.userId ? (
+              <button
+                className="delete-message"
+                onClick={() => {
+                  deleteMessage(message.messageId);
+                }}
+              >
+                <span class="material-symbols-outlined">delete</span>
+              </button>
+            ) : (
+              <></>
+            )}
+          </div>
+        ))}
       </div>
-      <Chat userId={userId} selectedChat={selectedChat} />
+      <div className="enter-message">
+        <textarea
+          placeholder="Enter your message"
+          value={newMessageContent}
+          onChange={handleInputChange}
+        />
+        <button onClick={handleSendMessage}>Send</button>
+      </div>
     </div>
   );
 }
 
-const mapStateToProps = (state) => ({
-  isFetching: state.profileInfo.isFetching,
-  userId: state.loginInfo.userId,
-});
-
-const ChatContainerWithApi = connect(mapStateToProps, {
-  setIsFetching,
-})(ChatContainer);
-
-export default ChatContainerWithApi;
+export default Chat;
