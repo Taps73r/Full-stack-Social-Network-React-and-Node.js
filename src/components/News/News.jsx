@@ -1,3 +1,4 @@
+import React from "react";
 import Post from "../Profile/Posts/Post/Post";
 import Preloader from "../common/Preloader/Preloader";
 import "./News.css";
@@ -8,9 +9,17 @@ function News(props) {
     return <Preloader />;
   }
   if (props.newsData.posts && props.newsData.posts.length > 0) {
-    posts = props.newsData.posts.map((post) => {
+    const shuffledPosts = [...props.newsData.posts];
+    for (let i = shuffledPosts.length - 1; i > 0; i--) {
+      const j = Math.floor(Math.random() * (i + 1));
+      [shuffledPosts[i], shuffledPosts[j]] = [
+        shuffledPosts[j],
+        shuffledPosts[i],
+      ];
+    }
+    posts = shuffledPosts.map((post) => {
       return (
-        <div className="Posts">
+        <div className="Posts" key={post._id}>
           <Post
             newsPage={true}
             key={post._id}
@@ -28,6 +37,7 @@ function News(props) {
   } else {
     posts = <p>No posts available.</p>;
   }
+
   return (
     <div className="news">
       <div className="news_element">
