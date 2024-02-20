@@ -18,6 +18,7 @@ function Chat(props) {
           }
         );
         setMessages(response.data);
+        console.log(response.data);
       } catch (error) {
         console.error("Помилка отримання повідомлень чата:", error);
       }
@@ -46,6 +47,24 @@ function Chat(props) {
       console.error("Помилка відправлення повідомлення:", error);
     }
   };
+  const deleteMessage = (messageId) => {
+    const token = localStorage.getItem("token");
+    axios
+      .delete(
+        `http://localhost:3002/private-chats/${props.selectedChat}/messages/${messageId}`,
+        {
+          headers: {
+            Authorization: `Bearer ${token}`,
+          },
+        }
+      )
+      .then(() => {
+        setMessages(
+          messages.filter((message) => message.messageId !== messageId)
+        );
+      })
+      .catch(() => {});
+  };
 
   const handleSendMessage = () => {
     if (newMessageContent.length > 140) {
@@ -58,7 +77,6 @@ function Chat(props) {
   const handleInputChange = (event) => {
     setNewMessageContent(event.target.value);
   };
-  //TODO:  видалення чату
 
   return (
     <div className="chat">
@@ -72,7 +90,19 @@ function Chat(props) {
                 : "justifycontent-flex-start"
             }`}
           >
-            {message.content}
+            <p>{message.content}</p>
+            {message.userId === props.userId ? (
+              <button
+                className="delete-message"
+                onClick={() => {
+                  deleteMessage(message.messageId);
+                }}
+              >
+                <span class="material-symbols-outlined">delete</span>
+              </button>
+            ) : (
+              <></>
+            )}
           </div>
         ))}
       </div>
