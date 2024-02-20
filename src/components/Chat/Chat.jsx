@@ -18,7 +18,6 @@ function Chat(props) {
           }
         );
         setMessages(response.data);
-        console.log(response.data);
       } catch (error) {
         console.error("Помилка отримання повідомлень чата:", error);
       }
@@ -26,6 +25,13 @@ function Chat(props) {
 
     if (props.selectedChat) {
       fetchChat(props.selectedChat);
+      // Починаємо періодично викликати функцію fetchChat кожні 10 секунд
+      const intervalId = setInterval(() => {
+        fetchChat(props.selectedChat);
+      }, 10000); // 10000 мілісекунд = 10 секунд
+
+      // Зупиняємо періодичні виклики після виходу з компонента
+      return () => clearInterval(intervalId);
     }
   }, [props.selectedChat]);
 
