@@ -61,7 +61,7 @@
   display: flex;
   flex-direction: column;
   align-items: center;
-  justify-content: end;
+  justify-content: flex-end;
   border-radius: 10px;
   margin-left: 10px;
   background-color: #3a506b;
@@ -75,7 +75,7 @@
   border-radius: 0 0 10px 10px;
   background-color: #1c2541;
 }
-.enter-message button{
+.enter-message button {
   border: none;
   width: 16%;
   background-color: #5bc0be;
@@ -85,8 +85,8 @@
   color: #fff;
   cursor: pointer;
 }
-.enter-message button:hover{
-  background-color: #0B132B;
+.enter-message button:hover {
+  background-color: #0b132b;
   color: #5bc0be;
 }
 .enter-message textarea {
@@ -103,6 +103,29 @@
   outline: none;
   color: #fff;
 }
-.enter-message textarea::placeholder{
+.enter-message textarea::placeholder {
   color: #fff;
+}
+.Message {
+  display: flex;
+  align-items: row;
+  margin-bottom: 20px;
+  color: #fff;
+  font-size: 1.2svw;
+  padding: 1.3svw;
+  border-radius: 15px;
+  background-color: #1c2541;
+}
+.justifycontent-flex-end {
+  display: flex;
+  justify-content: flex-end;
+}
+.justifycontent-flex-start {
+  display: flex;
+  justify-content: flex-start;
+}
+.chat-messages {
+  width: 94%;
+  overflow-y: auto;
+  margin-top: 10px;
 }
