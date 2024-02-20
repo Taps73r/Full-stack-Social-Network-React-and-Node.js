@@ -18,7 +18,6 @@ export default function CreateChat(props) {
             },
           }
         );
-        console.log(response);
         setSubscriptions(response.data);
       } catch (error) {
         console.error("Помилка при отриманні списку підписок:", error);
