@@ -69,15 +69,15 @@ router.get(
         return res.status(404).json({ message: "Чат не знайдено" });
       }
 
-      let messages = [];
+      const messages = [];
 
       for (const message of chat.messages) {
         const senderProfile = await Profile.findOne({ userId: message.sender });
         if (senderProfile) {
           messages.push({
-            userId: senderProfile.userId,
+            messageId: message._id,
+            userId: message.sender,
             name: senderProfile.name,
-            avatar: senderProfile.photo,
             content: message.content,
           });
         }
