@@ -25,6 +25,18 @@ export default function CreateChat(props) {
     }
     fetchSubscriptions();
   }, []);
+
+  const handleCreateChat = async (userId) => {
+    try {
+      props.createChat(userId);
+      setSubscriptions((prevSubscriptions) =>
+        prevSubscriptions.filter((sub) => sub.userId !== userId)
+      );
+    } catch (error) {
+      console.error("Помилка при створенні чату:", error);
+    }
+  };
+
   return (
     <div className="Create-chat">
       <button
@@ -45,7 +57,7 @@ export default function CreateChat(props) {
             <button
               className="create-chat-btn"
               onClick={() => {
-                props.createChat(sub.userId);
+                handleCreateChat(sub.userId);
               }}
             >
               Create Chat
