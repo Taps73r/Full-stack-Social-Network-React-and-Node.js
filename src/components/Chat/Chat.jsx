@@ -19,10 +19,7 @@ function Chat(props) {
           }
         );
         setMessages(response.data);
-      } catch (error) {
-        console.error("Помилка отримання повідомлень чата:", error);
-        
-      }
+      } catch (error) {}
     };
 
     if (props.selectedChat) {
@@ -68,7 +65,10 @@ function Chat(props) {
           messages.filter((message) => message.messageId !== messageId)
         );
       })
-      .catch(() => {});
+      .catch((error) => {
+        console.log(error);
+        props.setErrorMessage();
+      });
   };
 
   const handleSendMessage = () => {
@@ -85,7 +85,7 @@ function Chat(props) {
 
   return (
     <div className="chat">
-      {error ? <ErrorCatcher /> : <></>}
+      {props.errorMessage ? <ErrorCatcher /> : <></>}
       <div className="chat-messages">
         {messages.map((message, index) => (
           <div

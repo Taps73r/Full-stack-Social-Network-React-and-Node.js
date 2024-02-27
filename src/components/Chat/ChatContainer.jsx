@@ -10,7 +10,13 @@ import "./Chat.css";
 import staticPhoto from "../../photos/userstaticavatar.jpg";
 import { setErrorMessage } from "../../redux/error-reducer";
 
-function ChatContainer({ userId, isFetching, setIsFetching }) {
+function ChatContainer({
+  userId,
+  isFetching,
+  setIsFetching,
+  errorMessage,
+  setErrorMessage,
+}) {
   const [chats, setChats] = useState([]);
   const [selectedChat, setSelectedChat] = useState(null);
   const [followedUsers, setFollowedUsers] = useState(false);
@@ -103,7 +109,12 @@ function ChatContainer({ userId, isFetching, setIsFetching }) {
           </button>
         </div>
       </div>
-      <Chat userId={userId} selectedChat={selectedChat} />
+      <Chat
+        userId={userId}
+        selectedChat={selectedChat}
+        setErrorMessage={setErrorMessage}
+        errorMessage={errorMessage}
+      />
     </div>
   );
 }
@@ -111,6 +122,7 @@ function ChatContainer({ userId, isFetching, setIsFetching }) {
 const mapStateToProps = (state) => ({
   isFetching: state.profileInfo.isFetching,
   userId: state.loginInfo.userId,
+  errorMessage: state.errorInfo.errorMessage,
 });
 
 const ChatContainerWithApi = connect(mapStateToProps, {
