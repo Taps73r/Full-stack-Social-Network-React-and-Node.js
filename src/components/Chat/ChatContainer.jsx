@@ -8,6 +8,7 @@ import CreateChat from "../common/CreateChat/CreateChat";
 import { NavLink } from "react-router-dom";
 import "./Chat.css";
 import staticPhoto from "../../photos/userstaticavatar.jpg";
+import { deleteErrorMessage, setErrorMessage } from "../../redux/error-reducer";
 
 function ChatContainer({ userId, isFetching, setIsFetching }) {
   const [chats, setChats] = useState([]);
@@ -103,7 +104,6 @@ function ChatContainer({ userId, isFetching, setIsFetching }) {
         </div>
       </div>
       <Chat userId={userId} selectedChat={selectedChat} />
-      
     </div>
   );
 }
@@ -111,10 +111,13 @@ function ChatContainer({ userId, isFetching, setIsFetching }) {
 const mapStateToProps = (state) => ({
   isFetching: state.profileInfo.isFetching,
   userId: state.loginInfo.userId,
+  errorMessage: state.errorInfo.errorMessage,
 });
 
 const ChatContainerWithApi = connect(mapStateToProps, {
   setIsFetching,
+  deleteErrorMessage,
+  setErrorMessage,
 })(ChatContainer);
 
 export default ChatContainerWithApi;

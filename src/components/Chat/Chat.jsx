@@ -4,7 +4,6 @@ import ErrorCatcher from "../common/ErrorCatcher/ErrorCatcher";
 
 function Chat(props) {
   const [messages, setMessages] = useState([]);
-  const [error, setError] = useState(null);
   const [newMessageContent, setNewMessageContent] = useState("");
 
   useEffect(() => {
@@ -22,7 +21,7 @@ function Chat(props) {
         setMessages(response.data);
       } catch (error) {
         console.error("Помилка отримання повідомлень чата:", error);
-        setError();
+        
       }
     };
 
