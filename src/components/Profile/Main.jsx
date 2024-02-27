@@ -1,4 +1,3 @@
-import ErrorCatcher from "../common/ErrorCatcher/ErrorCatcher";
 import ChangeUserInfo from "./ChangeUserInfo";
 import "./Main.css";
 import ProfileInfo from "./ProfileInfo/ProfileInfo";
@@ -9,7 +8,6 @@ function Main(props) {
   } else {
     return (
       <div className="maincontent">
-        <ErrorCatcher />
         <ProfileInfo
           postData={props.postData}
           profileData={props.profileData}
