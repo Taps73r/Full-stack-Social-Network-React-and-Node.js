@@ -103,6 +103,7 @@ function ChatContainer({ userId, isFetching, setIsFetching }) {
         </div>
       </div>
       <Chat userId={userId} selectedChat={selectedChat} />
+      
     </div>
   );
 }
