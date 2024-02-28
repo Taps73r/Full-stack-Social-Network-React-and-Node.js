@@ -9,6 +9,8 @@ import OtherProfile from "./OtherProfile";
 import axios from "axios";
 import { connect } from "react-redux";
 import Preloader from "../common/Preloader/Preloader";
+import { setErrorMessage } from "../../redux/error-reducer";
+import ErrorCatcherContainer from "../common/ErrorCatcher/ErrorCatcher";
 
 function withRouter(Component) {
   function ComponentWithRouterProp(props) {
@@ -39,7 +41,10 @@ class OtherProfileContainer extends React.Component {
         this.props.setIsFetching(false);
       })
       .catch((error) => {
-        console.error("Error fetching profile data:", error);
+        this.props.setErrorMessage(
+          error.response.data.message,
+          error.response.status
+        );
         this.props.setIsFetching(false);
       });
   };
@@ -56,7 +61,6 @@ class OtherProfileContainer extends React.Component {
         }
       )
       .then((response) => {
-        console.log(response);
         if (response.data.subscription === "No") {
           const no = [0];
           this.props.toggleSubscriptionProfile(no);
@@ -66,7 +70,10 @@ class OtherProfileContainer extends React.Component {
         );
       })
       .catch((error) => {
-        console.error("Error subscribing user:", error);
+        this.props.setErrorMessage(
+          error.response.data.message,
+          error.response.status
+        );
       });
   };
   likeCurrentPost = (postId) => {
@@ -84,7 +91,10 @@ class OtherProfileContainer extends React.Component {
       )
       .then((response) => {})
       .catch((error) => {
-        console.error(error);
+        this.props.setErrorMessage(
+          error.response.data.message,
+          error.response.status
+        );
       });
   };
   render() {
@@ -92,13 +102,16 @@ class OtherProfileContainer extends React.Component {
       return <Preloader />;
     }
     return (
-      <OtherProfile
-        likeCurrentPost={this.likeCurrentPost}
-        postData={this.props.postData}
-        profileData={this.props.profileData}
-        loggedId={this.props.loginUser}
-        handleSubscribe={this.subscribeUserProfile}
-      />
+      <>
+        {this.props.errorMessage ? <ErrorCatcherContainer /> : <></>}
+        <OtherProfile
+          likeCurrentPost={this.likeCurrentPost}
+          postData={this.props.postData}
+          profileData={this.props.profileData}
+          loggedId={this.props.loginUser}
+          handleSubscribe={this.subscribeUserProfile}
+        />
+      </>
     );
   }
 }
@@ -108,11 +121,13 @@ let mapStateToProps = (state) => {
     profileData: state.otherProfileInfo.profileData,
     loginUser: state.loginInfo.userId,
     isFetching: state.otherProfileInfo.isFetching,
+    errorMessage: state.errorInfo.errorMessage,
   };
 };
 
 let OtherProfileContainerWithApi = connect(mapStateToProps, {
   setProfile,
+  setErrorMessage,
   setIsFetching,
   toggleSubscriptionProfile,
 })(withRouter(OtherProfileContainer));
