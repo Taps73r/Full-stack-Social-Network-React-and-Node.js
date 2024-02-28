@@ -3,6 +3,7 @@ import axios from "axios";
 import "./Users.css";
 import Users from "./Users";
 import Preloader from "../common/Preloader/Preloader";
+import ErrorCatcherContainer from "../common/ErrorCatcher/ErrorCatcher";
 
 class UsersAPIComponent extends React.Component {
   componentDidMount() {
@@ -24,6 +25,13 @@ class UsersAPIComponent extends React.Component {
         this.props.setUsers(response.data.items);
         this.props.setTotalUsersCount(response.data.totalCount);
         this.props.setIsFetching(false);
+      })
+      .catch((error) => {
+        this.props.setIsFetching(false);
+        this.props.setErrorMessage(
+          error.response.data.message,
+          error.response.status
+        );
       });
   };
 
@@ -43,7 +51,10 @@ class UsersAPIComponent extends React.Component {
         this.props.toggleSubscription(followerId, followingId);
       })
       .catch((error) => {
-        console.error("Error subscribing user:", error);
+        this.props.setErrorMessage(
+          error.response.data.message,
+          error.response.status
+        );
       });
   };
 
@@ -60,6 +71,7 @@ class UsersAPIComponent extends React.Component {
   render() {
     return (
       <>
+        {this.props.errorMessage ? <ErrorCatcherContainer /> : <></>}
         {this.props.isFetching ? (
           <Preloader />
         ) : (
