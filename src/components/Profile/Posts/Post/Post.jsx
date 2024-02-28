@@ -8,8 +8,10 @@ import Comments from "../../../common/Comments/Comments";
 import axios from "axios";
 import { NavLink } from "react-router-dom";
 import staticPhoto from "../../../../photos/userstaticavatar.jpg";
+import ErrorCatcherContainer from "../../../common/ErrorCatcher/ErrorCatcher";
 
 function Post(props) {
+  const { setErrorMessage } = props;
   const likesCount = props.likes?.length || 0;
   const userId = props.userId;
   const profileId = props.profileData.userId;
@@ -34,10 +36,12 @@ function Post(props) {
         .then((response) => {
           changeCommentsCount(response.data.count);
         })
-        .catch((error) => {});
+        .catch((error) => {
+          setErrorMessage(error.response.data.message, error.response.status);
+        });
     };
     getCommentsCount();
-  }, [props.postId]);
+  }, [props.postId, setErrorMessage]);
 
   const showHideComent = () => {
     setShowComents(!showComents);
@@ -107,6 +111,7 @@ function Post(props) {
   const messageToShow = expanded ? props.message : wrapText(props.message, 46);
   return (
     <>
+      {props.errorMessage ? <ErrorCatcherContainer /> : <></>}
       <div className="posts">
         <div className="userPhoto">
           <div className="post_username_position">
@@ -189,6 +194,8 @@ function Post(props) {
       </div>
       {showComents ? (
         <Comments
+          setErrorMessage={props.setErrorMessage}
+          errorMessage={props.errorMessage}
           addCommentToCount={addCommentToCount}
           deleteCommentFromCount={deleteCommentFromCount}
           postId={props.postId}
