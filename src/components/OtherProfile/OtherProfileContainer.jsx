@@ -110,6 +110,8 @@ class OtherProfileContainer extends React.Component {
           profileData={this.props.profileData}
           loggedId={this.props.loginUser}
           handleSubscribe={this.subscribeUserProfile}
+          setErrorMessage={this.props.setErrorMessage}
+          errorMessage={this.props.errorMessage}
         />
       </>
     );
