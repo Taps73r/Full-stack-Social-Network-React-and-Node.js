@@ -6,13 +6,19 @@ function verifyTokenAndUser(req, res, next) {
     : null;
 
   if (!token) {
-    return res.status(401).json({ message: "Немає токену" });
+    return res.status(401).json({
+      message:
+        "Ваш сеанс аутентифікації закінчився. Будь ласка, увійдіть знову для продовження роботи.",
+    });
   }
 
   jwt.verify(token, "secret_key", (err, decoded) => {
     if (err) {
       console.error("JWT verification error:", err);
-      return res.status(401).json({ message: "Недійсний токен" });
+      return res.status(401).json({
+        message:
+          "Ваш сеанс аутентифікації закінчився. Будь ласка, увійдіть знову для продовження роботи.",
+      });
     }
     if (req.params.userId && req.params.userId != decoded.userId) {
       return res.status(403).json({ message: "Недостатньо прав доступу" });
