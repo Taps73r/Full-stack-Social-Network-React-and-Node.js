@@ -6,7 +6,8 @@ import CreatePostContainer from "../Posts/CreatePostContainer";
 function ProfileInfo(props) {
   let posts;
   if (props.postData && props.postData.length > 0) {
-    posts = props.postData.map((post) => {
+    const reversedPosts = props.postData.slice().reverse();
+    posts = reversedPosts.map((post) => {
       return (
         <Post
           key={post._id}
