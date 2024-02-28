@@ -2,6 +2,7 @@ import React, { useState } from "react";
 import "./Comments.css";
 import axios from "axios";
 import CommentsData from "./CommentsData";
+import ErrorCatcherContainer from "../ErrorCatcher/ErrorCatcher";
 
 const Comments = (props) => {
   const [showOtherComments, setShowOtherComments] = useState(false);
@@ -19,7 +20,12 @@ const Comments = (props) => {
       .then((response) => {
         setCommentsFromResponse(response.data.comments);
       })
-      .catch((error) => {});
+      .catch((error) => {
+        props.setErrorMessage(
+          error.response.data.message,
+          error.response.status
+        );
+      });
   };
   const sendComent = (postId, commentText) => {
     const token = localStorage.getItem("token");
@@ -39,7 +45,12 @@ const Comments = (props) => {
           response.data.newComment,
         ]);
       })
-      .catch((response) => {});
+      .catch((error) => {
+        props.setErrorMessage(
+          error.response.data.message,
+          error.response.status
+        );
+      });
   };
   const handleSendComent = (e) => {
     e.preventDefault();
@@ -63,7 +74,10 @@ const Comments = (props) => {
         setCommentsFromResponse(response.data.comments);
       })
       .catch((error) => {
-        console.error("Error fetching comments:", error);
+        props.setErrorMessage(
+          error.response.data.message,
+          error.response.status
+        );
       });
   };
 
@@ -88,6 +102,7 @@ const Comments = (props) => {
   }
   return (
     <div className="all-comment-block">
+      {props.errorMessage ? <ErrorCatcherContainer /> : <></>}
       <div className="coment_block">
         <form>
           <textarea
