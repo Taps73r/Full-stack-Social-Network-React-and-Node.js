@@ -3,6 +3,7 @@ import { useEffect, useState } from "react";
 import ErrorCatcher from "../common/ErrorCatcher/ErrorCatcher";
 
 function Chat(props) {
+  const { setErrorMessage } = props;
   const [messages, setMessages] = useState([]);
   const [newMessageContent, setNewMessageContent] = useState("");
 
@@ -19,7 +20,9 @@ function Chat(props) {
           }
         );
         setMessages(response.data);
-      } catch (error) {}
+      } catch (error) {
+        setErrorMessage(error.response.data.message, error.response.status);
+      }
     };
 
     if (props.selectedChat) {
@@ -29,7 +32,7 @@ function Chat(props) {
       }, 10000);
       return () => clearInterval(intervalId);
     }
-  }, [props.selectedChat]);
+  }, [props.selectedChat, setErrorMessage]);
 
   const sendMessage = async () => {
     try {
@@ -46,7 +49,7 @@ function Chat(props) {
       setMessages([...messages, response.data]);
       setNewMessageContent("");
     } catch (error) {
-      console.error("Помилка відправлення повідомлення:", error);
+      props.setErrorMessage(error.response.data.message, error.response.status);
     }
   };
   const deleteMessage = (messageId) => {
@@ -66,8 +69,10 @@ function Chat(props) {
         );
       })
       .catch((error) => {
-        console.log(error);
-        props.setErrorMessage();
+        props.setErrorMessage(
+          error.response.data.message,
+          error.response.status
+        );
       });
   };
 
@@ -104,7 +109,7 @@ function Chat(props) {
                   deleteMessage(message.messageId);
                 }}
               >
-                <span class="material-symbols-outlined">delete</span>
+                <span className="material-symbols-outlined">delete</span>
               </button>
             ) : (
               <></>
