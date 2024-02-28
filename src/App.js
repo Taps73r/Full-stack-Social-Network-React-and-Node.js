@@ -16,6 +16,8 @@ import SettingsContainer from "./components/Settings/SettingsContainer";
 import OtherProfileContainerWithApi from "./components/OtherProfile/OtherProfileContainer";
 import NewsContainerWithRedux from "./components/News/NewsContainer";
 import ChatContainer from "./components/Chat/ChatContainer";
+import { setErrorMessage } from "./redux/error-reducer";
+import ErrorCatcherContainer from "./components/common/ErrorCatcher/ErrorCatcher";
 
 class App extends React.Component {
   componentDidMount() {
@@ -26,17 +28,13 @@ class App extends React.Component {
     const storedToken = localStorage.getItem("token");
     if (storedToken) {
       axios
-        .post("http://localhost:3002/protected", { token: storedToken })
+        .post("http://localhost:3002/protected", {})
         .then((response) => {
-          if (response.data) {
-            const { token, username, userId } = response.data;
-            this.props.loginSuccess({ token, username, userId });
-          } else {
-            // Обробте неприпустимий токен
-          }
+          const { token, username, userId } = response.data;
+          this.props.loginSuccess({ token, username, userId });
         })
         .catch((error) => {
-          console.error("Error during token validation:", error);
+          setErrorMessage(error.response.data.message, error.response.status);
         });
     }
   }
@@ -44,6 +42,7 @@ class App extends React.Component {
     const { isAuthenticated } = this.props;
     return (
       <div className="App">
+        {this.props.errorMessage ? <ErrorCatcherContainer /> : <></>}
         <Header />
         {isAuthenticated ? (
           <>
@@ -83,9 +82,12 @@ class App extends React.Component {
 
 const mapStateToProps = (state) => ({
   isAuthenticated: state.loginInfo.isAuthenticated,
+  errorMessage: state.errorInfo.errorMessage,
 });
+
 const mapDispatchToProps = (dispatch) => ({
   loginSuccess: (token) => dispatch(loginSuccess(token)),
+  setErrorMessage,
 });
 
 export default connect(mapStateToProps, mapDispatchToProps)(App);
