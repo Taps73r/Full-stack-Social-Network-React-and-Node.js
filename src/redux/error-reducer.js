@@ -5,7 +5,6 @@ const IMAGE_PROFILE_LOAD = "IMAGE_PROFILE_LOAD";
 const TEXT_NAME_LOAD = "TEXT_NAME_LOAD";
 const TEXT_BIO_LOAD = "TEXT_BIO_LOAD";
 const SET_ERROR = "SET_ERROR";
-const DELETE_ERROR = "DELETE_ERROR";
 
 let initialState = {
   imagePostLoad: false,
@@ -17,11 +16,6 @@ let initialState = {
 };
 export const errorReducer = (state = initialState, action) => {
   switch (action.type) {
-    case DELETE_ERROR:
-      return {
-        ...state,
-        errorMessage: "",
-      };
     case SET_ERROR:
       return {
         ...state,
@@ -66,9 +60,6 @@ export const errorReducer = (state = initialState, action) => {
   }
 };
 
-export const deleteErrorMessage = () => ({
-  type: DELETE_ERROR,
-});
 export const setErrorMessage = (errorMessage) => ({
   type: SET_ERROR,
   errorMessage,
