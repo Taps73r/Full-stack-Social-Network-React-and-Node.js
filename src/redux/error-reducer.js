@@ -13,6 +13,7 @@ let initialState = {
   textNameProfileLoad: false,
   textBioProfileLoad: false,
   errorMessage: "",
+  statusCode: null,
 };
 export const errorReducer = (state = initialState, action) => {
   switch (action.type) {
@@ -20,6 +21,7 @@ export const errorReducer = (state = initialState, action) => {
       return {
         ...state,
         errorMessage: action.errorMessage,
+        statusCode: action.status,
       };
     case DROP_ERRORS:
       return {
@@ -60,9 +62,10 @@ export const errorReducer = (state = initialState, action) => {
   }
 };
 
-export const setErrorMessage = (errorMessage) => ({
+export const setErrorMessage = (errorMessage, status) => ({
   type: SET_ERROR,
   errorMessage,
+  status,
 });
 export const setImageProfileLoad = () => ({
   type: IMAGE_PROFILE_LOAD,
