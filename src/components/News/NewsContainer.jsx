@@ -62,6 +62,8 @@ const NewsContainer = ({
         userId={userId}
         newsData={newsData}
         isFetching={isFetching}
+        setErrorMessage={setErrorMessage}
+        errorMessage={errorMessage}
       />
     </>
   );

@@ -30,6 +30,8 @@ function News(props) {
             message={post.postMessage}
             photos={post.photos}
             profileData={post.userId}
+            setErrorMessage={props.setErrorMessage}
+            errorMessage={props.errorMessage}
           />
         </div>
       );
