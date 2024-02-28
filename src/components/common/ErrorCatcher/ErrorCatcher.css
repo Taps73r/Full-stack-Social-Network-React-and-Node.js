@@ -1,3 +1,5 @@
+@import url("https://fonts.googleapis.com/css2?family=Tilt+Neon&display=swap");
+
 .ErrorCatcher {
   width: 100%;
   height: 100%;
@@ -15,6 +17,7 @@
   width: 30svw;
   display: grid;
   place-items: center;
+  border-radius: 2svw;
 }
 
 .ErrorBlock button {
@@ -26,10 +29,13 @@
   color: #fff;
   transition: 0.5s;
   cursor: pointer;
+  font-family: "Tilt Neon", sans-serif;
 }
 
 .ErrorBlock button:hover {
   background-color: #5bc0be;
 }
 
-
+.ErrorBlock p {
+  font-size: 2svw;
+}
