@@ -28,7 +28,7 @@ class App extends React.Component {
     const storedToken = localStorage.getItem("token");
     if (storedToken) {
       axios
-        .post("http://localhost:3002/protected", {})
+        .post("http://localhost:3002/protected", { token: storedToken })
         .then((response) => {
           const { token, username, userId } = response.data;
           this.props.loginSuccess({ token, username, userId });
