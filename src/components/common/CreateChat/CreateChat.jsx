@@ -3,9 +3,12 @@ import "./CreateChat.css";
 import staticPhoto from "../../../photos/userstaticavatar.jpg";
 
 import React, { useEffect, useState } from "react";
+import ErrorCatcherContainer from "../ErrorCatcher/ErrorCatcher";
 
 export default function CreateChat(props) {
+  const { setErrorMessage } = props;
   const [subscriptions, setSubscriptions] = useState([]);
+
   useEffect(() => {
     async function fetchSubscriptions() {
       const token = localStorage.getItem("token");
@@ -20,11 +23,11 @@ export default function CreateChat(props) {
         );
         setSubscriptions(response.data);
       } catch (error) {
-        console.error("Помилка при отриманні списку підписок:", error);
+        setErrorMessage(error.response.data.message, error.response.status);
       }
     }
     fetchSubscriptions();
-  }, []);
+  }, [setErrorMessage]);
 
   const handleCreateChat = async (userId) => {
     try {
@@ -39,6 +42,7 @@ export default function CreateChat(props) {
 
   return (
     <div className="Create-chat">
+      {props.errorMessage ? <ErrorCatcherContainer /> : <></>}
       <button
         className="back-btn"
         onClick={() => {

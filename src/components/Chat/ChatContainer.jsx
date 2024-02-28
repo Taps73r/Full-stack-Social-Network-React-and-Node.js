@@ -9,6 +9,7 @@ import { NavLink } from "react-router-dom";
 import "./Chat.css";
 import staticPhoto from "../../photos/userstaticavatar.jpg";
 import { setErrorMessage } from "../../redux/error-reducer";
+import ErrorCatcherContainer from "../common/ErrorCatcher/ErrorCatcher";
 
 function ChatContainer({
   userId,
@@ -38,12 +39,12 @@ function ChatContainer({
           });
       } catch (error) {
         setIsFetching(false);
-        console.error("Помилка отримання списку чатів:", error);
+        setErrorMessage(error.response.data.message, error.response.status);
       }
     };
 
     fetchChats();
-  }, [setIsFetching, userId]);
+  }, [setIsFetching, userId, setErrorMessage]);
   const handleCheckChat = (chatId) => {
     setSelectedChat(chatId);
   };
@@ -66,7 +67,7 @@ function ChatContainer({
         });
     } catch (error) {
       setIsFetching(false);
-      console.error("Помилка створення чату:", error);
+      setErrorMessage(error.response.data.message, error.response.status);
     }
   };
   if (isFetching || !chats) {
@@ -78,12 +79,15 @@ function ChatContainer({
         createChat={createChat}
         followedUsers={followedUsers}
         setFollowedUsers={setFollowedUsers}
+        setErrorMessage={setErrorMessage}
+        errorMessage={errorMessage}
       />
     );
   }
 
   return (
     <div className="chat-page">
+      {errorMessage ? <ErrorCatcherContainer /> : <></>}
       <div className="chat-route">
         {chats.map((element, index) => {
           return (

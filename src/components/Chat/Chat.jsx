@@ -1,6 +1,6 @@
 import axios from "axios";
 import { useEffect, useState } from "react";
-import ErrorCatcher from "../common/ErrorCatcher/ErrorCatcher";
+import ErrorCatcherContainer from "../common/ErrorCatcher/ErrorCatcher";
 
 function Chat(props) {
   const { setErrorMessage } = props;
@@ -90,7 +90,7 @@ function Chat(props) {
 
   return (
     <div className="chat">
-      {props.errorMessage ? <ErrorCatcher /> : <></>}
+      {props.errorMessage ? <ErrorCatcherContainer /> : <></>}
       <div className="chat-messages">
         {messages.map((message, index) => (
           <div
