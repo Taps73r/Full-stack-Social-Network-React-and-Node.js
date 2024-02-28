@@ -12,6 +12,8 @@ import {
   setProfile,
   updateTextPost,
 } from "../../redux/profile-reducer";
+import { setErrorMessage } from "../../redux/error-reducer";
+import ErrorCatcherContainer from "../common/ErrorCatcher/ErrorCatcher";
 
 function MainContainer({
   userId,
@@ -31,6 +33,8 @@ function MainContainer({
   updatePostText,
   updateTextPost,
   setPostData,
+  errorMessage,
+  setErrorMessage,
 }) {
   useEffect(() => {
     const requestProfileInfo = () => {
@@ -48,13 +52,12 @@ function MainContainer({
           setIsFetching(false);
         })
         .catch((error) => {
-          // Обробка помилки
-          console.error("Error fetching profile data:", error);
+          setErrorMessage(error.response.data.message, error.response.status);
           setIsFetching(false);
         });
     };
     requestProfileInfo();
-  }, [userId, setIsFetching, setProfile]);
+  }, [userId, setIsFetching, setProfile, setErrorMessage]);
 
   let addPost = () => {
     setIsFetching(true);
@@ -77,7 +80,7 @@ function MainContainer({
       })
       .catch((error) => {
         setIsFetching(false);
-        console.error("Error adding post:", error);
+        setErrorMessage(error.response.data.message, error.response.status);
       });
   };
   let changeUserInfo = () => {
@@ -108,8 +111,7 @@ function MainContainer({
         setIsFetching(false);
       })
       .catch((error) => {
-        // Обробка помилки
-        console.error("Error fetching profile data:", error);
+        setErrorMessage(error.response.data.message, error.response.status);
         setIsFetching(false);
       });
   };
@@ -125,6 +127,10 @@ function MainContainer({
       .then((response) => {
         setPostData(response.data);
         setIsFetching(false);
+      })
+      .catch((error) => {
+        setIsFetching(false);
+        setErrorMessage(error.response.data.message, error.response.status);
       });
   };
   let updateCurrentPost = (postId) => {
@@ -144,6 +150,10 @@ function MainContainer({
       .then((response) => {
         setPostData(response.data);
         setIsFetching(false);
+      })
+      .catch((error) => {
+        setIsFetching(false);
+        setErrorMessage(error.response.data.message, error.response.status);
       });
   };
   let likeCurrentPost = (postId) => {
@@ -160,27 +170,32 @@ function MainContainer({
       )
       .then((response) => {})
       .catch((error) => {
-        console.error(error);
+        setErrorMessage(error.response.data.message, error.response.status);
       });
   };
   if (isFetching || !profileData) {
     return <Preloader />;
   }
   return (
-    <Main
-      postData={postData}
-      profileData={profileData}
-      addPost={addPost}
-      likeCurrentPost={likeCurrentPost}
-      changeUserInfo={changeUserInfo}
-      putChangedUserInfo={putChangedUserInfo}
-      changingInfo={changingInfo}
-      userId={userId}
-      updatePostText={updatePostText}
-      updateTextPost={updateTextPost}
-      deleteCurrentPost={deleteCurrentPost}
-      updateCurrentPost={updateCurrentPost}
-    />
+    <>
+      {errorMessage ? <ErrorCatcherContainer /> : <></>}
+      <Main
+        postData={postData}
+        profileData={profileData}
+        addPost={addPost}
+        likeCurrentPost={likeCurrentPost}
+        changeUserInfo={changeUserInfo}
+        putChangedUserInfo={putChangedUserInfo}
+        changingInfo={changingInfo}
+        userId={userId}
+        updatePostText={updatePostText}
+        updateTextPost={updateTextPost}
+        deleteCurrentPost={deleteCurrentPost}
+        updateCurrentPost={updateCurrentPost}
+        setErrorMessage={setErrorMessage}
+        errorMessage={errorMessage}
+      />
+    </>
   );
 }
 
@@ -196,10 +211,12 @@ const mapStateToProps = (state) => ({
   avatar: state.profileInfo.avatar,
   newPostImages: state.profileInfo.newPostImages,
   updatePostText: state.profileInfo.updatePostText,
+  errorMessage: state.errorInfo.errorMessage,
 });
 
 const ProfileContainerWithApi = connect(mapStateToProps, {
   setProfile,
+  setErrorMessage,
   setIsFetching,
   addPostActionCreator,
   setChangeUserInfo: changeUserInfo,
