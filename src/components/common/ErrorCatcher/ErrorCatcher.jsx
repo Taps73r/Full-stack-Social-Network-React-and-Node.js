@@ -11,13 +11,22 @@ const ErrorCatcherPortal = ({ children }) => {
   );
 };
 
-const ErrorCatcher = () => {
+const ErrorCatcher = ({ errorMessage, setErrorMessage, statusCode }) => {
+  const handleConfirm = () => {
+    setErrorMessage("");
+
+    if (statusCode === 401) {
+      window.location.replace("/login");
+      localStorage.removeItem("token");
+    }
+  };
+
   return (
     <ErrorCatcherPortal>
       <div className="ErrorCatcher">
         <div className="ErrorBlock">
-          <p>{}</p>
-          <button>Confirm</button>
+          <p>{errorMessage}</p>
+          <button onClick={handleConfirm}>Confirm</button>
         </div>
       </div>
     </ErrorCatcherPortal>
@@ -26,6 +35,7 @@ const ErrorCatcher = () => {
 
 const mapStateToProps = (state) => ({
   errorMessage: state.errorInfo.errorMessage,
+  statusCode: state.errorInfo.statusCode,
 });
 
 const ErrorCatcherContainer = connect(mapStateToProps, {
