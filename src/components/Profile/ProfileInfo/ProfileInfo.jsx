@@ -21,6 +21,8 @@ function ProfileInfo(props) {
           message={post.postMessage}
           photos={post.photos}
           profileData={props.profileData}
+          setErrorMessage={props.setErrorMessage}
+          errorMessage={props.errorMessage}
         />
       );
     });

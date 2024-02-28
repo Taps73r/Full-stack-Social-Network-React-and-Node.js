@@ -4,7 +4,13 @@ import ProfileInfo from "./ProfileInfo/ProfileInfo";
 
 function Main(props) {
   if (props.changingInfo === true) {
-    return <ChangeUserInfo putChangedUserInfo={props.putChangedUserInfo} />;
+    return (
+      <ChangeUserInfo
+        putChangedUserInfo={props.putChangedUserInfo}
+        setErrorMessage={props.setErrorMessage}
+        errorMessage={props.errorMessage}
+      />
+    );
   } else {
     return (
       <div className="maincontent">
@@ -19,6 +25,8 @@ function Main(props) {
           updateTextPost={props.updateTextPost}
           deleteCurrentPost={props.deleteCurrentPost}
           updateCurrentPost={props.updateCurrentPost}
+          setErrorMessage={props.setErrorMessage}
+          errorMessage={props.errorMessage}
         />
       </div>
     );
