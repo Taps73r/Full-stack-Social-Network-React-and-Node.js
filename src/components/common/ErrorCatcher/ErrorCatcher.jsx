@@ -1,6 +1,8 @@
 import React from "react";
 import ReactDOM from "react-dom";
 import "./ErrorCatcher.css";
+import { connect } from "react-redux";
+import { setErrorMessage } from "../../../redux/error-reducer";
 
 const ErrorCatcherPortal = ({ children }) => {
   return ReactDOM.createPortal(
@@ -9,7 +11,7 @@ const ErrorCatcherPortal = ({ children }) => {
   );
 };
 
-const ErrorCatcher = ({ errorMessage }) => {
+const ErrorCatcher = () => {
   return (
     <ErrorCatcherPortal>
       <div className="ErrorCatcher">
@@ -22,4 +24,12 @@ const ErrorCatcher = ({ errorMessage }) => {
   );
 };
 
-export default ErrorCatcher;
+const mapStateToProps = (state) => ({
+  errorMessage: state.errorInfo.errorMessage,
+});
+
+const ErrorCatcherContainer = connect(mapStateToProps, {
+  setErrorMessage,
+})(ErrorCatcher);
+
+export default ErrorCatcherContainer;
