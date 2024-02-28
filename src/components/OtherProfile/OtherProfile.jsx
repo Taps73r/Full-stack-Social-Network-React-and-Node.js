@@ -28,8 +28,7 @@ const OtherProfile = (props) => {
   };
   let posts;
   if (props.postData && props.postData.length > 0) {
-    const reversedPosts = props.postData.slice().reverse();
-    posts = reversedPosts.map((post) => {
+    posts = props.postData.map((post) => {
       return (
         <Post
           key={post._id}
