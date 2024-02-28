@@ -4,6 +4,8 @@ import axios from "axios";
 import { connect } from "react-redux";
 import { getNewsData } from "../../redux/news-reducer";
 import { setIsFetching } from "../../redux/profile-reducer";
+import { setErrorMessage } from "../../redux/error-reducer";
+import ErrorCatcherContainer from "../common/ErrorCatcher/ErrorCatcher";
 
 const NewsContainer = ({
   newsData,
@@ -11,6 +13,8 @@ const NewsContainer = ({
   userId,
   isFetching,
   setIsFetching,
+  setErrorMessage,
+  errorMessage,
 }) => {
   useEffect(() => {
     const getAllPosts = () => {
@@ -28,10 +32,11 @@ const NewsContainer = ({
         })
         .catch((error) => {
           setIsFetching(false);
+          setErrorMessage(error.response.data.message, error.response.status);
         });
     };
     getAllPosts();
-  }, [getNewsData, setIsFetching]);
+  }, [getNewsData, setIsFetching, setErrorMessage]);
   let likeCurrentPost = (postId) => {
     const token = localStorage.getItem("token");
     axios
@@ -46,16 +51,19 @@ const NewsContainer = ({
       )
       .then((response) => {})
       .catch((error) => {
-        console.error(error);
+        setErrorMessage(error.response.data.message, error.response.status);
       });
   };
   return (
-    <News
-      likeCurrentPost={likeCurrentPost}
-      userId={userId}
-      newsData={newsData}
-      isFetching={isFetching}
-    />
+    <>
+      {errorMessage ? <ErrorCatcherContainer /> : <></>}
+      <News
+        likeCurrentPost={likeCurrentPost}
+        userId={userId}
+        newsData={newsData}
+        isFetching={isFetching}
+      />
+    </>
   );
 };
 
@@ -64,11 +72,13 @@ let mapStateToProps = (state) => {
     newsData: state.newsInfo.newsData,
     userId: state.loginInfo.userId,
     isFetching: state.profileInfo.isFetching,
+    errorMessage: state.errorInfo.errorMessage,
   };
 };
 
 let NewsContainerWithRedux = connect(mapStateToProps, {
   getNewsData,
   setIsFetching,
+  setErrorMessage,
 })(NewsContainer);
 export default NewsContainerWithRedux;
