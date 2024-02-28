@@ -50,7 +50,18 @@ router.post("/posts", verifyTokenAndUser, async (req, res) => {
 
 router.get("/news-post", verifyTokenAndUser, async (req, res) => {
   try {
-    const allPosts = await Post.find();
+    const page = parseInt(req.query.page) || 1;
+    const pageSize = parseInt(req.query.pageSize) || 10;
+
+    const totalPosts = await Post.countDocuments();
+    const totalPages = Math.ceil(totalPosts / pageSize);
+
+    const skip = (page - 1) * pageSize;
+
+    const allPosts = await Post.find()
+      .skip(skip)
+      .limit(pageSize)
+      .sort({ createdAt: -1 });
 
     if (!allPosts || allPosts.length === 0) {
       return res.status(404).json({ message: "Posts not found" });
@@ -73,7 +84,11 @@ router.get("/news-post", verifyTokenAndUser, async (req, res) => {
       })
     );
 
-    res.json({ posts: postsWithUserInfo });
+    res.json({
+      posts: postsWithUserInfo,
+      totalPages,
+      currentPage: page,
+    });
   } catch (error) {
     console.error("Error getting posts:", error);
     res.status(500).json({ message: "Error getting posts" });
