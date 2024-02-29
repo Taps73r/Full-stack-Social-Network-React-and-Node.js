@@ -8,6 +8,8 @@ const Subscription = require("../Schema/subscription");
 
 const verifyToken = require("../Security/SecurityToken");
 
+const LIMIT_PER_PAGE = 10;
+
 router.get("/profile/:userId", verifyToken, async (req, res) => {
   const userId = req.params.userId;
 
@@ -17,8 +19,6 @@ router.get("/profile/:userId", verifyToken, async (req, res) => {
     if (!profile) {
       return res.status(404).json({ message: "Профіль не знайдено" });
     }
-
-    const posts = await Post.find({ userId });
 
     const subscriptions = await Subscription.find({
       $or: [{ follower: userId }, { following: userId }],
@@ -37,13 +37,39 @@ router.get("/profile/:userId", verifyToken, async (req, res) => {
       name: profile.name,
       bio: profile.bio,
       photo: profile.photo,
-      posts: posts || [],
       subscriptions: userSubscriptions,
       followers: followers,
     });
   } catch (error) {
     console.error("Помилка при отриманні даних профілю:", error);
     res.status(500).json({ message: "Помилка при отриманні даних профілю" });
+  }
+});
+
+router.get("/profile/:userId/posts", verifyToken, async (req, res) => {
+  const userId = req.params.userId;
+  const page = parseInt(req.query.page) || 1;
+
+  try {
+    const postsCount = await Post.countDocuments({ userId });
+    const totalPages = Math.ceil(postsCount / LIMIT_PER_PAGE);
+    const skip = (totalPages - page) * LIMIT_PER_PAGE;
+
+    const posts = await Post.find({ userId })
+      .skip(skip)
+      .limit(LIMIT_PER_PAGE)
+      .sort({ createdAt: -1 });
+
+    res.json({
+      posts: posts || [],
+      currentPage: page,
+      totalPages: totalPages,
+    });
+  } catch (error) {
+    console.error("Помилка при отриманні постів користувача:", error);
+    res
+      .status(500)
+      .json({ message: "Помилка при отриманні постів користувача" });
   }
 });
 
