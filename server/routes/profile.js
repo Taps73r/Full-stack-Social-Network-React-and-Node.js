@@ -84,7 +84,17 @@ router.put("/update-profile", verifyToken, async (req, res) => {
         .status(404)
         .json({ message: "Профіль користувача не знайдено" });
     }
+    if (name && name.length > 12) {
+      return res
+        .status(400)
+        .json({ message: "Ім'я не може бути довшим за 12 символів" });
+    }
 
+    if (bio && bio.length > 50) {
+      return res
+        .status(400)
+        .json({ message: "Біо не може бути довшим за 50 символів" });
+    }
     if (name) {
       userProfile.name = name;
     }
