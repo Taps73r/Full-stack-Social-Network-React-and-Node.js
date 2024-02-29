@@ -126,6 +126,7 @@
   display: flex;
   flex-direction: column;
   overflow-y: auto;
+  height: 94%;
 }
 .Message {
   margin: 10px 0;
@@ -164,5 +165,32 @@
 .delete-message:hover {
   background-color: #5bc0be;
   color: #fff;
+}
 
+@media screen and (max-width: 650px) {
+  .Message p {
+    font-size: 2.5svw;
+  }
+
+  .delete-message {
+    padding: 1svw;
+    margin-left: 1svw;
+    height: 5svw;
+    width: 5svw;
+    cursor: pointer;
+  }
+  .material-symbols-outlined{
+    font-size: 4svw;
+  }
+  .chat-route {
+    width: 30%;
+  }
+  .chat-list-block p{
+    font-size: 2svw;
+  }
+
+  .chat-list-block img{
+    height: 5svw;
+    width: 5svw;
+  }
 }
