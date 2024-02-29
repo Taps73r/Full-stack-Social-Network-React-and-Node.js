@@ -1,0 +1,24 @@
+.newsContainer_btn {
+    width: 100%;
+    display: flex;
+    flex-direction: row;
+    justify-content: center;
+    align-items: center;
+    gap: 30px;
+    margin-top: 20px;
+    padding-bottom: 40px;
+}
+
+.newsContainer_btn button{
+    font-size: 2svw;
+    border: none;
+    background-color: #3a506b;
+    padding: 1svw;
+    color: #fff;
+    cursor: pointer;
+    border-radius: 10px;
+}
+
+.newsContainer_btn button:hover {
+    background-color: #5bc0be;
+}

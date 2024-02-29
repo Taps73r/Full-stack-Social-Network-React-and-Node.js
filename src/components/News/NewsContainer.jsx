@@ -1,4 +1,4 @@
-import { useEffect } from "react";
+import { useEffect, useState } from "react";
 import News from "./News";
 import axios from "axios";
 import { connect } from "react-redux";
@@ -16,18 +16,24 @@ const NewsContainer = ({
   setErrorMessage,
   errorMessage,
 }) => {
+  const [page, setPage] = useState(1);
+  const [allPages, setAllPages] = useState();
   useEffect(() => {
-    const getAllPosts = () => {
+    const getAllPosts = (page) => {
       setIsFetching(true);
       const token = localStorage.getItem("token");
       axios
         .get(`http://localhost:3002/news-post`, {
+          params: {
+            page: page,
+          },
           headers: {
             Authorization: `Bearer ${token}`,
           },
         })
         .then((response) => {
-          getNewsData(response.data);
+          getNewsData(response.data.posts);
+          setAllPages(response.data.totalPages);
           setIsFetching(false);
         })
         .catch((error) => {
@@ -35,8 +41,8 @@ const NewsContainer = ({
           setErrorMessage(error.response.data.message, error.response.status);
         });
     };
-    getAllPosts();
-  }, [getNewsData, setIsFetching, setErrorMessage]);
+    getAllPosts(page);
+  }, [getNewsData, setIsFetching, setErrorMessage, page]);
   let likeCurrentPost = (postId) => {
     const token = localStorage.getItem("token");
     axios
@@ -56,15 +62,29 @@ const NewsContainer = ({
   };
   return (
     <>
-      {errorMessage ? <ErrorCatcherContainer /> : <></>}
-      <News
-        likeCurrentPost={likeCurrentPost}
-        userId={userId}
-        newsData={newsData}
-        isFetching={isFetching}
-        setErrorMessage={setErrorMessage}
-        errorMessage={errorMessage}
-      />
+      <div className="news-container">
+        {errorMessage ? <ErrorCatcherContainer /> : <></>}
+        <News
+          likeCurrentPost={likeCurrentPost}
+          userId={userId}
+          newsData={newsData}
+          isFetching={isFetching}
+          setErrorMessage={setErrorMessage}
+          errorMessage={errorMessage}
+        />
+        <div className="newsContainer_btn">
+          {page === 1 ? (
+            <></>
+          ) : (
+            <button onClick={() => setPage(page - 1)}>Back</button>
+          )}
+          {page === allPages ? (
+            <></>
+          ) : (
+            <button onClick={() => setPage(page + 1)}>Next</button>
+          )}
+        </div>
+      </div>
     </>
   );
 };

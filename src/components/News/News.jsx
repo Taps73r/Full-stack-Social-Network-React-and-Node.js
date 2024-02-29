@@ -8,16 +8,8 @@ function News(props) {
   if (props.isFetching) {
     return <Preloader />;
   }
-  if (props.newsData.posts && props.newsData.posts.length > 0) {
-    const shuffledPosts = [...props.newsData.posts];
-    for (let i = shuffledPosts.length - 1; i > 0; i--) {
-      const j = Math.floor(Math.random() * (i + 1));
-      [shuffledPosts[i], shuffledPosts[j]] = [
-        shuffledPosts[j],
-        shuffledPosts[i],
-      ];
-    }
-    posts = shuffledPosts.map((post) => {
+  if (props.newsData && props.newsData.length > 0) {
+    posts = props.newsData.map((post) => {
       return (
         <div className="Posts" key={post._id}>
           <Post

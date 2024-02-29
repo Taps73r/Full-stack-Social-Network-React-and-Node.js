@@ -8,7 +8,7 @@ export const newsReducer = (state = initialState, action) => {
     case GET_NEWS_DATA:
       return {
         ...state,
-        newsData: action.data
+        newsData: action.data,
       };
     default:
       return state;
@@ -16,6 +16,6 @@ export const newsReducer = (state = initialState, action) => {
 };
 
 export const getNewsData = (data) => ({
-    type: GET_NEWS_DATA,
-    data,
-})
+  type: GET_NEWS_DATA,
+  data,
+});

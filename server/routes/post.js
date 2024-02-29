@@ -50,8 +50,8 @@ router.post("/posts", verifyTokenAndUser, async (req, res) => {
 
 router.get("/news-post", verifyTokenAndUser, async (req, res) => {
   try {
-    const page = parseInt(req.query.page) || 1;
-    const pageSize = parseInt(req.query.pageSize) || 10;
+    const page = req.query.page ? parseInt(req.query.page) : 1;
+    const pageSize = parseInt(req.query.pageSize) || 8;
 
     const totalPosts = await Post.countDocuments();
     const totalPages = Math.ceil(totalPosts / pageSize);
