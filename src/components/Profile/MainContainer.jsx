@@ -89,7 +89,6 @@ function MainContainer({
           },
         })
         .then((response) => {
-          console.log(response);
           fetchPostData(response.data.posts);
           setCountOfPages(response.data.totalPages);
           setIsFetching(false);
