@@ -40,7 +40,7 @@ body {
 .route_side_bar {
   grid-area: 2 / 2 / 3 / 5;
   overflow-y: auto;
-  height: 43svw;
+  height: 570px;
   scrollbar-color: #5bc0be #3a506b;
   scrollbar-width: thin;
 }
@@ -55,5 +55,11 @@ body {
   .route_side_bar {
     width: 100%;
     height: 100%;
+  }
+}
+
+@media screen and (min-height: 800px){
+  .route_side_bar{
+    height: 80svh;
   }
 }
