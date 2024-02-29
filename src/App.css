@@ -39,7 +39,8 @@ body {
 
 .route_side_bar {
   grid-area: 2 / 2 / 3 / 5;
-  height: 550px;
+  overflow-y: auto;
+  height: 72.5svh;
   scrollbar-color: #5bc0be #3a506b;
   scrollbar-width: thin;
 }

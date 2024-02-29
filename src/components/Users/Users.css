@@ -163,3 +163,28 @@
     width: 60svw;
   }
 }
+
+@media screen and (min-width: 1800px) {
+  .avatar_button img {
+    width: 5svw;
+    height: 5svw;
+    border-radius: 50%;
+  }
+
+  .users_name {
+    font-size: 1.4svw;
+  }
+  .users_bio {
+    font-size: 1svw;
+  }
+  .users_name button {
+    width: 5svw;
+    height: 2svw;
+    color: #1c2541;
+    background-color: #fff;
+    border: 2px solid #5bc0be;
+    border-radius: 10px;
+    font-size: 1.2svw;
+    font-family: "Tilt Neon", sans-serif;
+  }
+}

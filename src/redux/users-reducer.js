@@ -8,7 +8,7 @@ const TOGGLE_SUBSCRIPTION = 'TOGGLE_SUBSCRIPTION';
 
 let initialState = {
     users: [],
-    pageSize: 6,
+    pageSize: 9,
     totalUsersCount: 40,
     currentPage: 1,
     newUserSearchText: '',
