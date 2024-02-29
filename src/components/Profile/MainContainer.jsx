@@ -1,5 +1,5 @@
 import axios from "axios";
-import React, { useEffect } from "react";
+import React, { useEffect, useState } from "react";
 import { connect } from "react-redux";
 import Preloader from "./../common/Preloader/Preloader";
 import Main from "./Main";
@@ -7,6 +7,7 @@ import "./Main.css";
 import {
   addPostActionCreator,
   changeUserInfo,
+  fetchPostData,
   setIsFetching,
   setPostData,
   setProfile,
@@ -23,6 +24,7 @@ function MainContainer({
   profileData,
   addPostActionCreator,
   setIsFetching,
+  fetchPostData,
   setProfile,
   setChangeUserInfo,
   changeBioText,
@@ -36,6 +38,31 @@ function MainContainer({
   errorMessage,
   setErrorMessage,
 }) {
+  const [page, setPage] = useState(1);
+  const [pagesCount, setCountOfPages] = useState();
+  useEffect(() => {
+    let fetchMorePosts = (page) => {
+      const token = localStorage.getItem("token");
+      const url = `http://localhost:3002/profile/${userId}/posts`;
+      axios
+        .get(url, {
+          params: {
+            page: page,
+          },
+          headers: {
+            Authorization: `Bearer ${token}`,
+          },
+        })
+        .then((response) => {
+          console.log(response);
+          fetchPostData(response.data.posts);
+        })
+        .catch((error) => {
+          setErrorMessage(error.response.data.message, error.response.status);
+        });
+    };
+    fetchMorePosts(page);
+  }, [page, fetchPostData, setErrorMessage, userId]);
   useEffect(() => {
     const requestProfileInfo = () => {
       setIsFetching(true);
@@ -55,9 +82,33 @@ function MainContainer({
           setErrorMessage(error.response.data.message, error.response.status);
           setIsFetching(false);
         });
+      axios
+        .get(`http://localhost:3002/profile/${userId}/posts`, {
+          headers: {
+            Authorization: `Bearer ${token}`,
+          },
+        })
+        .then((response) => {
+          console.log(response);
+          fetchPostData(response.data.posts);
+          setCountOfPages(response.data.totalPages);
+          setIsFetching(false);
+        })
+        .catch((error) => {
+          setErrorMessage(error.response.data.message, error.response.status);
+          setIsFetching(false);
+        });
     };
     requestProfileInfo();
-  }, [userId, setIsFetching, setProfile, setErrorMessage]);
+  }, [userId, setIsFetching, setProfile, setErrorMessage, fetchPostData]);
+
+  const handleBackPosts = () => {
+    setPage(page - 1);
+  };
+
+  const handleNextPosts = () => {
+    setPage(page + 1);
+  };
 
   let addPost = () => {
     setIsFetching(true);
@@ -195,6 +246,14 @@ function MainContainer({
         setErrorMessage={setErrorMessage}
         errorMessage={errorMessage}
       />
+      <div className="newsContainer_btn">
+        {page === 1 ? <></> : <button onClick={handleBackPosts}>Back</button>}
+        {page === pagesCount ? (
+          <></>
+        ) : (
+          <button onClick={handleNextPosts}>Next</button>
+        )}
+      </div>
     </>
   );
 }
@@ -222,6 +281,7 @@ const ProfileContainerWithApi = connect(mapStateToProps, {
   setChangeUserInfo: changeUserInfo,
   updateTextPost,
   setPostData,
+  fetchPostData,
 })(MainContainer);
 
 export default ProfileContainerWithApi;

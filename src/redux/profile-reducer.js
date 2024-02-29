@@ -11,6 +11,7 @@ const UPLOAD_POST_IMAGES = "UPLOAD_POST_IMAGES";
 const UPDATE_POST_TEXT = "UPDATE_POST_TEXT";
 const SET_POST_DATA = "SET_POST_DATA";
 const SET_LIKE = "SET_LIKE";
+const FETCH_POST_DATA = "FETCH_POST_DATA";
 
 let initialState = {
   postData: [],
@@ -22,7 +23,7 @@ let initialState = {
   changeNameText: "",
   avatar: "",
   newPostImages: [],
-  updatePostText: ""
+  updatePostText: "",
 };
 export const profileReducer = (state = initialState, action) => {
   switch (action.type) {
@@ -38,6 +39,11 @@ export const profileReducer = (state = initialState, action) => {
         ...state,
         newPostText: action.newText,
       };
+    case FETCH_POST_DATA:
+      return {
+        ...state,
+        postData: action.postData,
+      };
     case SET_POST_DATA:
       return {
         ...state,
@@ -50,9 +56,7 @@ export const profileReducer = (state = initialState, action) => {
         newPostImages: action.images,
       };
     case SET_LIKE:
-      return {
-
-      }
+      return {};
     case UPLOAD_AVATAR:
       return {
         ...state,
@@ -62,7 +66,6 @@ export const profileReducer = (state = initialState, action) => {
       return {
         ...state,
         profileData: action.profileData,
-        postData: action.profileData.posts || [],
       };
     case UPDATE_POST_TEXT:
       return {
@@ -135,9 +138,12 @@ export const setIsFetching = (isFetching, userId) => ({
   isFetching,
   userId,
 });
-export const setProfile = (profileData, postData) => ({
+export const setProfile = (profileData) => ({
   type: SET_PROFILE,
   profileData,
+});
+export const fetchPostData = (postData) => ({
+  type: FETCH_POST_DATA,
   postData,
 });
 export const uploadAvatar = (avatarUrl) => ({
