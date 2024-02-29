@@ -1,5 +1,7 @@
 import {
+  fetchPostData,
   setIsFetching,
+  setPage,
   setProfile,
   toggleSubscriptionProfile,
 } from "../../redux/other-profile-reducer";
@@ -47,7 +49,50 @@ class OtherProfileContainer extends React.Component {
         );
         this.props.setIsFetching(false);
       });
+    axios
+      .get(`http://localhost:3002/profile/${userId}/posts`, {
+        headers: {
+          Authorization: `Bearer ${token}`,
+        },
+      })
+      .then((response) => {
+        this.props.fetchPostData(response.data);
+      })
+      .catch((error) => {
+        setErrorMessage(error.response.data.message, error.response.status);
+      });
   };
+  fetchMorePosts = (userId, page) => {
+    const token = localStorage.getItem("token");
+    axios
+      .get(`http://localhost:3002/profile/${userId}/posts`, {
+        params: {
+          page: page,
+        },
+        headers: {
+          Authorization: `Bearer ${token}`,
+        },
+      })
+      .then((response) => {
+        console.log(response);
+        this.props.fetchPostData(response.data);
+      })
+      .catch((error) => {
+        setErrorMessage(error.response.data.message, error.response.status);
+      });
+  };
+  handleNextPage = () => {
+    const nextPage = this.props.page + 1;
+    this.props.setPage(nextPage);
+    this.fetchMorePosts(this.props.router.params.userId, nextPage);
+  };
+
+  handlePrevPage = () => {
+    const prevPage = this.props.page - 1;
+    this.props.setPage(prevPage);
+    this.fetchMorePosts(this.props.router.params.userId, prevPage);
+  };
+
   subscribeUserProfile = (followerId, followingId) => {
     const token = localStorage.getItem("token");
     axios
@@ -113,6 +158,19 @@ class OtherProfileContainer extends React.Component {
           setErrorMessage={this.props.setErrorMessage}
           errorMessage={this.props.errorMessage}
         />
+        <div className="newsContainer_btn">
+          {this.props.page === 1 ? (
+            <></>
+          ) : (
+            <button onClick={this.handlePrevPage}>Back</button>
+          )}
+          {this.props.page === this.props.pagesCount ||
+          this.props.pagesCount === 0 ? (
+            <></>
+          ) : (
+            <button onClick={this.handleNextPage}>Next</button>
+          )}
+        </div>
       </>
     );
   }
@@ -124,6 +182,8 @@ let mapStateToProps = (state) => {
     loginUser: state.loginInfo.userId,
     isFetching: state.otherProfileInfo.isFetching,
     errorMessage: state.errorInfo.errorMessage,
+    pagesCount: state.otherProfileInfo.pagesCount,
+    page: state.otherProfileInfo.page,
   };
 };
 
@@ -132,6 +192,8 @@ let OtherProfileContainerWithApi = connect(mapStateToProps, {
   setErrorMessage,
   setIsFetching,
   toggleSubscriptionProfile,
+  fetchPostData,
+  setPage,
 })(withRouter(OtherProfileContainer));
 
 export default OtherProfileContainerWithApi;
