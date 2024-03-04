@@ -24,7 +24,7 @@ export const otherProfileReducer = (state = initialState, action) => {
     case SET_PAGE:
       return {
         ...state,
-        page: action.page,
+        page: Number(action.page),
       };
     case SET_PROFILE:
       return {
@@ -35,7 +35,7 @@ export const otherProfileReducer = (state = initialState, action) => {
       return {
         ...state,
         postData: action.postData.posts,
-        pagesCount: action.postData.pagesCount,
+        pagesCount: action.postData.totalPages,
       };
     case TOGGLE_IS_FETCHING:
       return { ...state, isFetching: action.isFetching };
