@@ -8,7 +8,6 @@ import ProfileContainerWithApi from "./components/Profile/MainContainer";
 import LoginContainerAPI from "./components/Login/LoginContainer";
 import RegisterContainerAPI from "./components/Register/RegisterContainer";
 import PreLogin from "./components/Login/PreLogin";
-import { connect } from "react-redux";
 import React from "react";
 import { loginSuccess } from "./redux/login-reducer";
 import axios from "axios";
@@ -18,6 +17,7 @@ import NewsContainerWithRedux from "./components/News/NewsContainer";
 import ChatContainer from "./components/Chat/ChatContainer";
 import { setErrorMessage } from "./redux/error-reducer";
 import ErrorCatcherContainer from "./components/common/ErrorCatcher/ErrorCatcher";
+import { connect } from "react-redux";
 
 class App extends React.Component {
   componentDidMount() {
@@ -34,7 +34,11 @@ class App extends React.Component {
           this.props.loginSuccess({ token, username, userId });
         })
         .catch((error) => {
-          setErrorMessage(error.response.data.message, error.response.status);
+          console.error(error);
+          this.props.setErrorMessage(
+            error.response.data.message,
+            error.response.status
+          );
         });
     }
   }
@@ -85,9 +89,8 @@ const mapStateToProps = (state) => ({
   errorMessage: state.errorInfo.errorMessage,
 });
 
-const mapDispatchToProps = (dispatch) => ({
-  loginSuccess: (token) => dispatch(loginSuccess(token)),
+const AppContainer = connect(mapStateToProps, {
   setErrorMessage,
-});
-
-export default connect(mapStateToProps, mapDispatchToProps)(App);
+  loginSuccess,
+})(App);
+export default AppContainer;
