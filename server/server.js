@@ -4,6 +4,7 @@ const bodyParser = require("body-parser");
 const jwt = require("jsonwebtoken");
 const cors = require("cors");
 const cloudinary = require("cloudinary").v2;
+require("dotenv").config();
 
 const authRoutes = require("./routes/auth");
 const profileRoutes = require("./routes/profile");
@@ -17,13 +18,12 @@ const app = express();
 const port = 3002;
 
 cloudinary.config({
-  cloud_name: "duoxvyirq",
-  api_key: "872646555943858",
-  api_secret: "8FumT857SXwXJz7dRs-mwCRBJpY",
+  cloud_name: process.env.CLOUDINARY_CLOUD_NAME,
+  api_key: process.env.CLOUDINARY_API_KEY,
+  api_secret: process.env.CLOUDINARY_API_SECRET,
 });
 
-const mongoURI =
-  "mongodb+srv://taps73r:motherboard2005@cluster0.rx59bw7.mongodb.net/?retryWrites=true&w=majority";
+const mongoURI = process.env.MONGO_URI;
 mongoose.connect(mongoURI, { useNewUrlParser: true, useUnifiedTopology: true });
 const db = mongoose.connection;
 db.on("error", console.error.bind(console, "Помилка підключення до MongoDB:"));
