@@ -2,15 +2,15 @@ import React from "react";
 import { connect } from "react-redux";
 import Login from "./Login";
 import {
-  loginFailure,
   loginPassText,
   loginRequest,
   loginSuccess,
   loginUserNameText,
 } from "../../redux/login-reducer";
 import axios from "axios";
-import Preloader from "../common/Preloader/Preloader";
 import { setProfile } from "../../redux/profile-reducer";
+import { setErrorMessage } from "../../redux/error-reducer";
+import ErrorCatcherContainer from "../common/ErrorCatcher/ErrorCatcher";
 
 class LoginContainer extends React.Component {
   handleLogin = async () => {
@@ -19,8 +19,8 @@ class LoginContainer extends React.Component {
       password,
       loginRequest,
       loginSuccess,
-      loginFailure,
       setProfile,
+      setErrorMessage,
     } = this.props;
     loginRequest();
 
@@ -36,15 +36,15 @@ class LoginContainer extends React.Component {
       setProfile(data);
       window.location.replace("/profile");
     } catch (error) {
-      loginFailure(error.response.data.message || "Помилка логіну");
+      console.error(error);
+      setErrorMessage(error.response.data.message || "Помилка логіну");
     }
   };
 
   render() {
-    if (this.props.isFetching) {
-      return <Preloader />;
-    } else {
-      return (
+    return (
+      <>
+        {this.props.errorMessage ? <ErrorCatcherContainer /> : <></>}
         <Login
           username={this.props.username}
           password={this.props.password}
@@ -53,8 +53,8 @@ class LoginContainer extends React.Component {
           loginUserNameText={this.props.loginUserNameText}
           onLogin={this.handleLogin}
         />
-      );
-    }
+      </>
+    );
   }
 }
 
@@ -63,15 +63,15 @@ let mapStateToProps = (state) => ({
   password: state.loginInfo.password,
   isFetching: state.loginInfo.isFetching,
   isAuthenticated: state.loginInfo.isAuthenticated,
-  error: state.loginInfo.error,
+  errorMessage: state.errorInfo.errorMessage,
 });
 
 let LoginContainerAPI = connect(mapStateToProps, {
   loginPassText,
-  loginFailure,
   loginRequest,
   loginSuccess,
   loginUserNameText,
   setProfile,
+  setErrorMessage,
 })(LoginContainer);
 export default LoginContainerAPI;
