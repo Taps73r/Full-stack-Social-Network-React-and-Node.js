@@ -11,7 +11,7 @@ function Footer() {
             <div className='copyright'>
                 Copyright <span className="material-symbols-outlined">
                     copyright
-                </span> 2023, Converso. All Rights Reserved.
+                </span> 2023-2024, Converso. All Rights Reserved.
             </div>
         </div>
     )
