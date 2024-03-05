@@ -54,13 +54,18 @@ app.post("/protected", (req, res) => {
   const token = req.body.token;
 
   if (!token) {
-    return res.status(401).json(console.log("Немає токену"));
+    return res.status(401).json({
+      message:
+        "Ваш сеанс аутентифікації закінчився. Будь ласка, увійдіть знову для продовження роботи.",
+    });
   }
 
   jwt.verify(token, "secret_key", (err, decoded) => {
     if (err) {
-      console.error("JWT verification error:", err);
-      return res.status(401).json(console.log("Немає токену"));
+      return res.status(401).json({
+        message:
+          "Ваш сеанс аутентифікації закінчився. Будь ласка, увійдіть знову для продовження роботи.",
+      });
     }
 
     res.json({
