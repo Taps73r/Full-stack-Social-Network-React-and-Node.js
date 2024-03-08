@@ -8,6 +8,29 @@ const Profile = require("../Schema/profileSchema");
 router.post("/register", async (req, res) => {
   const { username, password } = req.body;
 
+  const minUsernameLength = 4;
+  const maxUsernameLength = 12;
+  const minPasswordLength = 6;
+  const maxPasswordLength = 14;
+
+  if (
+    username.length < minUsernameLength ||
+    username.length > maxUsernameLength
+  ) {
+    return res.status(400).json({
+      message: `Ім'я користувача має бути від ${minUsernameLength} до ${maxUsernameLength} символів`,
+    });
+  }
+
+  if (
+    password.length < minPasswordLength ||
+    password.length > maxPasswordLength
+  ) {
+    return res.status(400).json({
+      message: `Пароль має бути від ${minPasswordLength} до ${maxPasswordLength} символів`,
+    });
+  }
+
   try {
     const existingUser = await User.findOne({ username });
     if (existingUser) {
