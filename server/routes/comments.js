@@ -110,6 +110,17 @@ router.post("/comments/:postId", verifyTokenAndUser, async (req, res) => {
 
     const userProfile = await Profile.findOne({ userId });
 
+    const maxCommentLength = 20;
+    const minCommentLength = 2;
+    if (
+      commentText.length < minCommentLength ||
+      commentText.length > maxCommentLength
+    ) {
+      return res.status(400).json({
+        message: `Текст коментаря повинен містити від ${minCommentLength} до ${maxCommentLength} символів`,
+      });
+    }
+
     const comment = new Comment({
       postId,
       userId,
