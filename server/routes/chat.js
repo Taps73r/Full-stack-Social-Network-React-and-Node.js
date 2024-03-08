@@ -15,7 +15,7 @@ router.post("/private-chats", verifyTokenAndUser, async (req, res) => {
     });
 
     if (existingChat) {
-      return res.status(400).json({ message: "Чат уже существует" });
+      return res.status(400).json({ message: "Чат вже існує" });
     }
 
     const newPrivateChat = await PrivateChat.create({
@@ -98,6 +98,17 @@ router.post(
       const chatId = req.params.chatId;
       const sender = req.userData.userId;
       const { content } = req.body;
+      const maxMessageLength = 140;
+      if (content.length > maxMessageLength) {
+        return res.status(400).json({
+          message: `Вміст повідомлення не може перевищувати ${maxMessageLength} символів`,
+        });
+      }
+      if (!content || content.trim().length === 0) {
+        return res
+          .status(400)
+          .json({ message: "Повідомлення не може бути порожнім" });
+      }
       const chat = await PrivateChat.findById(chatId);
       if (!chat) {
         return res.status(404).json({ message: "Чат не знайдено" });
