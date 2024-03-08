@@ -99,7 +99,7 @@ function CreatePost(props) {
             <img src="icon-photo.png" alt="" />
             {props.imageError
               ? "Error pictures"
-              : "Перетягніть або виберіть фотографії (максимум 3)"}
+              : "Виберіть фотографії (максимум 3)"}
           </label>
           <input
             type="file"
