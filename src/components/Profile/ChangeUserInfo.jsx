@@ -15,7 +15,7 @@ import {
 import './ProfileInfo/ProfileInfo.css';
 
 let ChangeUserInfoComponent = (props) => {
-    const [imageLoadedText, setImageLoadedText] = useState('Drag here');
+    const [imageLoadedText, setImageLoadedText] = useState("select an image");
 
     let submitData = (file) => {
         props.putChangedUserInfo(file);

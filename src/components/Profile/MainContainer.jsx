@@ -245,14 +245,18 @@ function MainContainer({
         setErrorMessage={setErrorMessage}
         errorMessage={errorMessage}
       />
-      <div className="newsContainer_btn">
-        {page === 1 ? <></> : <button onClick={handleBackPosts}>Back</button>}
-        {page === pagesCount ? (
-          <></>
-        ) : (
-          <button onClick={handleNextPosts}>Next</button>
-        )}
-      </div>
+      {changingInfo ? (
+        <></>
+      ) : (
+        <div className="newsContainer_btn">
+          {page === 1 ? <></> : <button onClick={handleBackPosts}>Back</button>}
+          {page === pagesCount ? (
+            <></>
+          ) : (
+            <button onClick={handleNextPosts}>Next</button>
+          )}
+        </div>
+      )}
     </>
   );
 }
