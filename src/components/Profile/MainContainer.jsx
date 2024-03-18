@@ -43,7 +43,7 @@ function MainContainer({
   useEffect(() => {
     let fetchMorePosts = (page) => {
       const token = localStorage.getItem("token");
-      const url = `http://localhost:3002/profile/${userId}/posts`;
+      const url = `https://converso-social-network-api.onrender.com/profile/${userId}/posts`;
       axios
         .get(url, {
           params: {
@@ -67,7 +67,7 @@ function MainContainer({
     const requestProfileInfo = () => {
       setIsFetching(true);
       const token = localStorage.getItem("token");
-      const url = `http://localhost:3002/profile/${userId}`;
+      const url = `https://converso-social-network-api.onrender.com/profile/${userId}`;
       axios
         .get(url, {
           headers: {
@@ -83,11 +83,14 @@ function MainContainer({
           setIsFetching(false);
         });
       axios
-        .get(`http://localhost:3002/profile/${userId}/posts`, {
-          headers: {
-            Authorization: `Bearer ${token}`,
-          },
-        })
+        .get(
+          `https://converso-social-network-api.onrender.com/profile/${userId}/posts`,
+          {
+            headers: {
+              Authorization: `Bearer ${token}`,
+            },
+          }
+        )
         .then((response) => {
           fetchPostData(response.data.posts);
           setCountOfPages(response.data.totalPages);
@@ -116,7 +119,7 @@ function MainContainer({
     const token = localStorage.getItem("token");
     axios
       .post(
-        "http://localhost:3002/posts",
+        "https://converso-social-network-api.onrender.com/posts",
         { userId, postMessage, photos },
         {
           headers: {
@@ -144,7 +147,7 @@ function MainContainer({
     setIsFetching(true);
     axios
       .put(
-        `http://localhost:3002/update-profile`,
+        `https://converso-social-network-api.onrender.com/update-profile`,
         {
           name,
           bio,
@@ -169,11 +172,14 @@ function MainContainer({
     const token = localStorage.getItem("token");
     setIsFetching(true);
     axios
-      .delete(`http://localhost:3002/posts/${postId}`, {
-        headers: {
-          Authorization: `Bearer ${token}`,
-        },
-      })
+      .delete(
+        `https://converso-social-network-api.onrender.com/posts/${postId}`,
+        {
+          headers: {
+            Authorization: `Bearer ${token}`,
+          },
+        }
+      )
       .then((response) => {
         setPostData(response.data);
         setIsFetching(false);
@@ -189,7 +195,7 @@ function MainContainer({
     const token = localStorage.getItem("token");
     axios
       .put(
-        `http://localhost:3002/posts/${postId}`,
+        `https://converso-social-network-api.onrender.com/posts/${postId}`,
         { updatedText },
         {
           headers: {
@@ -210,7 +216,7 @@ function MainContainer({
     const token = localStorage.getItem("token");
     axios
       .post(
-        `http://localhost:3002/like`,
+        `https://converso-social-network-api.onrender.com/like`,
         { postId },
         {
           headers: {

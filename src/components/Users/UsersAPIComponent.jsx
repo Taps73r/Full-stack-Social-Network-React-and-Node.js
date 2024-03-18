@@ -13,7 +13,7 @@ class UsersAPIComponent extends React.Component {
     const token = localStorage.getItem("token");
     this.props.setIsFetching(true);
     const { pageSize, newUserSearchText } = this.props;
-    const url = `http://localhost:3002/users-info?page=${currentPage}&count=${pageSize}&term=${newUserSearchText}`;
+    const url = `https://converso-social-network-api.onrender.com/users-info?page=${currentPage}&count=${pageSize}&term=${newUserSearchText}`;
 
     axios
       .get(url, {
@@ -39,7 +39,7 @@ class UsersAPIComponent extends React.Component {
     const token = localStorage.getItem("token");
     axios
       .post(
-        "http://localhost:3002/subscribe",
+        "https://converso-social-network-api.onrender.com/subscribe",
         { followingId },
         {
           headers: {

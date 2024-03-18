@@ -28,11 +28,14 @@ function ChatContainer({
         setIsFetching(true);
         const token = localStorage.getItem("token");
         await axios
-          .get(`http://localhost:3002/private-chats/${userId}`, {
-            headers: {
-              Authorization: `Bearer ${token}`,
-            },
-          })
+          .get(
+            `https://converso-social-network-api.onrender.com/private-chats/${userId}`,
+            {
+              headers: {
+                Authorization: `Bearer ${token}`,
+              },
+            }
+          )
           .then((response) => {
             setChats(response.data);
             setIsFetching(false);
@@ -54,7 +57,7 @@ function ChatContainer({
     try {
       await axios
         .post(
-          `http://localhost:3002/private-chats`,
+          `https://converso-social-network-api.onrender.com/private-chats`,
           { partId },
           {
             headers: {

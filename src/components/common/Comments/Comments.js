@@ -12,7 +12,7 @@ const Comments = (props) => {
   const deleteComment = (commentId) => {
     const token = localStorage.getItem("token");
     axios
-      .delete(`http://localhost:3002/comments/${commentId}`, {
+      .delete(`https://converso-social-network-api.onrender.com/comments/${commentId}`, {
         headers: {
           Authorization: `Bearer ${token}`,
         },
@@ -31,7 +31,7 @@ const Comments = (props) => {
     const token = localStorage.getItem("token");
     axios
       .post(
-        `http://localhost:3002/comments/${postId}`,
+        `https://converso-social-network-api.onrender.com/comments/${postId}`,
         { commentText },
         {
           headers: {
@@ -65,11 +65,14 @@ const Comments = (props) => {
   const getComments = () => {
     const token = localStorage.getItem("token");
     axios
-      .get(`http://localhost:3002/comments/${props.postId}`, {
-        headers: {
-          Authorization: `Bearer ${token}`,
-        },
-      })
+      .get(
+        `https://converso-social-network-api.onrender.com/comments/${props.postId}`,
+        {
+          headers: {
+            Authorization: `Bearer ${token}`,
+          },
+        }
+      )
       .then((response) => {
         setCommentsFromResponse(response.data.comments);
       })

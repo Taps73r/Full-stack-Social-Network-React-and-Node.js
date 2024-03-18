@@ -23,7 +23,7 @@ const NewsContainer = ({
       setIsFetching(true);
       const token = localStorage.getItem("token");
       axios
-        .get(`http://localhost:3002/news-post`, {
+        .get(`https://converso-social-network-api.onrender.com/news-post`, {
           params: {
             page: page,
           },
@@ -47,7 +47,7 @@ const NewsContainer = ({
     const token = localStorage.getItem("token");
     axios
       .post(
-        `http://localhost:3002/like`,
+        `https://converso-social-network-api.onrender.com/like`,
         { postId, userId },
         {
           headers: {

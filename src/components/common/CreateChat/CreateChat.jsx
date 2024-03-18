@@ -14,7 +14,7 @@ export default function CreateChat(props) {
       const token = localStorage.getItem("token");
       try {
         const response = await axios.get(
-          "http://localhost:3002/subscriptions",
+          "https://converso-social-network-api.onrender.com/subscriptions",
           {
             headers: {
               Authorization: `Bearer ${token}`,

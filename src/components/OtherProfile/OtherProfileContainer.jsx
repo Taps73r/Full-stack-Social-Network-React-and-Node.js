@@ -31,7 +31,7 @@ class OtherProfileContainer extends React.Component {
   requestProfileInfo = (userId) => {
     const token = localStorage.getItem("token");
     this.props.setIsFetching(true);
-    const url = `http://localhost:3002/profile/${userId}`;
+    const url = `https://converso-social-network-api.onrender.com/profile/${userId}`;
     axios
       .get(url, {
         headers: {
@@ -50,11 +50,14 @@ class OtherProfileContainer extends React.Component {
         this.props.setIsFetching(false);
       });
     axios
-      .get(`http://localhost:3002/profile/${userId}/posts`, {
-        headers: {
-          Authorization: `Bearer ${token}`,
-        },
-      })
+      .get(
+        `https://converso-social-network-api.onrender.com/profile/${userId}/posts`,
+        {
+          headers: {
+            Authorization: `Bearer ${token}`,
+          },
+        }
+      )
       .then((response) => {
         this.props.fetchPostData(response.data);
       })
@@ -65,14 +68,17 @@ class OtherProfileContainer extends React.Component {
   fetchMorePosts = (userId, page) => {
     const token = localStorage.getItem("token");
     axios
-      .get(`http://localhost:3002/profile/${userId}/posts`, {
-        params: {
-          page: page,
-        },
-        headers: {
-          Authorization: `Bearer ${token}`,
-        },
-      })
+      .get(
+        `https://converso-social-network-api.onrender.com/profile/${userId}/posts`,
+        {
+          params: {
+            page: page,
+          },
+          headers: {
+            Authorization: `Bearer ${token}`,
+          },
+        }
+      )
       .then((response) => {
         console.log(response);
         this.props.fetchPostData(response.data);
@@ -97,7 +103,7 @@ class OtherProfileContainer extends React.Component {
     const token = localStorage.getItem("token");
     axios
       .post(
-        "http://localhost:3002/subscribe",
+        "https://converso-social-network-api.onrender.com/subscribe",
         { followerId, followingId },
         {
           headers: {
@@ -126,7 +132,7 @@ class OtherProfileContainer extends React.Component {
     let userId = this.props.loginUser;
     axios
       .post(
-        `http://localhost:3002/like`,
+        `https://converso-social-network-api.onrender.com/like`,
         { postId, userId },
         {
           headers: {

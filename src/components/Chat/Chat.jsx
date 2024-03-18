@@ -12,7 +12,7 @@ function Chat(props) {
       try {
         const token = localStorage.getItem("token");
         const response = await axios.get(
-          `http://localhost:3002/private-chats/${chatId}/messages`,
+          `https://converso-social-network-api.onrender.com/private-chats/${chatId}/messages`,
           {
             headers: {
               Authorization: `Bearer ${token}`,
@@ -38,7 +38,7 @@ function Chat(props) {
     try {
       const token = localStorage.getItem("token");
       const response = await axios.post(
-        `http://localhost:3002/private-chats/${props.selectedChat}/messages`,
+        `https://converso-social-network-api.onrender.com/private-chats/${props.selectedChat}/messages`,
         { content: newMessageContent },
         {
           headers: {
@@ -56,7 +56,7 @@ function Chat(props) {
     const token = localStorage.getItem("token");
     axios
       .delete(
-        `http://localhost:3002/private-chats/${props.selectedChat}/messages/${messageId}`,
+        `https://converso-social-network-api.onrender.com/private-chats/${props.selectedChat}/messages/${messageId}`,
         {
           headers: {
             Authorization: `Bearer ${token}`,

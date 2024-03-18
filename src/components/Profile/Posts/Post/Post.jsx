@@ -28,11 +28,14 @@ function Post(props) {
     const getCommentsCount = () => {
       const token = localStorage.getItem("token");
       axios
-        .get(`http://localhost:3002/comments/${props.postId}/count`, {
-          headers: {
-            Authorization: `Bearer ${token}`,
-          },
-        })
+        .get(
+          `https://converso-social-network-api.onrender.com/comments/${props.postId}/count`,
+          {
+            headers: {
+              Authorization: `Bearer ${token}`,
+            },
+          }
+        )
         .then((response) => {
           changeCommentsCount(response.data.count);
         })

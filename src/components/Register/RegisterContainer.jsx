@@ -20,7 +20,10 @@ class RegisterContainer extends React.Component {
     const password = this.props.password;
 
     axios
-      .post("http://localhost:3002/auth/register", { username, password })
+      .post("https://converso-social-network-api.onrender.com/auth/register", {
+        username,
+        password,
+      })
       .then((response) => {
         this.props.registerSuccess();
       })

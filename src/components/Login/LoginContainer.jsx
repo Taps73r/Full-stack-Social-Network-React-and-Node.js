@@ -25,10 +25,13 @@ class LoginContainer extends React.Component {
     loginRequest();
 
     try {
-      const response = await axios.post("http://localhost:3002/auth/login", {
-        username,
-        password,
-      });
+      const response = await axios.post(
+        "https://converso-social-network-api.onrender.com/auth/login",
+        {
+          username,
+          password,
+        }
+      );
       const token = response.data.token;
       const data = response.data;
       localStorage.setItem("token", token);
